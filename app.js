@@ -5,12 +5,16 @@ import { apiError } from './utils/apiError.js';
 import otpRoute from './routes/Otp.js';
 import passResetRoute from './routes/PassReset.js';
 import servicesRoute from './routes/Services.js';
+import swaggerUi from "swagger-ui-express";
+import swaggerDocs from "./swagger.json" assert { type: "json" };; 
 
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.use(cors({origin: '*'}));
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/auth", userRoute );
 app.use("/api/otp", otpRoute);
 app.use("/api/reset-password", passResetRoute);
