@@ -1,430 +1,410 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "API Documentation",
-        "version": "1.0.0",
-        "description": "API documentation for user authentication, OTP management, password reset, and service management."
+  "swagger": "2.0",
+  "info": {
+    "title": "My API",
+    "description": "Description",
+    "version": "1.0.0"
+  },
+  "host": "localhost:8000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users/signup": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullname": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "confirmPassword": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
     },
-    "servers": [
-        {
-            "url": "http://localhost:8000",
-            "description": "Local Development Server"
+    "/users/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
         }
-    ],
-    "paths": {
-        "/api/auth/signup": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "User Signup",
-                "description": "Registers a new user.",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "fullname": {
-                                        "type": "string",
-                                        "example": "John Doe"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "john@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    },
-                                    "confirmPassword": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "required": [
-                                    "fullname",
-                                    "email",
-                                    "password",
-                                    "confirmPassword"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User created successfully"
-                    },
-                    "400": {
-                        "description": "Invalid request data"
-                    }
-                }
-            }
-        },
-        "/api/auth/login": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "User Login",
-                "description": "Logs in a user and returns a JWT token.",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "john@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "required": [
-                                    "email",
-                                    "password"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Login successful"
-                    },
-                    "401": {
-                        "description": "Invalid credentials"
-                    }
-                }
-            }
-        },
-        "/api/auth/logout": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "User Logout",
-                "description": "Logs out the currently authenticated user.",
-                "parameters": [
-                    {
-                        "name": "x-auth-header",
-                        "in": "header",
-                        "description": "Authentication token for the user.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "your-token"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Logout successful"
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                }
-            }
-        },
-        "/api/otp/": {
-            "get": {
-                "tags": [
-                    "OTP"
-                ],
-                "summary": "Get OTPs",
-                "description": "Fetches a list of all OTPs.",
-                "responses": {
-                    "200": {
-                        "description": "List of OTPs",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "_id": {
-                                                "type": "string",
-                                                "example": "otp-123"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "example": "john@example.com"
-                                            },
-                                            "otp": {
-                                                "type": "string",
-                                                "example": "456789"
-                                            },
-                                            "createdAt": {
-                                                "type": "string",
-                                                "example": "2024-11-18T11:00:05.241Z"
-                                            },
-                                            "updatedAt": {
-                                                "type": "string",
-                                                "example": "2024-11-18T11:00:05.241Z"
-                                            },
-                                            "__v": {
-                                                "type": "string",
-                                                "example": "0"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/otp/delete-otp": {
-            "delete": {
-                "tags": [
-                    "OTP"
-                ],
-                "summary": "Delete OTPs",
-                "description": "Deletes all OTPs.",
-                "responses": {
-                    "200": {
-                        "description": "All OTPs deleted successfully"
-                    }
-                }
-            }
-        },
-        "/api/otp/send-otp": {
-            "post": {
-                "tags": [
-                    "OTP"
-                ],
-                "summary": "Send OTP",
-                "description": "Sends a new OTP to the user.",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "john@example.com"
-                                    }
-                                },
-                                "required": [
-                                    "email"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OTP sent successfully"
-                    }
-                }
-            }
-        },
-        "/api/otp/verify-otp": {
-            "post": {
-                "tags": [
-                    "OTP"
-                ],
-                "summary": "Verify OTP",
-                "description": "Verifies the provided OTP.",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "john@example.com"
-                                    },
-                                    "otp": {
-                                        "type": "string",
-                                        "example": "456789"
-                                    }
-                                },
-                                "required": [
-                                    "email",
-                                    "otp"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "OTP verified successfully"
-                    },
-                    "400": {
-                        "description": "Invalid OTP"
-                    }
-                }
-            }
-        },
-        "/api/reset-password/generate-reset-token": {
-            "post": {
-                "tags": [
-                    "Password Reset"
-                ],
-                "summary": "Generate Reset Token",
-                "description": "Generates a password reset token based on the provided email.",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "user@example.com"
-                                    }
-                                },
-                                "required": [
-                                    "email"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Reset token generated successfully"
-                    },
-                    "400": {
-                        "description": "Invalid email or bad request"
-                    }
-                }
-            }
-        },
-        "/api/reset-password/change-password": {
-            "post": {
-                "tags": [
-                    "Password Reset"
-                ],
-                "summary": "Change Password",
-                "description": "Changes the user's password using the provided reset token in the header.",
-                "parameters": [
-                    {
-                        "name": "x-auth-header",
-                        "in": "header",
-                        "description": "The reset token required to authorize the password change.",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "example": "reset-token-example"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "password": {
-                                        "type": "string",
-                                        "example": "newPassword123"
-                                    }
-                                },
-                                "required": [
-                                    "password"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Password changed successfully"
-                    },
-                    "400": {
-                        "description": "Invalid token or bad request"
-                    }
-                }
-            }
-        },
-        "/api/services/add-service": {
-            "post": {
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Add Service",
-                "description": "Adds a new service.",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Premium Service"
-                                    }
-                                },
-                                "required": [
-                                    "name"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Service added successfully"
-                    }
-                }
-            }
-        },
-        "/api/services/": {
-            "get": {
-                "tags": [
-                    "Services"
-                ],
-                "summary": "Get Services",
-                "description": "Fetches a list of all available services.",
-                "responses": {
-                    "200": {
-                        "description": "List of services",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "_id": {
-                                                "type": "string",
-                                                "example": "673b05daaa2d964032b64b13"
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Premium Service"
-                                            },
-                                            "__v": {
-                                                "type": "string",
-                                                "example": "0"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-auth-header",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
         }
+      }
+    },
+    "/faqs/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "example": "any"
+                },
+                "answer": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "faq_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "faq_id": {
+                  "example": "any"
+                },
+                "question": {
+                  "example": "any"
+                },
+                "answer": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/otp/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/otp/delete-otp": {
+      "delete": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/otp/send-otp": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/otp/verify-otp": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "otp": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/pass-reset/generate-reset-token": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/pass-reset/change-password": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-auth-header",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/services/add-service": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/services/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/home-content/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "banner_images": {
+                  "example": "any"
+                },
+                "what_people_says": {
+                  "example": "any"
+                },
+                "features": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "doc_id": {
+                  "example": "any"
+                },
+                "banner_images": {
+                  "example": "any"
+                },
+                "what_people_says": {
+                  "example": "any"
+                },
+                "features": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
+  }
 }
