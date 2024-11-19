@@ -9,8 +9,8 @@ const storage = new CloudinaryStorage({
       console.log(req.body.folderName);
       return {
         folder: `uploads/`,
-        allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'ico', 'svg', 'mp4', 'avi', 'mov', 'mkv', 'webm'], 
-        public_id: `${Date.now()}-${file.originalname}`, 
+        allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'ico', 'svg', 'mp4', 'avi', 'mov', 'mkv', 'webm'],
+        public_id: `${Date.now()}-${file.originalname}`,
       };
     } catch (error) {
       console.error("Error in Cloudinary params:", error);
@@ -18,8 +18,6 @@ const storage = new CloudinaryStorage({
     }
   },
 });
-
-
 
 const upload = multer({ storage });
 export { upload }
