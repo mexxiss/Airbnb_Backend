@@ -6,8 +6,6 @@ const router = express.Router();
 
 router.post('/single', upload.single('file'), async (req, res) => {
     try {
-        const folderName = req.body.folderName;
-        console.log("FolderName: ", folderName);
         res.status(200).json({ imageUrl: req.file.path });
     } catch (error) {
         console.log(error);
