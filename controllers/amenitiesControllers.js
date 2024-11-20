@@ -1,4 +1,4 @@
-import { AmenitiesModel } from "../models/amenitiesModel";
+import { AmenitiesModel } from "../models/AmenitiesModel.js";
 
 // create amenities
 
@@ -14,7 +14,10 @@ const createAmenities = async (req, res) => {
     const newAmenity = new AmenitiesModel({ title, icon });
     const savedAmenity = await newAmenity.save();
 
-    res.status(201).json(savedAmenity);
+    res.status(201).json({
+      msg: "amenities created successfully",
+      data: savedAmenity,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -25,7 +28,7 @@ const createAmenities = async (req, res) => {
 const getAllAmenities = async (req, res) => {
   try {
     const amenities = await AmenitiesModel.find();
-    res.status(200).json(amenities);
+    res.status(200).json({ msg: "data feched succefully", data: amenities });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
