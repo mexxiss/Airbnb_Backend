@@ -12,14 +12,14 @@ export const GetFaqs = async (req, res, next) => {
 }
 
 export const SetFaqs = async (req, res, next) => {
-    const {question, answer} = req.body;
+    const {question, answer, page} = req.body;
 
     if(!question || !answer) {
         return next(new apiError(400, "Faq information is incomplete"));
     }
 
     try {
-        const faq = await FaqModel.create({question, answer});
+        const faq = await FaqModel.create({question, answer, page});
         return res.status(200).json(new apiResponse(200, faq, "Faq added successfully"));
     } catch (error) {
         return next(new apiError(500, "Server Error"));

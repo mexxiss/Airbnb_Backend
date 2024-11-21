@@ -8,6 +8,9 @@ const FaqSchema = new Schema({
     answer: {
         type: String,
         required: true, 
+    },
+    page: {
+        type: String
     }
 });
 
