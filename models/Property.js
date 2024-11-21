@@ -1,6 +1,6 @@
-import mongoose, { model } from "mongoose";
+import { model, Schema } from "mongoose";
 
-const propertySchema = new mongoose.Schema({
+const PropertySchema = new Schema({
   title: {
     type: String,
     required: [true, "Title is required"],
@@ -96,13 +96,13 @@ const propertySchema = new mongoose.Schema({
     type: Number,
     required: [true, "please enter cleaning_fee"],
   },
-  vat_tex: {
+  vat_tax: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "texes",
+    ref: "taxes",
   },
-  tourism_tex: {
+  tourism_tax: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "texes",
+    ref: "taxes",
   },
   amenities: {
     amenitie_id: [
@@ -199,4 +199,4 @@ const propertySchema = new mongoose.Schema({
   },
 });
 
-export const PropertyModel = model("property", propertySchema);
+export const PropertyModel = model("Property", PropertySchema);

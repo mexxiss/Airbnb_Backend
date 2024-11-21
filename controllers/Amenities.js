@@ -1,4 +1,4 @@
-import { AmenitiesModel } from "../models/AmenitiesModel.js";
+import { AmenitiesModel } from "../models/Amenities.js";
 
 // create amenities
 

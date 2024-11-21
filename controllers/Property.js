@@ -1,5 +1,5 @@
 import { PropertyModel } from "../models/Property.js";
-import { AmenitiesModel } from "../models/AmenitiesModel.js";
+import { AmenitiesModel } from "../models/Amenities.js";
 
 // Create a new property
 export const createProperty = async (req, res) => {
@@ -30,7 +30,7 @@ export const createProperty = async (req, res) => {
 export const getAllProperties = async (req, res) => {
   try {
     const properties = await PropertyModel.find().populate(
-      "vat_tex tourism_tex amenities.amenitie_id host_by.hostId ratings.reviews.userId"
+      "vat_tax tourism_tax amenities.amenitie_id host_by.hostId ratings.reviews.userId"
     );
     res.status(200).json({ success: true, data: properties });
   } catch (error) {
@@ -42,7 +42,7 @@ export const getAllProperties = async (req, res) => {
 export const getPropertyById = async (req, res) => {
   try {
     const property = await PropertyModel.findById(req.params.id).populate(
-      "vat_tex tourism_tex amenities.amenitie_id host_by.hostId ratings.reviews.userId"
+      "vat_tax tourism_tax amenities.amenitie_id host_by.hostId ratings.reviews.userId"
     );
     if (!property) {
       return res
