@@ -5,7 +5,7 @@ import {
   getAmenitiesById,
   updateAmenities,
   deleteAmenities,
-} from "../controllers/amenitiesControllers.js";
+} from "../controllers/Amenities.js";
 import amenitiesValidator from "../utils/validations/amenitiesValidatior.js";
 
 const router = express.Router();

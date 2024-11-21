@@ -1,6 +1,6 @@
 import mongoose, { model } from "mongoose";
 
-const amenitiesSchema = new mongoose.Schema({
+const AmenitiesSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, "title is required"],
@@ -11,4 +11,4 @@ const amenitiesSchema = new mongoose.Schema({
   },
 });
 
-export const AmenitiesModel = model("amenitie", amenitiesSchema);
+export const AmenitiesModel = model("amenities", AmenitiesSchema);
