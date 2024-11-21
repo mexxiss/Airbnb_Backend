@@ -32,7 +32,15 @@ export const GetHomeContent = async (req, res, next) => {
 };
 
 export const SetHomeContent = async (req, res, next) => {
-  const { banner_images, what_people_says, features } = req.body;
+  const {
+    banner_images,
+    what_people_says,
+    features,
+    cleaning_maintenance,
+    interior_design_page,
+    listing_management,
+    management_support,
+  } = req.body;
 
   if (!banner_images || !Array.isArray(banner_images)) {
     return next(new apiError(400, "Banner Images not found"));
@@ -47,6 +55,10 @@ export const SetHomeContent = async (req, res, next) => {
       banner_images,
       what_people_says,
       features,
+      cleaning_maintenance,
+      interior_design_page,
+      listing_management,
+      management_support,
     });
     return res
       .status(200)
