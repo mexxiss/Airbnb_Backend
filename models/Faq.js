@@ -10,7 +10,7 @@ const FaqSchema = new Schema({
         required: true, 
     },
     page: {
-        type: String
+        type: [String]
     }
 });
 
