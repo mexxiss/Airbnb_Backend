@@ -1,8 +1,9 @@
 import express from "express";
-import { GetGallaryTypes, SetGallaryType } from "../controllers/GallaryTypes.js";
+import { DeleteGallaryType, GetGallaryTypes, SetGallaryType } from "../controllers/GallaryTypes.js";
 const router = express.Router();
 
 router.get('/', GetGallaryTypes);
 router.post('/', SetGallaryType);
+router.delete('/:id', DeleteGallaryType);
 
 export default router
