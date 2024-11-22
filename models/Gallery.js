@@ -1,8 +1,11 @@
-import mongoose, { model } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 
 const gallerySchema = new mongoose.Schema({
-  key: { type: String },
   img_url: { type: String },
+  type: {
+    type: Schema.Types.ObjectId,
+    ref: "gallarytypes"
+  }
 });
 
 export const GalleryModel = model("gallery", gallerySchema);

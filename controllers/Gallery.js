@@ -1,9 +1,12 @@
+import mongoose from "mongoose";
 import { GalleryModel } from "../models/Gallery.js";
+import { apiError } from "../utils/apiError.js";
+import { apiResponse } from "../utils/apiResponse.js";
 
 export const createGalleryContent = async (req, res) => {
   try {
-    const { key, img_url } = req.body;
-    const newGallery = new GalleryModel({ key, img_url });
+    const { key, img_url, type } = req.body;
+    const newGallery = new GalleryModel({ key, img_url, type });
     const savedGallery = await newGallery.save();
 
     res
@@ -16,34 +19,14 @@ export const createGalleryContent = async (req, res) => {
 
 export const getGalleryImagesByQuery = async (req, res) => {
   try {
-    const { key, all } = req.query;
+    const { type } = req.query;
+    const query = {};
 
-    // MongoDB Aggregation Pipeline
-    const pipeline = [];
-
-    //  Filter by `key` if provided
-    if (key && all !== "true") {
-      pipeline.push({
-        $match: { key: key },
-      });
+    if (type) {
+      query.type = new mongoose.Types.ObjectId(type)
     }
 
-    // Project specific fields
-    pipeline.push({
-      $project: {
-        _id: 0,
-        key: 1,
-        img_url: 1,
-      },
-    });
-
-    // Sort by key
-    pipeline.push({
-      $sort: { key: 1 },
-    });
-
-    // Execute the Aggregation Pipeline
-    const galleryData = await GalleryModel.aggregate(pipeline);
+    const galleryData = await GalleryModel.find(query).populate("type");
 
     return res.status(200).json({
       success: true,
@@ -59,3 +42,19 @@ export const getGalleryImagesByQuery = async (req, res) => {
     });
   }
 };
+
+export const UpdateGallary = async (req, res, next) => {
+  const { type } = req.body;
+  const { id } = req.params;
+
+  if (!id) {
+    return next(new apiError(400, "Please provide valid document ID"));
+  }
+
+  try {
+    const gallaryDoc = await GalleryModel.findByIdAndUpdate(id, { $set: { type } }, { new: true, runValidators: true });
+    return res.status(200).json(new apiResponse(200, gallaryDoc, "Done"));
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error}`));
+  }
+}

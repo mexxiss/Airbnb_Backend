@@ -9,6 +9,7 @@ import homeContentRoute from "./HomeContent.js";
 import uploadRoute from "./Upload.js";
 import amenitiesRoute from "./Amenities.js";
 import galleryRoute from "./Gallery.js";
+import gallaryTypesRoute from "./GallaryTypes.js"
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use("/upload", uploadRoute);
 // js
 router.use("/amenities", amenitiesRoute);
 router.use("/gallery", galleryRoute);
+router.use("/gallery-types", gallaryTypesRoute);
 
 export default router;
