@@ -1,9 +1,9 @@
 import express from "express";
-import { DeleteFaq, GetFaqs, SetFaqs, UpdateFaq } from "../controllers/Faq.js";
+import { DeleteFaq, GetFaqs, GetFilteredFaqs, SetFaqs, UpdateFaq } from "../controllers/Faq.js";
 
 const router = express.Router();
 
-router.get('/', GetFaqs);
+router.get('/', GetFilteredFaqs);
 router.post('/', SetFaqs);
 router.delete('/:id', DeleteFaq);
 router.put('/:id', UpdateFaq);
