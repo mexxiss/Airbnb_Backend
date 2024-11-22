@@ -3,7 +3,7 @@ import { DeleteFaq, GetFaqs, GetFilteredFaqs, SetFaqs, UpdateFaq } from "../cont
 
 const router = express.Router();
 
-router.get('/', GetFilteredFaqs);
+router.get('/', GetFaqs);
 router.post('/', SetFaqs);
 router.delete('/:id', DeleteFaq);
 router.put('/:id', UpdateFaq);
