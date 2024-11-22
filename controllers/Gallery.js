@@ -22,7 +22,7 @@ export const getGalleryImagesByQuery = async (req, res) => {
     const { type } = req.query;
     const query = {};
 
-    if (type) {
+    if (type && type!=="674055ff3756c3c8f2e7e686") {
       query.type = new mongoose.Types.ObjectId(type)
     }
 

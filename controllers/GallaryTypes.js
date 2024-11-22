@@ -19,7 +19,7 @@ export const SetGallaryType = async (req, res, next) => {
 
 export const GetGallaryTypes = async (req, res, next) => {
     try {
-        const gallaryTypes = await GallaryTypesModel.find();
+        const gallaryTypes = await GallaryTypesModel.find().sort({name: 1});
         return res.status(200).json(new apiResponse(200, gallaryTypes, "Gallary Types Retrieved Successfully"))
     } catch (error) {
         return next(new apiError(500, "Server Error"));
