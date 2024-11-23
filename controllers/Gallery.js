@@ -5,8 +5,8 @@ import { apiResponse } from "../utils/apiResponse.js";
 
 export const createGalleryContent = async (req, res) => {
   try {
-    const { key, img_url, type } = req.body;
-    const newGallery = new GalleryModel({ key, img_url, type });
+    const { img_url, type } = req.body;
+    const newGallery = new GalleryModel({ img_url, type });
     const savedGallery = await newGallery.save();
 
     res
@@ -25,7 +25,7 @@ export const getGalleryImagesByQuery = async (req, res) => {
     if (type && mongoose.isValidObjectId(type)) {
       query.type = new mongoose.Types.ObjectId(type)
     }
-
+    console.log(query);
     const galleryData = await GalleryModel.find(query).populate("type");
 
     return res.status(200).json({

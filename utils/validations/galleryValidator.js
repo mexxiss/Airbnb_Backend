@@ -1,22 +1,22 @@
 const galleryValidator = (req, res, next) => {
   try {
-    const { key, img_url } = req.body;
-    if (!key) {
+    const { type, img_url } = req.body;
+    if (!type && !mongoose.isValidObjectId(type)) {
       return res.status(400).json({
-        mag: "key is required",
-        key: "key",
+        msg: "Type is not passed correctly",
+        key: "type",
       });
     }
     if (!img_url) {
       return res.status(400).json({
-        mag: "img_url is required",
+        msg: "img_url is required",
         key: "img_url",
       });
     }
 
     next();
   } catch (error) {
-    res.status(500).json({ msg: "internal server error" });
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
