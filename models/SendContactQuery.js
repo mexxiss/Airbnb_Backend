@@ -14,18 +14,22 @@ const sendQuerySchema = new Schema(
       lowercase: true,
       match: [
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-        "Please fill a valid email address",
+        "Please provide a valid email address",
       ],
     },
     phone: {
       type: String,
       required: [true, "Phone number is required"],
-      match: [/^\d{10}$/, "Phone number must be 10 digits"], // You can adjust the phone regex pattern based on your region
+      match: [
+        /^5[02456]\d{7}$/,
+        "Invalid Dubai phone number (9 digits, starting with 50, 52, 54, 55, or 56)",
+      ],
     },
     subject: {
       type: String,
       required: [true, "Subject is required"],
       trim: true,
+      minlength: [3, "Subject must be at least 3 characters long"],
     },
     message: {
       type: String,
