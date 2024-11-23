@@ -11,6 +11,7 @@ import amenitiesRoute from "./Amenities.js";
 import galleryRoute from "./Gallery.js";
 import gallaryTypesRoute from "./GallaryTypes.js";
 import contactUsRoute from "./ContactUs.js";
+import propertiesRoute from "./Properties.js";
 
 const router = express.Router();
 
@@ -21,10 +22,10 @@ router.use("/pass-reset", passResetRoute);
 router.use("/services", servicesRoute);
 router.use("/home-content", homeContentRoute);
 router.use("/upload", uploadRoute);
-// js
 router.use("/amenities", amenitiesRoute);
 router.use("/gallery", galleryRoute);
 router.use("/contact-us", contactUsRoute);
 router.use("/gallery-types", gallaryTypesRoute);
+router.use("/properties", propertiesRoute);
 
 export default router;
