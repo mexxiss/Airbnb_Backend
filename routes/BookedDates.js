@@ -1,8 +1,9 @@
 import express from "express";
-import { GetBookedDates, SetBookedDates } from "../controllers/BookedDates.js";
+import { GetBookedDates, GetFilteredDates, SetBookedDates } from "../controllers/BookedDates.js";
 const router = express.Router();
 
 router.get('/', GetBookedDates);
 router.post('/', SetBookedDates);
+router.get('/filter', GetFilteredDates);
 
 export default router;
