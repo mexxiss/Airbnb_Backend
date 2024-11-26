@@ -44,6 +44,24 @@ const PropertiesSchema = new Schema({
             type: Number,
             min: 1
         },
+        permit: {
+            permit_code: {type: String},
+            permit_expiry_date: {type: String}
+        },
+        wifi: {
+            name: {type: String},
+            password: {type: String}
+        },
+        utilities: [
+            {
+                name: String,
+                service_provider: String,
+                account_no: String,
+                paid_by: String,
+                web_login: String,
+                web_password: String
+            }
+        ]
     },
     address: {
         building_no: {
@@ -95,7 +113,6 @@ const PropertiesSchema = new Schema({
                     type: Number,
                     default: 0
                 },
-
                 price_per_night: {
                     type: Number,
                     required: true
@@ -151,18 +168,6 @@ const PropertiesSchema = new Schema({
         enum: ["Active", "Inactive"],
         default: "Active", 
     },
-    maintenance: [
-        {
-            issue: { type: String }, 
-            reported_date: { type: Date, default: Date.now },
-            status: {
-                type: String,
-                enum: ["Pending", "In Progress", "Resolved"],
-                default: "Pending",
-            },
-            cost: { type: Number, default: 0 },
-        },
-    ],
 }, { timestamps: true });
 
 PropertiesSchema.methods.calculateCosts = async function (nights_count, discount = 0, vat_tax_rate, tourism_tax_rate) {
