@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
-import validator, { trim } from "validator";
+import validator from "validator";
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
+import { mailSender } from "../utils/mailSender.js";
+import { apiError } from "../utils/apiError.js";
 
 const BookDetailsSchema = new Schema({
     first_name: {
@@ -48,7 +50,7 @@ const BookDetailsSchema = new Schema({
         required: true,
         default: false
     },
-    property_id: {
+    property: {
         type: Schema.Types.ObjectId,
         ref: "properties",
         required: true,
@@ -58,6 +60,21 @@ const BookDetailsSchema = new Schema({
         ref: "bookedDates",
         required: true
     },
+    status: { type: String, enum: ['Confirmed', 'Cancelled', 'Checked Out'], default: 'Confirmed' }
 }, { timestamps: true });
+
+BookDetailsSchema.index({ property: 1 });
+BookDetailsSchema.index({ booked_dates: 1 });
+
+BookDetailsSchema.pre("save", async function(next) {
+    if(this.isNew) {
+        const mailResponse = await mailSender(this.email, "Booking Request Received", `<p>Your request for booking property - ${this.property} - has been acknowledged.</p><p>We will be contacting you shortly</p><p>Mexxiss Property Management Team</p>`);
+        if(mailResponse && !mailResponse.error) {
+            next();
+        } else {
+            next(new apiError(500, mailResponse.message));
+        }
+    }
+})
 
 export const BookDetailsModel = model("bookDetails", BookDetailsSchema);

@@ -84,7 +84,7 @@ const PropertiesSchema = new Schema({
             currency: {
                 type: String,
                 required: true,
-                default: "AER"
+                default: "AED"
             },
             security_details: {
                 type: String,
@@ -106,25 +106,8 @@ const PropertiesSchema = new Schema({
                     default: 0
                 }
             },
-            revenue_details: {
-                future_occupancy: {
-                    type: String,
-                    enum: ["Occupied", "Available"],
-                    default: "Available"
-                },
-                total_revenue: {
-                    type: Number,
-                    required: true,
-                    default: 0,
-                },
-                total_tourism_tax: {
-                    type: Number,
-                }
-            },
         }
-
     },
-
     property_check_details: {
         check_in: {
             type: String,
@@ -162,8 +145,42 @@ const PropertiesSchema = new Schema({
         other: {
             type: String
         }
-    }
+    },
+    status: {
+        type: String,
+        enum: ["Active", "Inactive"],
+        default: "Active", 
+    },
+    maintenance: [
+        {
+            issue: { type: String }, 
+            reported_date: { type: Date, default: Date.now },
+            status: {
+                type: String,
+                enum: ["Pending", "In Progress", "Resolved"],
+                default: "Pending",
+            },
+            cost: { type: Number, default: 0 },
+        },
+    ],
 }, { timestamps: true });
+
+PropertiesSchema.methods.calculateCosts = async function (nights_count, discount = 0, vat_tax_rate, tourism_tax_rate) {
+    const stay_charges = this.costs.prices.price_per_night * nights_count;
+    const cleaning_fee = this.costs.prices.cleaning_fee;
+    const vat_tax = stay_charges * (vat_tax_rate / 100);
+    const tourism_tax = stay_charges * (tourism_tax_rate / 100);
+
+    if (nights_count >= 30) {
+        discount += stay_charges * (this.discounts_percentage.monthly / 100);
+    } else if (nights_count >= 7) {
+        discount += stay_charges * (this.discounts_percentage.weekly / 100);
+    }
+    const net_charges = stay_charges + cleaning_fee + vat_tax + tourism_tax - discount;
+    const costs = { stay_charges, discount, cleaning_fee, tourism_tax, vat_tax, net_charges };
+    return costs;
+};
+
 
 PropertiesSchema.methods.addStayingRules = async function (newRules) {
     if (Array.isArray(newRules) && newRules.length > 0) {

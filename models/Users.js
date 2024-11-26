@@ -1,54 +1,105 @@
 import { Schema, model } from "mongoose";
 import validator from "validator";
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const UserSchema = new Schema({
-    fullname: {
-        type: String,
-        required: true
-    },
+    fullname: { type: String, required: true },
     email: {
-        type: String,
+        type: [String],
         required: true,
-        unique: true,
-        validate: [validator.isEmail, "Email is not Valid"]
+        validate: [
+            {
+                validator: function (emails) {
+                    return emails.every((email) => validator.isEmail(email));
+                },
+                message: "One or more emails are invalid.",
+            },
+        ],
+    },
+    phone: {
+        type: [String],
+        required: true,
+        validate: [
+            {
+                validator: function (phones) {
+                    return phones.every((phone) => {
+                        const phoneNumber = parsePhoneNumberFromString(phone);
+                        return phoneNumber && phoneNumber.isValid();
+                    });
+                },
+                message: "One or more phone numbers are invalid.",
+            },
+        ],
     },
     password: {
         type: String,
-        maxLength: 50,
-        minLength: 6,
-        validate: [
-            function (password) {
-                return /[@$#!&*^]/.test(password);
+        required: true,
+    },
+    accessToken: { type: String },
+    isLoggedIn: { type: Boolean, default: false },
+    role: {
+        type: String,
+        enum: ["Owner", "Admin"],
+        default: "Owner",
+    },
+    paymentDetails: {
+        bankAccount: {
+            accountHolderName: { type: String },
+            accountNumber: { type: String },
+            bankName: { type: String },
+            swiftCode: { type: String },
+            iban: { type: String },
+        },
+        paymentMethod: {
+            type: String,
+            enum: ["Bank Transfer", "PayPal", "Stripe"],
+            default: "Bank Transfer",
+        },
+    },
+    address: {
+        building_no: { type: String },
+        city: { type: String },
+        street: { type: String },
+        area: { type: String },
+        landmark: { type: String },
+        country: { type: String, default: "Dubai" },
+        pincode: { type: String },
+    },
+    documents: {
+        dewaBills: [
+            {
+                url: {
+                    type: String,
+                    // required: true,
+                },
             },
-            "Password must contain at least 1 special character (@, $, #, !, &, *, or ^)"
-        ]
+        ],
+        passport: {
+            url: {
+                type: String,
+                // required: true,
+            },
+            expiryDate: {
+                type: Date,
+                // required: true, 
+            },
+        },
+        titleDeed: {
+            url: {
+                type: String,
+                // required: true,
+            }
+        },
     },
-    confirmPassword: {
-        type: String,
-    },
-    accessToken: {
-        type: String,
-    },
-    isLoggedIn: {
-        type: Boolean,
-        default: false,
-    }
 }, { timestamps: true });
 
-UserSchema.pre("save", function (next) {
-    if (this.confirmPassword) {
-        this.confirmPassword = undefined;
-    }
-
+UserSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
-        const hashedPass = bcrypt.hashSync(this.password);
-        this.password = hashedPass;
-        next();
-    } else {
-        return next();
+        this.password = await bcrypt.hash(this.password, 10);
     }
+    next();
 });
 
 UserSchema.methods.compareBcryptPassword = function (password) {
@@ -56,18 +107,17 @@ UserSchema.methods.compareBcryptPassword = function (password) {
 };
 
 UserSchema.methods.generateAccessToken = async function () {
-    const { JWT_SECRET, JWT_EXPIRY } = process.env;
-    const accessToken = await jsonwebtoken.sign(
-        { _id: this._id, email: this.email },
+    const JWT_SECRET = process.env.JWT_SECRET || "defaultSecret";
+    const JWT_EXPIRY = process.env.JWT_EXPIRY || "1h";
+    const accessToken = jsonwebtoken.sign(
+        { _id: this._id, email: this.email[0] },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRY }
     );
-    if (accessToken) {
-        this.isLoggedIn = true;
-        this.accessToken = accessToken;
-        await this.save({ validateBeforeSave: false });
-        return accessToken;
-    }
+    this.isLoggedIn = true;
+    this.accessToken = accessToken;
+    await this.save({ validateBeforeSave: false });
+    return accessToken;
 };
 
 UserSchema.methods.logout = async function () {
@@ -75,6 +125,6 @@ UserSchema.methods.logout = async function () {
     this.accessToken = "";
     await this.save({ validateBeforeSave: false });
     return;
-}
+};
 
 export const UserModel = model("users", UserSchema);

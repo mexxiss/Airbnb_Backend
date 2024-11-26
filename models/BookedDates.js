@@ -16,8 +16,7 @@ const BookedDatesSchema = new Schema({
     cost_details: {
         currency: {
             type: String,
-            required: true,
-            default: "AER",
+            default: "AED",
         },
         stay_charges: {
             type: Number,
@@ -55,28 +54,36 @@ const BookedDatesSchema = new Schema({
             min: [0, "Amount cannot be negative"]
         }
     },
-    bookDetails: {
-        type: [Schema.Types.ObjectId],
-        ref: "bookDetails",
-        required: true
-    },
-    propertyId: {
-        type: [Schema.Types.ObjectId],
+    property: {
+        type: Schema.Types.ObjectId,
         ref: "properties",
         required: true
     }
 }, { timestamps: true });
 
+BookedDatesSchema.index({property: 1})
+
+BookedDatesSchema.methods.getNightsCount = async function (checkin_date, checkout_date) {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const nights_count = Math.ceil((new Date(checkout_date) - new Date(checkin_date)) / oneDay);
+    if (nights_count <= 0) {
+        throw new Error("Check-out date must be after check-in date.");
+    }
+    return nights_count;
+}
+
 BookedDatesSchema.methods.isAvailable = async function (checkinDate, checkoutDate) {
-    const existingBookings = await this.model('bookedDates').find({
-        propertyId: this.propertyId,
+    const existingBookings = await this.model("bookedDates").find({
+        property: this.property,
         $or: [
-            { checkin_date: { $lte: checkoutDate }, checkout_date: { $gte: checkinDate } },
-            { checkin_date: { $gte: checkinDate }, checkout_date: { $lte: checkoutDate } }
+            { 
+                checkin_date: { $lt: new Date(checkoutDate) }, 
+                checkout_date: { $gt: new Date(checkinDate) } 
+            }
         ]
     });
-
     return existingBookings.length === 0;
 };
+
 
 export const BookedDatesModel = model("bookedDates", BookedDatesSchema)
