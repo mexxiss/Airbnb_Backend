@@ -10,7 +10,7 @@ const UtilitySchema = new Schema({
         type: Number,
         required: true,
         default: 30
-    }
+    },
 },  { timestamps: true });
 
 UtilitySchema.post("save", async function () {
