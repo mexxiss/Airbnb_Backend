@@ -52,16 +52,15 @@ const PropertiesSchema = new Schema({
             name: {type: String},
             password: {type: String}
         },
-        utilities: [
-            {
-                name: String,
-                service_provider: String,
-                account_no: String,
-                paid_by: String,
-                web_login: String,
-                web_password: String
-            }
-        ]
+        utilities: [{
+            name: String,
+            account_no: String,
+            paid_by: String,
+            web_login: String,
+            web_pass: String,
+            link: String,
+            uploads: [String]
+        }]
     },
     address: {
         building_no: {

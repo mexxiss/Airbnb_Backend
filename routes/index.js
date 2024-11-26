@@ -13,6 +13,8 @@ import propertiesRoute from "./Properties.js";
 import utilityRoute from "./Utility.js";
 import bookedDatesRoute from "./BookedDates.js";
 import bookDetailsRoute from "./BookDetails.js";
+import providersRoute from "./ServiceProviders.js";
+import maintenanceRoute from "./Maintenance.js";
 
 const router = express.Router();
 
@@ -29,5 +31,7 @@ router.use("/properties", propertiesRoute);
 router.use("/utility", utilityRoute)
 router.use("/booked-dates", bookedDatesRoute);
 router.use("/book-details", bookDetailsRoute)
+router.use("/providers", providersRoute);
+router.use("/maintenance", maintenanceRoute);
 
 export default router;

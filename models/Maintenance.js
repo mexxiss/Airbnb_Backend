@@ -11,7 +11,7 @@ const MaintenanceSchema = new Schema({
     property: {
         type: Schema.Types.ObjectId,
         ref: "properties"
-    }
+    },
 }, {timestamps: true});
 
 MaintenanceSchema.index({ property: 1 })
