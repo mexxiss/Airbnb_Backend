@@ -2,32 +2,44 @@ import { UserModel } from "../models/Users.js";
 import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
-export const SignUp = async (req, res, next) => {
-    const { fullname, email, password, confirmPassword } = req.body;
+import validator from 'validator'; 
+import { generatePassword } from "../utils/generatePassword.js";
 
-    const requiredFields = [fullname, email, password, confirmPassword];
-    const allFieldsFilled = requiredFields.every(field => {
-        return field !== undefined && field !== null && field !== ""
-    });
+export const SignUp = async (req, res, next) => {
+    const { fullname, email, phone, role, paymentDetails, address, documents } = req.body;
+
+    const requiredFields = [fullname, email, phone, address];
+    const allFieldsFilled = requiredFields.every(field => field !== undefined && field !== null && field !== "");
     
     if (!allFieldsFilled) {
         return next(new apiError(400, "All Fields are Required"));
     }
-    if (password !== confirmPassword) {
-        return next(new apiError(400, "Password has not been confirmed"));
+
+    if (!Array.isArray(email) || email.length === 0) {
+        return next(new apiError(400, "Email field must be a non-empty array"));
+    }
+
+    const invalidEmails = email.filter(e => !validator.isEmail(e));
+    if (invalidEmails.length > 0) {
+        return next(new apiError(400, `Invalid email format for: ${invalidEmails.join(", ")}`));
+    }
+
+    if (role && !['Owner', 'Admin'].includes(role)) {
+        return next(new apiError(400, "Invalid role"));
     }
 
     try {
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: { $in: email } });
         if (user) {
             return next(new apiError(400, "User already exists"));
         }
-
-        const newUser = await UserModel.create({ fullname, email, password });
-        res.status(201).json(new apiResponse(201, newUser, "User created Successfully"));
+        const password = generatePassword();
+        console.log(password);
+        const newUser = await UserModel.create({ fullname, email, password, phone, role, paymentDetails, address, documents });
+        return res.status(201).json(new apiResponse(201, newUser, "User created Successfully"));
     } catch (error) {
-        console.log(error);
-        next(new apiError(500, error));
+        console.log(error); 
+        return next(new apiError(500, error.message || "Internal server error"));
     }
 }
 
@@ -40,7 +52,7 @@ export const Login = async(req, res, next) => {
     });
 
     try {
-        const user = await UserModel.findOne({email});
+        const user = await UserModel.findOne({ email: { $in: email } });
         if (!user) {
             return next(new apiError(400, "Email is not Registered"));
         }
@@ -50,9 +62,33 @@ export const Login = async(req, res, next) => {
         }
 
         const token = await user.generateAccessToken();
-        res.status(200).json(new apiResponse(200, {user, token},"Login Successful"));
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "Strict",
+            maxAge: process.env.JWT_EXPIRY,
+        });
+        return res.status(200).json(new apiResponse(200, {user},"Login Successful"));
     } catch (error) {
         return next(new apiError(500, "Server Error"))
+    }
+}
+
+export const ChangePassword = async(req, res, next) => {
+    const user_id = req._id;
+    const {current_pass, new_pass} = req.body;
+
+    try {
+        const user = await UserModel.findById(user_id);
+        if(!user.compareBcryptPassword(current_pass)) {
+            return next(new apiError(400, "Current Password doesn't match"));
+        }
+        user.password = new_pass;
+        await user.save();
+        return res.status(200).json(new apiResponse(200, {user},"password changed"));
+    } catch(error) {
+        return next(new apiError(500, `Server Error: ${error}`));
     }
 }
 
@@ -62,6 +98,7 @@ export const Logout = async (req, res, next) => {
     try {
         const user = await UserModel.findById(user_id);
         await user.logout();
+        res.clearCookie("token");
         return res.status(200).json(new apiResponse(200, {user}, "Logout Successful"));
     } catch (error) {
         return next(new apiError(500, "Server Error"));
