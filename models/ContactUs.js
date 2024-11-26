@@ -19,6 +19,16 @@ const contactUsSchema = new Schema({
     address: {
       type: String,
     },
+    coordinates: [
+      {
+        lat: {
+          type: Number,
+        },
+        long: {
+          type: Number,
+        },
+      },
+    ],
   },
 });
 

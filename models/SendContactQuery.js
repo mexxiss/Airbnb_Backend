@@ -20,10 +20,7 @@ const sendQuerySchema = new Schema(
     phone: {
       type: String,
       required: [true, "Phone number is required"],
-      match: [
-        /^5[02456]\d{7}$/,
-        "Invalid Dubai phone number (9 digits, starting with 50, 52, 54, 55, or 56)",
-      ],
+      minlength: [6, "Number must be at least 3 characters long"],
     },
     subject: {
       type: String,
