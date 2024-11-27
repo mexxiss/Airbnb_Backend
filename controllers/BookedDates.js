@@ -92,3 +92,18 @@ export const SetBookedDates = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${error}`));
     }
 }
+
+export const DeleteBookedDates = async (req, res, next) => {
+    const {id} = req.params;
+
+    if (!id) {
+        return next(new apiError(400, "ID not provided"))
+    }
+
+    try {
+        const date = await BookedDatesModel.deleteOne(id);
+        return res.status(200).json(new apiResponse(200, date, "Deleted Booked Date"));
+    } catch (error) {
+        return next(new apiError(500, `Server Error: ${error}`))
+    }
+}
