@@ -16,6 +16,7 @@ import bookDetailsRoute from "./BookDetails.js";
 import providersRoute from "./ServiceProviders.js";
 import maintenanceRoute from "./Maintenance.js";
 import estimateRevenueRoute from "./EstimateRevenue.js";
+import pricingRoute from "./Pricing.js";
 
 const router = express.Router();
 
@@ -34,5 +35,6 @@ router.use("/booked-dates", bookedDatesRoute);
 router.use("/book-details", bookDetailsRoute)
 router.use("/providers", providersRoute);
 router.use("/maintenance", maintenanceRoute);
-router.use("/estimate-revenue", estimateRevenueRoute)
+router.use("/estimate-revenue", estimateRevenueRoute);
+router.use("/pricing", pricingRoute)
 export default router;

@@ -10,7 +10,7 @@ export const AddRevenueDetails = async (req, res, next) => {
     }
 
     try {
-        const revenue = EstimateRevenueModel.create({area, beds});
+        const revenue = await EstimateRevenueModel.create({area, beds});
         return res.status(200).json(new apiResponse(200, revenue, "Revenue created successfully"));
     } catch ( error ) {
         return next(new apiError(500, `Server Error: ${error}`));
