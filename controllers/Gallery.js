@@ -19,11 +19,11 @@ export const createGalleryContent = async (req, res) => {
 
 export const getGalleryImagesByQuery = async (req, res) => {
   try {
-    const { type } = req.query;
+    const { id } = req.query;
     const query = {};
 
-    if (type && mongoose.isValidObjectId(type)) {
-      query.type = new mongoose.Types.ObjectId(type)
+    if (id && mongoose.isValidObjectId(id)) {
+      query.type = new mongoose.Types.ObjectId(id)
     }
 
     const galleryData = await GalleryModel.find(query).populate("type");
