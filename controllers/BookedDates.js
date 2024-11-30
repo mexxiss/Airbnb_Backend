@@ -6,7 +6,7 @@ import { UtilityModel } from "../models/Utility.js";
 import mongoose from "mongoose";
 
 export const GetFilteredDates = async (req, res, next) => {
-    const { start_date, property } = req.body;
+    const { start_date, property } = req.query;
 
     if (!property && mongoose.isValidObjectId(property)) {
         return next(new apiError(400, "Property ID not provided"));
