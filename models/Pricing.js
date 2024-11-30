@@ -5,6 +5,10 @@ const PricingSchema = new Schema({
         type: String,
         required: true,
     },
+    description: {
+        type: String,
+        required: true
+    },
     figures: {
         type: String,
         required: true,
