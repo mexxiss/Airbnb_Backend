@@ -16,8 +16,36 @@ export const GetFilteredDates = async (req, res, next) => {
 
     const e_date = new Date(s_date);
     e_date.setMonth(e_date.getMonth() + 4);
-    
+
     try {
+        // const dates = await BookedDatesModel.aggregate([
+        //     {
+        //         $match: {
+        //             property: new mongoose.Types.ObjectId(property),
+        //             $expr: {
+        //                 $and: [
+        //                     { $gte: ["$checkout_date", s_date] },
+        //                     { $lte: ["$checkin_date", e_date] }
+        //                 ]
+        //             },
+        //         }
+        //     },
+        //     {
+        //         $group: {
+        //             _id: null,
+        //             total_stays: { $sum: 1 },
+        //             total_nights_count: { $sum: "$nights_count" },
+        //             total_stay_charges: { $sum: "$cost_details.stay_charges" },
+        //             total_cleaning_fee: { $sum: "$cost_details.cleaning_fee" },
+        //             total_discount: { $sum: "$cost_details.discount" },
+        //             total_tourism_tax: { $sum: "$cost_details.tourism_tax" },
+        //             total_vat_tax: { $sum: "$cost_details.vat_tax" },
+        //             total_net_charges: { $sum: "$cost_details.net_charges" },
+        //             documents: {$push: "$$ROOT"}
+        //         }
+        //     },
+        // ]);
+
         const dates = await BookedDatesModel.aggregate([
             {
                 $match: {
@@ -27,25 +55,54 @@ export const GetFilteredDates = async (req, res, next) => {
                             { $gte: ["$checkout_date", s_date] },
                             { $lte: ["$checkin_date", e_date] }
                         ]
-                    },
+                    }
                 }
             },
             {
-                $group: {
-                    _id: { month: {$month: "$checkout_date"}, year: {$year: "$checkout_date"} },
-                    total_stays: { $sum: 1 },
-                    total_nights_count: { $sum: "$nights_count" },
-                    total_stay_charges: { $sum: "$cost_details.stay_charges" },
-                    total_cleaning_fee: { $sum: "$cost_details.cleaning_fee" },
-                    total_discount: { $sum: "$cost_details.discount" },
-                    total_tourism_tax: { $sum: "$cost_details.tourism_tax" },
-                    total_vat_tax: { $sum: "$cost_details.vat_tax" },
-                    total_net_charges: { $sum: "$cost_details.net_charges" },
-                    documents: {$push: "$$ROOT"}
+                $facet: {
+                    totals: [
+                        {
+                            $group: {
+                                _id: { month: { $month: "$checkout_date" }, year: { $year: "$checkout_date" } },
+                                total_stays: { $sum: 1 },
+                                total_nights_count: { $sum: "$nights_count" },
+                                total_stay_charges: { $sum: "$cost_details.stay_charges" },
+                                total_cleaning_fee: { $sum: "$cost_details.cleaning_fee" },
+                                total_discount: { $sum: "$cost_details.discount" },
+                                total_tourism_tax: { $sum: "$cost_details.tourism_tax" },
+                                total_vat_tax: { $sum: "$cost_details.vat_tax" },
+                                total_net_charges: { $sum: "$cost_details.net_charges" },
+                            }
+                        },
+                        {
+                            $sort: { "_id.year": 1, "_id.month": 1 }  
+                        },
+                        {
+                            $limit: 1  
+                        }
+                    ],
+                    documents: [
+                        {
+                            $project: {
+                                _id: 1,
+                                checkin_date: 1,
+                                checkout_date: 1,
+                                property: 1,
+                                nights_count: 1
+                            }
+                        }
+                    ]
                 }
             },
+            {
+                $project: {
+                    totals: { $arrayElemAt: ["$totals", 0] },  // Extract the first group's total calculations
+                    documents: 1
+                }
+            }
         ]);
-        return res.status(200).json(new apiResponse(200, dates, "Dates Retrieved Successfully"));
+
+        return res.status(200).json(dates[0]);
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`))
     }
@@ -94,7 +151,7 @@ export const SetBookedDates = async (req, res, next) => {
 }
 
 export const DeleteBookedDates = async (req, res, next) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     if (!id) {
         return next(new apiError(400, "ID not provided"))

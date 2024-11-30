@@ -36,5 +36,6 @@ router.use("/book-details", bookDetailsRoute)
 router.use("/providers", providersRoute);
 router.use("/maintenance", maintenanceRoute);
 router.use("/estimate-revenue", estimateRevenueRoute);
-router.use("/pricing", pricingRoute)
+router.use("/pricing", pricingRoute);
+
 export default router;
