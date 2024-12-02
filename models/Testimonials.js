@@ -1,13 +1,18 @@
 import { Schema, model } from "mongoose";
 
-// Not Completed - on hold
-
 const TestimonialsSchema = new Schema({
     comment: {
         type: String,
         required: true,
     },
-
-});
+    name: {
+        type: String,
+        required: true
+    },
+    designation: {
+        type: String,
+        required: true
+    }
+}, {timestamps: true});
 
 export const TestimonialsModel = model("testimonials", TestimonialsSchema)
