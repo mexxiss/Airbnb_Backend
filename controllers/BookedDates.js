@@ -25,49 +25,36 @@ export const GetFilteredDates = async (req, res, next) => {
                     property: new mongoose.Types.ObjectId(property),
                     $expr: {
                         $and: [
-                            { $lte: ["$checkin_date", e_date] }, // Booking starts before or on the end date
-                            { $gte: ["$checkout_date", s_date] } // Booking ends after or on the start date
+                            { $gte: ["$checkout_date", s_date] },
+                            { $lte: ["$checkin_date", e_date] }
                         ]
                     }
                 }
             },
             {
                 $addFields: {
-                    adjusted_checkin: {
-                        $cond: [
-                            { $lt: ["$checkin_date", s_date] }, // If checkin is before start_date
-                            s_date,
-                            "$checkin_date"
-                        ]
-                    },
-                    adjusted_checkout: {
-                        $cond: [
-                            { $gt: ["$checkout_date", e_date] }, // If checkout is after end_date
-                            e_date,
-                            "$checkout_date"
-                        ]
-                    }
-                }
-            },
-            {
-                $addFields: {
-                    overlapping_nights: {
-                        $dateDiff: {
-                            startDate: "$adjusted_checkin",
-                            endDate: "$adjusted_checkout",
-                            unit: "day"
-                        }
-                    }
+                    month: { $month: "$checkout_date" },
+                    year: { $year: "$checkout_date" }
                 }
             },
             {
                 $facet: {
                     totals: [
                         {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$year", s_date.getFullYear()] },
+                                        { $eq: ["$month", s_date.getMonth() + 1] }
+                                    ]
+                                }
+                            }
+                        },
+                        {
                             $group: {
                                 _id: null,
                                 total_stays: { $sum: 1 },
-                                total_overlapping_nights: { $sum: "$overlapping_nights" },
+                                total_nights_count: { $sum: "$nights_count" },
                                 total_stay_charges: { $sum: "$cost_details.stay_charges" },
                                 total_cleaning_fee: { $sum: "$cost_details.cleaning_fee" },
                                 total_discount: { $sum: "$cost_details.discount" },
@@ -84,7 +71,7 @@ export const GetFilteredDates = async (req, res, next) => {
                                 checkin_date: 1,
                                 checkout_date: 1,
                                 property: 1,
-                                overlapping_nights: 1
+                                nights_count: 1
                             }
                         }
                     ]
@@ -92,11 +79,12 @@ export const GetFilteredDates = async (req, res, next) => {
             },
             {
                 $project: {
-                    totals: { $arrayElemAt: ["$totals", 0] }, // Extract totals
+                    totals: { $arrayElemAt: ["$totals", 0] }, // Ensure totals isn't empty
                     documents: 1
                 }
             }
-        ]);        
+        ]);
+        
 
         return res.status(200).json(dates[0]);
     } catch (error) {
