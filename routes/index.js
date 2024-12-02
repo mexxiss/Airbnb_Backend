@@ -17,6 +17,7 @@ import providersRoute from "./ServiceProviders.js";
 import maintenanceRoute from "./Maintenance.js";
 import estimateRevenueRoute from "./EstimateRevenue.js";
 import pricingRoute from "./Pricing.js";
+import testimonialsRoute from "./Testimonials.js";
 
 const router = express.Router();
 
@@ -37,5 +38,6 @@ router.use("/providers", providersRoute);
 router.use("/maintenance", maintenanceRoute);
 router.use("/estimate-revenue", estimateRevenueRoute);
 router.use("/pricing", pricingRoute);
+router.use("/testimonials", testimonialsRoute);
 
 export default router;
