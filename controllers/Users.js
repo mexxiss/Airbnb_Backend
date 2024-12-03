@@ -4,6 +4,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 
 import validator from 'validator'; 
 import { generatePassword } from "../utils/generatePassword.js";
+import { BlacklistModel } from "../models/Blacklist.js";
 
 export const SignUp = async (req, res, next) => {
     const { fullname, email, phone, role, paymentDetails, address, documents } = req.body;
@@ -94,13 +95,27 @@ export const ChangePassword = async(req, res, next) => {
 
 export const Logout = async (req, res, next) => {
     const user_id = req._id;
+    const token = req.token;
 
     try {
+        const blacklistCheck = await BlacklistModel.findOne({token});
+
+        if(blacklistCheck) {
+            return next(new apiError(401, "Session expired"));
+        }
+
+        const blacklist = await BlacklistModel.create({token});
         const user = await UserModel.findById(user_id);
+
+        if(!user) {
+            return next(new apiError(400, "User doesn't exist"));
+        }
+
         await user.logout();
         res.clearCookie("token");
+
         return res.status(200).json(new apiResponse(200, {user}, "Logout Successful"));
     } catch (error) {
-        return next(new apiError(500, "Server Error"));
+        return next(new apiError(500, `Server Error: ${error}`));
     }
 }
