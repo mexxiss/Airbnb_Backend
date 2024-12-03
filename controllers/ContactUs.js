@@ -44,29 +44,44 @@ export const sendContactQuery = async (req, res) => {
     const emailSubject = `${subject}`;
     const recipientEmail = process.env.GMAIL; // Admin email where the queries should be sent
 
-    const htmlToSend = `
-      <h2>New Query Received </h2>
-      <p><strong>Name:</strong> ${fullname}</p>
+    const replacements = {
+      title: "Received new Query!",
+      text: `Congratulations, you have received a new query from ${fullname}. Here is the contact information provided.`,
+      moreDetails: `<p><strong>Name:</strong> ${fullname}</p>
       <p><strong>Email:</strong> ${email}</p>
       <p><strong>Phone:</strong> ${phone}</p>
       <p><strong>Subject:</strong> ${subject}</p>
       <p><strong>Message:</strong></p>
-      <p>${message}</p>
-    `;
+      <p>${message}</p>`,
+    };
 
-    await sendQueryContactEmail(
-      email,
-      recipientEmail,
-      emailSubject,
-      htmlToSend
-    );
+    const acknowledgeReplacements = {
+      title: "Mexxiss has received your Query",
+      text: `Dear ${fullname}, thank you for reaching out to us. We have received your query and will respond shortly.`,
+      moreDetails: `<p>If you have any urgent concerns, feel free to reply to this email.</p>`,
+    };
+
+    await Promise.all([
+      mailSender(process.env.MAIL_FROM, emailSubject, replacements),
+      mailSender(email, "Thanks for contacting us", acknowledgeReplacements),
+    ]);
+
+    
+    // await mailSender(
+    //   process.env.MAIL_FROM,
+    //   emailSubject,
+    //   replacements,
+    // );
+
+    // await mailSender(
+    //   email,
+    //   "Thanks for contacting us",
+    //   acknowledgeReplacements,
+    // );
 
     const sendQuery = new SendQuery(req.body);
     await sendQuery.save();
 
-    setTimeout(async () => {
-      await sendAcknowledgmentEmail(email, fullname);
-    }, 1000);
     res.status(200).json({
       success: true,
       message: "Your query has been submitted successfully.",

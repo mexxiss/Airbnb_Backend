@@ -1,24 +1,20 @@
+import { mailSender } from "./mailSender.js";
 import sendQueryContactEmail from "./sendQueryContactEmail.js";
 
 export const sendAcknowledgmentEmail = async (senderEmail, senderName) => {
   try {
     // Acknowledgment email content
-    const htmlContent = `
-        <h3>Thank You for Connecting with Us</h3>
-        <p>Dear ${senderName},</p>
-        <p>Thank you for reaching out to us. We have received your query and will get back to you as soon as possible.</p>
-        <p>If you have any urgent queries, feel free to contact us at <strong>${process.env.GMAIL}</strong>.</p>
-        <br>
-        <p>Best regards,</p>
-        <p>Your Support Team</p>
-      `;
+    const replacements = {
+      title: "Mexxiss has received your Query",
+      text: `Dear ${senderName}, thank you for reaching out to us. We have received your query and will respond shortly.`,
+      moreDetails: `<p>If you have any urgent concerns, feel free to reply to this email.</p>`,
+    };
 
     // Sending acknowledgment email
-    const info = await sendQueryContactEmail(
-      process.env.GMAIL,
+    const info = await mailSender(
       senderEmail,
       "Thanks for Connecting with Us",
-      htmlContent
+      replacements
     );
 
     return {

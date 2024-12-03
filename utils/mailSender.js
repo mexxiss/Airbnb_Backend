@@ -1,7 +1,17 @@
-import nodemailer from 'nodemailer'
+import nodemailer from 'nodemailer';
+import fs from 'fs/promises';
 
-export const mailSender = async (email, subject, body) => {
+export const mailSender = async (email, subject, replacements) => {
     try {
+        let html = await fs.readFile("public/thankyou.html", "utf-8");
+
+        Object.keys(replacements).forEach(key => {
+            const regex = new RegExp(`{{${key}}}`, "g");
+            html = html.replace(regex, replacements[key]);
+        });
+        
+        console.log(email)
+
         let transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
             auth: {
@@ -14,13 +24,12 @@ export const mailSender = async (email, subject, body) => {
             from: process.env.MAIL_FROM,
             to: email,
             subject: subject,
-            html: body
+            html: html 
         });
 
         return info;
     } catch (error) {
-        // Return nothing as this would be considered as response received...
-        console.error("Error encountered while sending OTP:", error);
+        console.error("Error encountered while sending email:", error);
         return { error: true, message: error.message };
     }
-}
+};

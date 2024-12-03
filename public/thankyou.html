@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Templates</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style type="text/css">
+        @font-face {
+            font-family: "Funnel Display";
+            src: url("./assets/fonts/FunnelDisplay-Regular.woff2") format("woff2"),
+                url("./assets/fonts/FunnelDisplay-Regular.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "Funnel Display";
+            src: url("./assets/fonts/FunnelDisplay-Bold.woff2") format("woff2"),
+                url("./assets/fonts/FunnelDisplay-Bold.woff") format("woff");
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "Funnel Display";
+            src: url("./assets/fonts/FunnelDisplay-Medium.woff2") format("woff2"),
+                url("./assets/fonts/FunnelDisplay-Medium.woff") format("woff");
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "Funnel Display";
+            src: url("./assets/fonts/FunnelDisplay-SemiBold.woff2") format("woff2"),
+                url("./assets/fonts/FunnelDisplay-SemiBold.woff") format("woff");
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            padding: 0px;
+            margin: 0px;
+            font-family: 'Funnel Display', sans-serif;
+        }
+
+        .main_box {
+            background: #eee;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: 10px;
+            width: 700px;
+        }
+
+        .btn1 {
+            background-color: #bb9e6c;
+            transition: .3s ease-in-out;
+        }
+
+        .btn1:hover {
+            background-color: #a88c5b;
+        }
+
+        th,
+        td {
+            padding: 10px;
+        }
+
+        .logo {
+            width: 180px;
+        }
+
+        .socilIcon {
+            width: 30px;
+            transition: .3s;
+        }
+
+        .socilIcon:hover {
+            transform: translateY(-6px);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="main_box">
+        <div class="container">
+            <table style="width: 100%;border-spacing: 0; border-radius: 10px;">
+                <thead style="text-align: center;">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <a href="#"><img src="https://res.cloudinary.com/airbnb-management/image/upload/v1733225292/logo_hily17.png" alt="logo" class="logo"></a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 20px 0 0;"></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <h1 style="font-weight: 600;margin-bottom: 10px;">{{title}}</h1>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="center_content">
+                    <tr style="text-align: center;">
+                        <td>
+                            <p style="font-weight: 600;">{{text}}</p>
+                            {{moreDetails}}
+                        </td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td style="padding: 30px 0;">
+                            <a class="btn1" href="https://air-bnd-mexxiss-app.web.app/" target="_blank"
+                                style="padding: 8px 30px;color: white;text-decoration: none;border-radius: 7px;text-transform: uppercase;">Go
+                                to website</a>
+                        </td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td>
+                            <h6 style="font-weight: 600;font-size: 24px;color: rgb(92, 92, 92);">Follow Us
+                            </h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul
+                                style="list-style: none;display: flex;align-items: center; justify-content: center;gap: 12px;">
+                                <li><a href="#"><img src="https://res.cloudinary.com/airbnb-management/image/upload/v1733225290/facebook_g6xepp.png" alt="Facebook"
+                                            class="socilIcon"></a></li>
+                                <li><a href="#"><img src="https://res.cloudinary.com/airbnb-management/image/upload/v1733225290/instagram_ij7ljc.png" alt="Instagram"
+                                            class="socilIcon"></a></li>
+                                <li><a href="#"><img src="https://res.cloudinary.com/airbnb-management/image/upload/v1733225291/linkedin_eibdm0.png" alt="Linkedin"
+                                            class="socilIcon"></a></li>
+                                <li><a href="#"><img src="https://res.cloudinary.com/airbnb-management/image/upload/v1733225293/youtube_qrbj9r.png" alt="Youtube"
+                                            class="socilIcon"></a></li>
+                                <li><a href="#"><img src="https://res.cloudinary.com/airbnb-management/image/upload/v1733225293/twitter_vwcujh.png" alt="twitter"
+                                            class="socilIcon"></a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px 0;"></td>
+                    </tr>
+                </tbody>
+                <tfoot style="background: #bb9e6c; width: 100%; text-align: center;color: white;font-size: 14px;">
+                    <tr>
+                        <td colspan="2">
+                            <p>Copyright © 2024 Airbnb</p>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+</body>
+
+</html>
