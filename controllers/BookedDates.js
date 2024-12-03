@@ -21,9 +21,6 @@ export const GetFilteredDates = async (req, res, next) => {
     const firstOfMonth = new Date(Date.UTC(s_date.getFullYear(), s_date.getMonth(), 1));
     const lastOfMonth = new Date(Date.UTC(s_date.getFullYear(), s_date.getMonth() + 1, 0));
 
-    console.log(firstOfMonth.toISOString());
-    console.log(lastOfMonth.toISOString());
-
     try {
         const dates = await BookedDatesModel.aggregate([
             {
@@ -95,23 +92,60 @@ export const GetFilteredDates = async (req, res, next) => {
                         }
                     },
                     nights_count_dynamic: {
-                        $cond: {
-                            if: {
-                                $and: [
-                                    { $gte: ["$checkin_date", firstOfMonth] },
-                                    { $lte: ["$checkout_date", lastOfMonth] }
-                                ]
-                            },
-                            then: {
-                                $dateDiff: {
-                                    startDate: "$checkin_date",
-                                    endDate: "$checkout_date",
-                                    unit: "day"
-                                }
-                            },
-                            else: {
-                                $cond: {
-                                    if: { $lt: ["$checkin_date", firstOfMonth] },
+                        $switch: {
+                            branches: [
+                                {
+                                    case: {
+                                        $and: [
+                                            { $gte: ["$checkin_date", firstOfMonth] },
+                                            { $lte: ["$checkout_date", lastOfMonth] }
+                                        ]
+                                    },
+                                    then: {
+                                        $dateDiff: {
+                                            startDate: "$checkin_date",
+                                            endDate: "$checkout_date",
+                                            unit: "day"
+                                        }
+                                    },
+                                },
+                                {
+                                    case: {
+                                        $and: [
+                                            { $lt: ["$checkin_date", firstOfMonth] },
+                                            { $gte: ["$checkout_date", lastOfMonth] }
+                                        ]
+                                    },
+                                    then: {
+                                        $dateDiff: {
+                                            startDate: firstOfMonth,
+                                            endDate: lastOfMonth,
+                                            unit: "day"
+                                        }
+                                    },
+                                },
+                                {
+                                    case: {
+                                        $and: [
+                                            { $gte: ["$checkin_date", firstOfMonth] },
+                                            { $gte: ["$checkout_date", lastOfMonth] }
+                                        ]
+                                    },
+                                    then: {
+                                        $dateDiff: {
+                                            startDate: "$checkin_date",
+                                            endDate: lastOfMonth,
+                                            unit: "day"
+                                        }
+                                    },
+                                },
+                                {
+                                    case: {
+                                        $and: [
+                                            { $lte: ["$checkin_date", firstOfMonth] },
+                                            { $lte: ["$checkout_date", lastOfMonth] }
+                                        ]
+                                    },
                                     then: {
                                         $dateDiff: {
                                             startDate: firstOfMonth,
@@ -119,15 +153,9 @@ export const GetFilteredDates = async (req, res, next) => {
                                             unit: "day"
                                         }
                                     },
-                                    else: {
-                                        $dateDiff: {
-                                            startDate: "$checkin_date",
-                                            endDate: lastOfMonth,
-                                            unit: "day"
-                                        }
-                                    }
                                 }
-                            }
+                            ],
+                            default: { $month: firstOfMonth }
                         }
                     }
                 }
@@ -229,6 +257,32 @@ export const SetBookedDates = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${error}`));
     }
 }
+
+export const UpdateBookedDates = async (req, res, next) => {
+    const { id } = req.params; 
+    const { checkin_date, checkout_date } = req.body; 
+
+    try {
+        const isoCheckinDate = new Date(checkin_date).toISOString();
+        const isoCheckoutDate = new Date(checkout_date).toISOString();
+
+        const updatedDates = await BookedDatesModel.findByIdAndUpdate(
+            id,
+            { $set: { checkin_date: isoCheckinDate, checkout_date: isoCheckoutDate } },
+            { new: true }
+        );
+
+        if (!updatedDates) {
+            return res.status(404).json({ message: 'Booked dates not found' });
+        }
+
+        res.status(200).json(updatedDates);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while updating booked dates', error });
+    }
+};
+
 
 export const DeleteBookedDates = async (req, res, next) => {
     const { id } = req.params;

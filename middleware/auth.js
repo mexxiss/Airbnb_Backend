@@ -2,8 +2,12 @@ import jsonwebtoken from "jsonwebtoken";
 import {apiError} from '../utils/apiError.js';
 
 const Auth = async(req, res, next) => {
-    const token = req.header("x-auth-header");
-    const {JWT_SECRET} = process.env;
+    const authorizationHeader = req.header("Authorization");
+
+    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Authorization token missing or invalid" });
+    }
+    const token = authorizationHeader.split(" ")[1];
 
     if(!token) {
         return res.status(401).json(new apiError(401, "", "Not Authorized"));
