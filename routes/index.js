@@ -18,6 +18,7 @@ import maintenanceRoute from "./Maintenance.js";
 import estimateRevenueRoute from "./EstimateRevenue.js";
 import pricingRoute from "./Pricing.js";
 import testimonialsRoute from "./Testimonials.js";
+import subscriptionsRoute from "./Subscriptions.js";
 
 const router = express.Router();
 
@@ -39,5 +40,6 @@ router.use("/maintenance", maintenanceRoute);
 router.use("/estimate-revenue", estimateRevenueRoute);
 router.use("/pricing", pricingRoute);
 router.use("/testimonials", testimonialsRoute);
+router.use("/subscriptions", subscriptionsRoute);
 
 export default router;
