@@ -119,3 +119,19 @@ export const Logout = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${error}`));
     }
 }
+
+export const UpdateUser = async (req, res, next) => {
+    const user_id = req._id;
+    const {updates} = req.body;
+
+    if(!user_id) {
+        return next(new apiError(400, "User Id not provided"));
+    }
+
+    try {
+        const user = await UserModel.findByIdAndUpdate(user_id, {$set: updates}, {new: true, runValidators: true});
+        return res.status(200).json(new apiResponse(200, user, "User Updated Successfully"));
+    } catch (error) {
+        return next(new apiError(500, `Server Error: ${error}`))
+    }
+}

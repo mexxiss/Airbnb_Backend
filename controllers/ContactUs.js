@@ -66,19 +66,6 @@ export const sendContactQuery = async (req, res) => {
       mailSender(email, "Thanks for contacting us", acknowledgeReplacements),
     ]);
 
-    
-    // await mailSender(
-    //   process.env.MAIL_FROM,
-    //   emailSubject,
-    //   replacements,
-    // );
-
-    // await mailSender(
-    //   email,
-    //   "Thanks for contacting us",
-    //   acknowledgeReplacements,
-    // );
-
     const sendQuery = new SendQuery(req.body);
     await sendQuery.save();
 
