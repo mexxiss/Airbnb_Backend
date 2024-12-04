@@ -25,8 +25,10 @@ export const getGalleryImagesByQuery = async (req, res) => {
     if (id && mongoose.isValidObjectId(id)) {
       query.type = new mongoose.Types.ObjectId(id)
     }
+    const pageNumber = Math.max(1, parseInt(page));
+    const limitNumber = Math.max(1, parseInt(limit));
 
-    const galleryData = await GalleryModel.find(query).populate("type").skip((page-1)*limit).limit(limit);
+    const galleryData = await GalleryModel.find(query).populate("type").skip((pageNumber-1)*limitNumber).limit(limitNumber);
 
     return res.status(200).json({
       success: true,
