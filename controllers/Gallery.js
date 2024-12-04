@@ -19,14 +19,14 @@ export const createGalleryContent = async (req, res) => {
 
 export const getGalleryImagesByQuery = async (req, res) => {
   try {
-    const { id } = req.query;
+    const { id, page = 1, limit = 12 } = req.query; // type as id
     const query = {};
 
     if (id && mongoose.isValidObjectId(id)) {
       query.type = new mongoose.Types.ObjectId(id)
     }
 
-    const galleryData = await GalleryModel.find(query).populate("type");
+    const galleryData = await GalleryModel.find(query).populate("type").skip((page-1)*limit).limit(limit);
 
     return res.status(200).json({
       success: true,
