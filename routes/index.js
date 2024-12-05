@@ -19,6 +19,7 @@ import estimateRevenueRoute from "./EstimateRevenue.js";
 import pricingRoute from "./Pricing.js";
 import testimonialsRoute from "./Testimonials.js";
 import subscriptionsRoute from "./Subscriptions.js";
+import videoGuidesRoute from "./VideoGuide.js";
 
 const router = express.Router();
 
@@ -41,5 +42,5 @@ router.use("/estimate-revenue", estimateRevenueRoute);
 router.use("/pricing", pricingRoute);
 router.use("/testimonials", testimonialsRoute);
 router.use("/subscriptions", subscriptionsRoute);
-
+router.use("/guides", videoGuidesRoute);
 export default router;
