@@ -1,8 +1,9 @@
 import express from "express";
-import { AddVideoGuide } from "../controllers/VideoGuides.js";
+import { AddVideoGuide, GetVideoGuides } from "../controllers/VideoGuides.js";
 
 const router = express.Router();
 
-router.post("/", AddVideoGuide)
+router.post("/", AddVideoGuide);
+router.get("/", GetVideoGuides);
 
 export default router
