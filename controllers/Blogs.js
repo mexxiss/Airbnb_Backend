@@ -3,21 +3,40 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetBlogs = async (req, res, next) => {
-    const {page=1, limit=6} = req.query;
+    const { page = 1, limit = 6 } = req.query;
 
     try {
-        const blogs = await BlogsModel.find().skip((page-1)*limit).limit(limit).populate("category");
-        return res.status(200).json(new apiResponse(200, blogs, "Blogs Retrieved Successfully"))
+        const pageNumber = parseInt(page, 10);
+        const limitNumber = parseInt(limit, 10);
+
+        const totalItems = await BlogsModel.countDocuments();
+
+        const totalPages = Math.ceil(totalItems / limitNumber);
+
+        const blogs = await BlogsModel.find().sort({ createdAt: -1 })
+            .skip((pageNumber - 1) * limitNumber)
+            .limit(limitNumber)
+            .populate("category");
+
+        return res.status(200).json(new apiResponse(200, {
+            blogs,
+            currentPage: pageNumber,
+            totalPages,
+            totalItems,
+            hasNextPage: pageNumber < totalPages,
+            hasPrevPage: pageNumber > 1
+        }, "Blogs Retrieved Successfully"));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
     }
-}
+};
 
-export const AddBlogs = async(req, res, next) => {
-    const {title, subtitle, body, tags, added_on, category, thumbnail} = req.body;
+
+export const AddBlogs = async (req, res, next) => {
+    const { title, subtitle, body, tags, added_on, category, thumbnail } = req.body;
 
     try {
-        const blog = await BlogsModel.create({title, subtitle, body, tags, added_on, category, thumbnail});
+        const blog = await BlogsModel.create({ title, subtitle, body, tags, added_on, category, thumbnail });
         return res.status(200).json(new apiResponse(200, blog, "Blog Added Successfully"))
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
