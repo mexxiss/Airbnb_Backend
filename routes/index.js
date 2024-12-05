@@ -20,6 +20,8 @@ import pricingRoute from "./Pricing.js";
 import testimonialsRoute from "./Testimonials.js";
 import subscriptionsRoute from "./Subscriptions.js";
 import videoGuidesRoute from "./VideoGuide.js";
+import thirdPartyLogoRoute from "./ThirdPartyLogos.js";
+import featuredArticlesRoute from "./MediaFeaturedArticles.js";
 
 const router = express.Router();
 
@@ -43,4 +45,7 @@ router.use("/pricing", pricingRoute);
 router.use("/testimonials", testimonialsRoute);
 router.use("/subscriptions", subscriptionsRoute);
 router.use("/guides", videoGuidesRoute);
+router.use("/third-party-logos", thirdPartyLogoRoute);
+router.use("/featured-articles", featuredArticlesRoute);
+
 export default router;
