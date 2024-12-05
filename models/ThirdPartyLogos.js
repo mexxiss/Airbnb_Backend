@@ -5,6 +5,9 @@ const ThirdPartyLogoSchema = new Schema({
         type: String,
         required: true,
     },
+    brand_image: {
+        type: String,
+    },
     type: {
         type: String,
         enum: ["trusted", "listing"],
