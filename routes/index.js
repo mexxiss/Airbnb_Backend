@@ -22,6 +22,8 @@ import subscriptionsRoute from "./Subscriptions.js";
 import videoGuidesRoute from "./VideoGuide.js";
 import thirdPartyLogoRoute from "./ThirdPartyLogos.js";
 import featuredArticlesRoute from "./MediaFeaturedArticles.js";
+import blogsRoute from "./Blogs.js";
+import blogsCategoryRoute from "./BlogCategory.js";
 
 const router = express.Router();
 
@@ -47,5 +49,7 @@ router.use("/subscriptions", subscriptionsRoute);
 router.use("/guides", videoGuidesRoute);
 router.use("/third-party-logos", thirdPartyLogoRoute);
 router.use("/featured-articles", featuredArticlesRoute);
+router.use("/blogs", blogsRoute);
+router.use("/blog-categories", blogsCategoryRoute);
 
 export default router;
