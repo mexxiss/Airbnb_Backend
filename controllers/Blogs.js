@@ -3,8 +3,10 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetBlogs = async (req, res, next) => {
+    const {page=1, limit=6} = req.query;
+
     try {
-        const blogs = await BlogsModel.find();
+        const blogs = await BlogsModel.find().skip((page-1)*limit).limit(limit).populate("category");
         return res.status(200).json(new apiResponse(200, blogs, "Blogs Retrieved Successfully"))
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
