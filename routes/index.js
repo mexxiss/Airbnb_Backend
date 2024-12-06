@@ -25,6 +25,7 @@ import featuredArticlesRoute from "./MediaFeaturedArticles.js";
 import blogsRoute from "./Blogs.js";
 import blogsCategoryRoute from "./BlogCategory.js";
 import legalsRoute from "./Legal.js";
+import requirementsRoute from "./Requirements.js";
 
 const router = express.Router();
 
@@ -53,5 +54,6 @@ router.use("/featured-articles", featuredArticlesRoute);
 router.use("/blogs", blogsRoute);
 router.use("/blog-categories", blogsCategoryRoute);
 router.use("/legals", legalsRoute);
+router.use("/requirements", requirementsRoute);
 
 export default router;
