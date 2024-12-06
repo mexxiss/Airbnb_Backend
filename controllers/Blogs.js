@@ -46,9 +46,9 @@ export const GetBlog = async (req, res, next) => {
         }
 
         const relatedBlogs = await BlogsModel.find({
-            category: blog.category,
+            // category: blog.category,
             _id: { $ne: id },
-        }).select("title subtitle added_on thumbnail").limit(6); 
+        }).select("title subtitle added_on thumbnail").sort({createdAt: -1}).limit(6); 
 
         return res.status(200).json(
             new apiResponse(200, { blog, relatedBlogs }, "Blog fetched successfully")
