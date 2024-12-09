@@ -26,6 +26,7 @@ import blogsRoute from "./Blogs.js";
 import blogsCategoryRoute from "./BlogCategory.js";
 import legalsRoute from "./Legal.js";
 import requirementsRoute from "./Requirements.js";
+import dubaiRoute from "./Dubai.js";
 
 const router = express.Router();
 
@@ -55,5 +56,6 @@ router.use("/blogs", blogsRoute);
 router.use("/blog-categories", blogsCategoryRoute);
 router.use("/legals", legalsRoute);
 router.use("/requirements", requirementsRoute);
+router.use("/airbnb-dubai", dubaiRoute);
 
 export default router;
