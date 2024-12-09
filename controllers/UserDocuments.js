@@ -5,9 +5,13 @@ import { UserDocumentsModel } from "../models/UserDocuments.js";
 export const SetUserDocument = async(req, res, next) => {
     const user_id = req._id;
     const {title, expiry_date, note, document, property} = req.body;
+    
+    if( !user_id ) {
+        return next(new apiError(400, `User required`));
+    }
 
     try {
-        const userdocuments = UserDocumentsModel.create({title, expiry_date, note, document, property, user: user_id});
+        const userdocuments = await UserDocumentsModel.create({title, expiry_date, note, document, property, user: user_id});
         return res.status(200).json(new apiResponse(200, userdocuments, "Created Successfully"));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
@@ -17,6 +21,10 @@ export const SetUserDocument = async(req, res, next) => {
 export const GetUserDocuments = async (req, res, next) => {
     const {property} = req.query || req.params;
     const user_id = req._id;
+    
+    if( !user_id ) {
+        return next(new apiError(400, `User required`));
+    }
 
     try {
         const docs = await UserDocumentsModel.find({property, user: user_id});

@@ -28,11 +28,13 @@ import legalsRoute from "./Legal.js";
 import requirementsRoute from "./Requirements.js";
 import dubaiRoute from "./Dubai.js";
 import userDocumentsRoute from "./UserDocuments.js";
+import paymentDetailsRoute from "./PaymentDetails.js";
 
 const router = express.Router();
 
 router.use("/users", userRoute);
-router.use("/user-documents", userDocumentsRoute)
+router.use("/user-documents", userDocumentsRoute);
+router.use("/payment-details", paymentDetailsRoute);
 router.use("/faqs", faqsRoute);
 router.use("/services", servicesRoute);
 router.use("/home-content", homeContentRoute);
