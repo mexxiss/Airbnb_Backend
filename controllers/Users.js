@@ -126,7 +126,8 @@ export const GetUser = async (req, res, next) => {
         return next(new apiError(400, "User Id not provided"));
     }
     try {
-        const user = await UserModel.findById(user_id);
+        const user = await UserModel.findById(user_id, { password: 0, accessToken: 0})
+
         return res.status(200).json({user});
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`))
