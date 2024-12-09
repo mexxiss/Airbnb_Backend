@@ -12,7 +12,8 @@ const PaymentDetailSchema = new Schema({
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: "users"
+        ref: "users",
+        unique: true
     }
 }, { timestamps: true });
 
