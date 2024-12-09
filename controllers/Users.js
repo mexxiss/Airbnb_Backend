@@ -7,9 +7,9 @@ import { generatePassword } from "../utils/generatePassword.js";
 import { BlacklistModel } from "../models/Blacklist.js";
 
 export const SignUp = async (req, res, next) => {
-    const { fullname, email, phone, role, paymentDetails, address, documents } = req.body;
+    const { first_name, last_name, email, phone, role, address } = req.body;
 
-    const requiredFields = [fullname, email, phone, address];
+    const requiredFields = [first_name, last_name, email, phone, address];
     const allFieldsFilled = requiredFields.every(field => field !== undefined && field !== null && field !== "");
     
     if (!allFieldsFilled) {
@@ -36,8 +36,8 @@ export const SignUp = async (req, res, next) => {
         }
         const password = generatePassword();
         console.log(password);
-        const newUser = await UserModel.create({ fullname, email, password, phone, role, paymentDetails, address, documents });
-        return res.status(201).json(new apiResponse(201, newUser, "User created Successfully"));
+        const newUser = await UserModel.create({ first_name, last_name, email, password, phone, role, address });
+        return res.status(201).json(new apiResponse(201, {newUser, password}, "User created Successfully"));
     } catch (error) {
         console.log(error); 
         return next(new apiError(500, error.message || "Internal server error"));

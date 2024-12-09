@@ -5,7 +5,8 @@ import jsonwebtoken from "jsonwebtoken";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const UserSchema = new Schema({
-    fullname: { type: String, required: true },
+    first_name: { type: String, required: true },
+    last_name: { type: String, required: true },
     email: {
         type: [String],
         required: true,
@@ -44,20 +45,6 @@ const UserSchema = new Schema({
         enum: ["Owner", "Admin"],
         default: "Owner",
     },
-    paymentDetails: {
-        bankAccount: {
-            accountHolderName: { type: String },
-            accountNumber: { type: String },
-            bankName: { type: String },
-            swiftCode: { type: String },
-            iban: { type: String },
-        },
-        paymentMethod: {
-            type: String,
-            enum: ["Bank Transfer", "PayPal", "Stripe"],
-            default: "Bank Transfer",
-        },
-    },
     address: {
         building_no: { type: String },
         city: { type: String },
@@ -66,33 +53,7 @@ const UserSchema = new Schema({
         landmark: { type: String },
         country: { type: String, default: "Dubai" },
         pincode: { type: String },
-    },
-    documents: {
-        dewaBills: [
-            {
-                url: {
-                    type: String,
-                    // required: true,
-                },
-            },
-        ],
-        passport: {
-            url: {
-                type: String,
-                // required: true,
-            },
-            expiryDate: {
-                type: Date,
-                // required: true, 
-            },
-        },
-        titleDeed: {
-            url: {
-                type: String,
-                // required: true,
-            }
-        },
-    },
+    }
 }, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
