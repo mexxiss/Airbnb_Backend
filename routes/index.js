@@ -27,10 +27,12 @@ import blogsCategoryRoute from "./BlogCategory.js";
 import legalsRoute from "./Legal.js";
 import requirementsRoute from "./Requirements.js";
 import dubaiRoute from "./Dubai.js";
+import userDocumentsRoute from "./UserDocuments.js";
 
 const router = express.Router();
 
 router.use("/users", userRoute);
+router.use("/user-documents", userDocumentsRoute)
 router.use("/faqs", faqsRoute);
 router.use("/services", servicesRoute);
 router.use("/home-content", homeContentRoute);

@@ -167,6 +167,11 @@ const PropertiesSchema = new Schema({
         enum: ["Active", "Inactive"],
         default: "Active", 
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+        required: true,
+    }
 }, { timestamps: true });
 
 PropertiesSchema.methods.calculateCosts = async function (nights_count, discount = 0, vat_tax_rate, tourism_tax_rate) {
