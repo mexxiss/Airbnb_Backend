@@ -120,6 +120,19 @@ export const Logout = async (req, res, next) => {
     }
 }
 
+export const GetUser = async (req, res, next) => {
+    const user_id = req._id;
+    if(!user_id) {
+        return next(new apiError(400, "User Id not provided"));
+    }
+    try {
+        const user = await UserModel.findById(user_id);
+        return res.status(200).json({user});
+    } catch (error) {
+        return next(new apiError(500, `Server Error: ${error}`))
+    }
+}
+
 export const UpdateUser = async (req, res, next) => {
     const user_id = req._id;
     const {updates} = req.body;

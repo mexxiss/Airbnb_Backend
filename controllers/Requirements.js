@@ -12,14 +12,14 @@ export const GetRequirements = async (req, res, next) => {
 }
 
 export const AddRequirements = async(req, res, next) => {
-    const { title, image, body, text_direction, order_no } = req.body;
+    const { head, points } = req.body;
 
-    if ( !order_no || !body ) {
+    if ( !head || !points ) {
         return next(new apiError(400, "Incomplete Data Provided"))
     }
 
     try {
-        const requirement = await RequirementsModel.create({title, image, body, text_direction, order_no});
+        const requirement = await RequirementsModel.create({head, points});
         return res.status(200).json(new apiResponse(200, requirement, "Requirement Added Successfully"))
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
