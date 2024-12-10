@@ -35,7 +35,7 @@ export const GetUserDocuments = async (req, res, next) => {
 }
 
 export const UpdateUserDocuments = async (req, res, next) => {
-    const {id} = req.params;
+    const {id} = req.params || req.query;
     const user_id = req._id;
     const {updates} = req.body;
 

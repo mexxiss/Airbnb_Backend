@@ -4,14 +4,14 @@ import { PaymentDetailsModel } from "../models/PaymentDetails.js";
 
 export const SetPaymentDetails = async(req, res, next) => {
     const user_id = req._id;
-    const {accountHolderName, accountNumber, bankName, swiftCode, iban, paymentMethod} = req.body;
+    const {accountHolderName, accountNumber, bankName, swiftCode, iban, paymentMethod, currency, address} = req.body;
     
     if( !user_id ) {
         return next(new apiError(400, `User required`));
     }
 
     try {
-        const paymentDetails = await PaymentDetailsModel.create({accountHolderName, accountNumber, bankName, swiftCode, iban, paymentMethod, user: user_id});
+        const paymentDetails = await PaymentDetailsModel.create({accountHolderName, accountNumber, bankName, swiftCode, iban, paymentMethod, user: user_id, currency, address});
         return res.status(200).json(new apiResponse(200, paymentDetails, "Created Successfully"));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
