@@ -46,11 +46,19 @@ const PropertiesSchema = new Schema({
         },
         permit: {
             permit_code: {type: String},
-            permit_expiry_date: {type: String}
+            permit_expiry_date: {
+                type: Date,
+                set: (value) => {
+                    return new Date(value).toISOString();
+                }
+            }
         },
         wifi: {
             name: {type: String},
             password: {type: String}
+        },
+        parking_no: {
+            type: String
         },
         utilities: [{
             name: String,

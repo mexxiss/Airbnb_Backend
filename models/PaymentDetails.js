@@ -10,6 +10,13 @@ const PaymentDetailSchema = new Schema({
         type: String,
         default: "Bank Transfer",
     },
+    currency: {
+        type: String,
+        default: "AED"
+    },
+    address: {
+        type: String,
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "users",

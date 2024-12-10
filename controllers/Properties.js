@@ -20,6 +20,7 @@ export const GetAllProperties = async (req, res, next) => {
     }
 }
 
+
 export const GetPropertyObj = async (req, res, next) => {
     const { id } = req.params;
     const totals = {
