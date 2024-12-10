@@ -59,16 +59,7 @@ const PropertiesSchema = new Schema({
         },
         parking_no: {
             type: String
-        },
-        utilities: [{
-            name: String,
-            account_no: String,
-            paid_by: String,
-            web_login: String,
-            web_pass: String,
-            link: String,
-            uploads: [String]
-        }]
+        }
     },
     address: {
         building_no: {
