@@ -1,10 +1,15 @@
 import { apiResponse } from "../utils/apiResponse.js";
 import { apiError } from "../utils/apiError.js";
 import { PropertyUtilitiesModel } from "../models/PropertyUtilities.js";
+import mongoose from "mongoose";
 
 export const SetPropertyUtility = async(req, res, next) => {
     const {name, provider_name, account_no, paid_by, web_login, web_pass, link, uploads, property, already_have_account} = req.body;
     
+    if(!property || !mongoose.isValidObjectId(property)) {
+        return next(new apiError(400, `Property Id is required`));
+    }
+
     try {
         const utilities = await PropertyUtilitiesModel.create({name, provider_name, account_no, paid_by, web_login, web_pass, link, uploads, property, already_have_account});
         return res.status(200).json(new apiResponse(200, utilities, "Property Utility Created Successfully"));
@@ -19,6 +24,10 @@ export const GetPropertyUtilities = async (req, res, next) => {
     
     if( !user_id ) {
         return next(new apiError(400, `User required`));
+    }
+
+    if ( !property ) {
+        return next(new apiError(400, `Query or Param not received for Property`));
     }
 
     try {
