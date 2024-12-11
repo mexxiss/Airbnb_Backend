@@ -29,6 +29,7 @@ import requirementsRoute from "./Requirements.js";
 import dubaiRoute from "./Dubai.js";
 import userDocumentsRoute from "./UserDocuments.js";
 import paymentDetailsRoute from "./PaymentDetails.js";
+import propertyUtilitiesRoute from "./PropertyUtilities.js";
 
 const router = express.Router();
 
@@ -61,5 +62,6 @@ router.use("/blog-categories", blogsCategoryRoute);
 router.use("/legals", legalsRoute);
 router.use("/requirements", requirementsRoute);
 router.use("/airbnb-dubai", dubaiRoute);
+router.use("/property-utilities", propertyUtilitiesRoute);
 
 export default router;
