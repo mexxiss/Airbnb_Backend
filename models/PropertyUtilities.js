@@ -16,7 +16,7 @@ const PropertyUtilitiesSchema = new Schema(
       default: false,
     },
     link: String,
-    uploads: [String],
+    uploads: String,
     property: {
       type: Schema.Types.ObjectId,
       ref: "properties",
