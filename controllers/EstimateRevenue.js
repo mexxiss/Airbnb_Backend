@@ -58,5 +58,5 @@ export const GetAreas = async (req, res, next) => {
         "Five Bed",
         "Six Bed"
     ]
-    return res.status(200, { regions, bedrooms }, "Areas List")
+    return res.status(200).json({regions, bedrooms})
 }
