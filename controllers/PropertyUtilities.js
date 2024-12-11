@@ -3,10 +3,10 @@ import { apiError } from "../utils/apiError.js";
 import { PropertyUtilitiesModel } from "../models/PropertyUtilities.js";
 
 export const SetPropertyUtility = async(req, res, next) => {
-    const {name, account_no, paid_by, web_login, web_pass, link, uploads, property} = req.body;
+    const {name, provider_name, account_no, paid_by, web_login, web_pass, link, uploads, property, already_have_account} = req.body;
     
     try {
-        const utilities = await PropertyUtilitiesModel.create({name, account_no, paid_by, web_login, web_pass, link, uploads, property});
+        const utilities = await PropertyUtilitiesModel.create({name, provider_name, account_no, paid_by, web_login, web_pass, link, uploads, property, already_have_account});
         return res.status(200).json(new apiResponse(200, utilities, "Property Utility Created Successfully"));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
