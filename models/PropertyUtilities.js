@@ -9,6 +9,10 @@ const PropertyUtilitiesSchema = new Schema({
     },
     web_login: String,
     web_pass: String,
+    already_have_account: {
+        type: Boolean,
+        default: false
+    },
     link: String,
     uploads: [String],
     property: {
