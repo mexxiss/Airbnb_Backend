@@ -71,7 +71,7 @@ UserSchema.methods.generateAccessToken = async function () {
     const JWT_SECRET = process.env.JWT_SECRET || "defaultSecret";
     const JWT_EXPIRY = process.env.JWT_EXPIRY || "1h";
     const accessToken = jsonwebtoken.sign(
-        { _id: this._id, email: this.email[0] },
+        { _id: this._id, role: this.role, name: `${this.full_name} ${this.last_name}` },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRY }
     );
