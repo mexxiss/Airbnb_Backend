@@ -30,7 +30,7 @@ jobs:
 
   deploy:
     name: Deploy to Server
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build_and_push
 
     steps:
@@ -41,14 +41,17 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Pull the latest Docker image
+            # Step 1: Pull the latest Docker image
+            echo "Pulling the latest Docker image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/airbnb-management-backend:${{ github.sha }}
 
-            # Stop the running container (if exists)
+            # Step 2: Stop and remove the existing container (if exists)
+            echo "Stopping and removing the existing container..."
             docker stop airbnb-management-backend-container || true
             docker rm airbnb-management-backend-container || true
 
-            # Run the new container with runtime environment variables
+            # Step 3: Run a new container with environment variables
+            echo "Running the new Docker container..."
             docker run -d \
               -p 8000:8000 \
               --name airbnb-management-backend-container \
