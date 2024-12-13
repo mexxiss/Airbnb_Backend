@@ -7,7 +7,7 @@ const PropertyUtilitiesSchema = new Schema(
     account_no: String,
     paid_by: {
       type: String,
-      enum: ["Owner", "Airbnb"],
+      enum: ["Owner", "Company"],
     },
     web_login: String,
     web_pass: String,
@@ -17,9 +17,14 @@ const PropertyUtilitiesSchema = new Schema(
     },
     link: String,
     uploads: String,
+    type: { type: String, default: "other" },
     property: {
       type: Schema.Types.ObjectId,
       ref: "properties",
+    },
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: "users",
     },
   },
   { timestamps: true }

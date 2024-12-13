@@ -3,62 +3,114 @@ import { apiError } from "../utils/apiError.js";
 import { PropertyUtilitiesModel } from "../models/PropertyUtilities.js";
 import mongoose from "mongoose";
 
-export const SetPropertyUtility = async(req, res, next) => {
-    const {name, provider_name, account_no, paid_by, web_login, web_pass, link, uploads, property, already_have_account} = req.body;
-    
-    if(!property || !mongoose.isValidObjectId(property)) {
-        return next(new apiError(400, `Property Id is required`));
-    }
+export const SetPropertyUtility = async (req, res, next) => {
+  const {
+    name,
+    provider_name,
+    account_no,
+    paid_by,
+    web_login,
+    web_pass,
+    link,
+    uploads,
+    property,
+    already_have_account,
+  } = req.body;
 
-    try {
-        const utilities = await PropertyUtilitiesModel.create({name, provider_name, account_no, paid_by, web_login, web_pass, link, uploads, property, already_have_account});
-        return res.status(200).json(new apiResponse(200, utilities, "Property Utility Created Successfully"));
-    } catch (error) {
-        return next(new apiError(500, `Server Error: ${error}`));
-    }
-}
+  if (!property || !mongoose.isValidObjectId(property)) {
+    return next(new apiError(400, `Property Id is required`));
+  }
+
+  try {
+    const utilities = await PropertyUtilitiesModel.create({
+      name,
+      provider_name,
+      account_no,
+      paid_by,
+      web_login,
+      web_pass,
+      link,
+      uploads,
+      property,
+      already_have_account,
+    });
+    return res
+      .status(200)
+      .json(
+        new apiResponse(200, utilities, "Property Utility Created Successfully")
+      );
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error}`));
+  }
+};
 
 export const GetPropertyUtilities = async (req, res, next) => {
-    const {property} = req.query || req.params;
-    const user_id = req._id;
-    
-    if( !user_id ) {
-        return next(new apiError(400, `User required`));
-    }
+  const { property } = req.query;
+  const user_id = req._id;
 
-    if ( !property ) {
-        return next(new apiError(400, `Query or Param not received for Property`));
-    }
+  if (!user_id) {
+    return next(new apiError(400, `User required`));
+  }
 
-    try {
-        const utilities = await PropertyUtilitiesModel.find({property});
-        return res.status(200).json({utilities});
-    } catch (error) {
-        return next(new apiError(500, `Server Error: ${error}`))
-    }
-}
+  if (!property) {
+    return next(new apiError(400, `Query or Param not received for Property`));
+  }
+
+  try {
+    const utilities = await PropertyUtilitiesModel.find({ property });
+    return res.status(200).json({ utilities });
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error}`));
+  }
+};
 
 export const UpdatePropertyUtility = async (req, res, next) => {
-    const {id} = req.params || req.query;
-    const user_id = req._id;
-    const {updates} = req.body;
+  const { id } = req.params || req.query; // Property ID
+  const user_id = req._id; // Authenticated user ID
+  const { updates } = req.body; // Utilities to update or create
 
-    if (!updates) {
-        return next(new apiError(400, `Property Utility Update required`));
+  if (!updates || !user_id) {
+    return next(new apiError(400, "Missing required fields"));
+  }
+
+  try {
+    // Validate updates array
+    if (!Array.isArray(updates) || updates.length === 0) {
+      return next(new apiError(400, "Updates should be a non-empty array"));
     }
-    if( !user_id ) {
-        return next(new apiError(400, `User required`));
-    }
 
-    try {
-        const doc = await PropertyUtilitiesModel.findByIdAndUpdate( id, {$set: updates}, { new: true, runValidators: true });
+    const results = await Promise.all(
+      updates.map(async (utility) => {
+        const { name, ...otherFields } = utility;
 
-        if (!doc) {
-            return next(new apiError(404, `Property Utility not found`));
+        const existingUtility = await PropertyUtilitiesModel.findOne({
+          property: id,
+          name,
+        });
+
+        if (existingUtility) {
+          return await PropertyUtilitiesModel.findByIdAndUpdate(
+            existingUtility._id,
+            { $set: { ...otherFields } },
+            { new: true, runValidators: true }
+          );
+        } else {
+          return await PropertyUtilitiesModel.create({
+            name,
+            ...otherFields,
+            property: id,
+            user_id,
+          });
         }
-        return res.status(200).json(doc);
-    } catch (error) {
-        console.error(`Error updating Property Utility: ${error.message}`);
-        return next(new apiError(500, `Server Error`));
-    }
-}
+      })
+    );
+
+    return res.status(200).json({
+      message: "Utilities successfully updated or created",
+      results,
+    });
+  } catch (error) {
+    console.error(`Error updating utilities: ${error.message}`);
+    return next(new apiError(500, "Server Error"));
+  }
+};
