@@ -29,7 +29,7 @@ const PropertyUtilitiesSchema = new Schema(
   },
   { timestamps: true }
 );
-
+        
 export const PropertyUtilitiesModel = model(
   "propertyutilities",
   PropertyUtilitiesSchema

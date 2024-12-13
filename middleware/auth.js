@@ -18,6 +18,7 @@ const Auth = async(req, res, next) => {
     try {
         const decoded = jsonwebtoken.verify(token, JWT_SECRET);
         req._id = decoded._id;
+        req.role = decoded.role;
         req.token = token
         next();
     } catch (error) {
