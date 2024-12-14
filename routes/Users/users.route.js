@@ -4,7 +4,6 @@ import {
   GetUser,
   Login,
   Logout,
-  SignUp,
   UpdateUser,
 } from "../../controllers/Users.js";
 import { Auth } from "../../middleware/auth.js";
@@ -12,7 +11,6 @@ import { Auth } from "../../middleware/auth.js";
 const router = express.Router();
 
 // Authentication Routes
-router.post("/signup", SignUp);
 router.post("/login", Login);
 router.post("/logout", Auth, Logout);
 router.post("/change-pass", Auth, ChangePassword);
