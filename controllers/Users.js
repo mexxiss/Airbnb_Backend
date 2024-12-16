@@ -90,7 +90,7 @@ export const Login = async (req, res, next) => {
       .status(200)
       .json(new apiResponse(200, { user }, "Login Successful"));
   } catch (error) {
-    return next(new apiError(500, "Server Error"));
+    return next(new apiError(500, `Server Error: ${error}`));
   }
 };
 
