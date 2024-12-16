@@ -24,7 +24,7 @@ export const getContactus = async (req, res) => {
     res.status(200).json({
       success: true,
       data: contacts[0]._doc,
-      msg: "contacts featched successfully",
+      msg: "contacts fetched successfully",
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use("/", userRoute);
 router.use("/", otherRoute);
-router.use("/", adminRoutes); // Role can be either Admin or Owner - case sensitive
+router.use("/", adminRoutes); 
 
-export default router;
+export default router
