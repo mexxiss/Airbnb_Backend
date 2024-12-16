@@ -50,23 +50,23 @@ const softDeleteUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const deletedUser = await UserModel.findByIdAndUpdate(
-      id,
-      { isDeleted: true },
-      { new: true }
-    );
+    const user = await UserModel.findById(id);
 
-    if (!deletedUser) {
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "User soft deleted successfully", data: deletedUser });
+    user.isDeleted = !user.isDeleted;
+    await user.save();
+
+    res.status(200).json({
+      message: `User ${user.isDeleted ? "In-Active" : "Active"} Successfully`,
+      data: user,
+    });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Failed to delete user", error: error.message });
+      .json({ message: "Failed to toggle user status", error: error.message });
   }
 };
 
