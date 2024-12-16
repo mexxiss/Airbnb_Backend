@@ -2,13 +2,42 @@ import swaggerAutogen from 'swagger-autogen';
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'Description'
+    title: "API Documentation",
+    version: "1.0.0",
+    description: "For Airbnb Management Platform",
   },
-  host: 'localhost:8000'
+  servers: [
+    {
+      url: "http://localhost:8000/api/v1",
+    },
+  ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
+  tags: [
+    {
+      name: "Users",
+      description: "User management routes",
+    },
+    {
+      name: "Admin",
+      description: "Admin-related routes",
+    },
+  ],
 };
 
 const outputFile = './swagger.json';
-const routes = ['./routes/index.js'];
+const endpointsFiles = ['./routes/index.js'];
 
-swaggerAutogen()(outputFile, routes, doc);
+swaggerAutogen()(outputFile, endpointsFiles, doc);
