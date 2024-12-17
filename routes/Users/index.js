@@ -5,6 +5,6 @@ import { Auth } from "../../middleware/auth.js";
 
 const router = express.Router();
 
-router.use("/users", Auth, Role(["Owner", "Admin"]), userRoute);
+router.use("/users", Auth, userRoute);
 
 export default router;
