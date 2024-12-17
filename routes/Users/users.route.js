@@ -1,4 +1,5 @@
 import express from "express";
+import {Auth} from "../../middleware/auth.js";
 import { ChangePassword, GetUser, Logout, UpdateUser } from "../../controllers/common/users/users.controllers.js";
 import { GetFilteredDates } from "../../controllers/common/booking/dates.controllers.js";
 import { GetPaymentDetails, SetPaymentDetails, UpdatePaymentDetails } from "../../controllers/common/users/bankdetails.controllers.js";
@@ -17,7 +18,7 @@ router.post("/change-pass", ChangePassword);
 router.put("/", UpdateUser);
 router.get("/", GetUser);
 
-// Booked Dates RoutesS
+// Booked Dates Routes
 router.get("/booked-dates/filter", GetFilteredDates);
 
 // Payment Details Routes
