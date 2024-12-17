@@ -1,31 +1,72 @@
 import express from "express";
 import { GetUser, SignUp, UpdateUser } from "../../controllers/Users.js";
-import { getAllUsers, getUserById, softDeleteUserById, updateUserById, } from "../../controllers/admin/user-controllers/usersControllers.js";
+import {
+  getAllUsers,
+  getUserById,
+  softDeleteUserById,
+  updateUserById,
+} from "../../controllers/admin/user-controllers/usersControllers.js";
 import amenitiesValidator from "../../utils/validations/amenitiesValidatior.js";
-import { createAmenities, deleteAmenities, getAllAmenities, getAmenitiesById, updateAmenities } from "../../controllers/Amenities.js";
-import { AddBlogCategory, GetBlogCategories } from "../../controllers/BlogCategory.js";
+import {
+  createAmenities,
+  deleteAmenities,
+  getAllAmenities,
+  getAmenitiesById,
+  updateAmenities,
+} from "../../controllers/Amenities.js";
+import {
+  AddBlogCategory,
+  GetBlogCategories,
+} from "../../controllers/BlogCategory.js";
 import { AddBlogs } from "../../controllers/Blogs.js";
-import { DeleteBookedDates, UpdateBookedDates } from "../../controllers/BookedDates.js";
+import {
+  DeleteBookedDates,
+  UpdateBookedDates,
+} from "../../controllers/BookedDates.js";
 import { getContactus, updateContactUs } from "../../controllers/ContactUs.js";
 import { SetDubaiDetails } from "../../controllers/Dubai.js";
 import { DeleteFaq, SetFaqs, UpdateFaq } from "../../controllers/Faq.js";
-import { DeleteGallaryType, SetGallaryType } from "../../controllers/GallaryTypes.js";
+import {
+  DeleteGallaryType,
+  SetGallaryType,
+} from "../../controllers/GallaryTypes.js";
 import galleryValidator from "../../utils/validations/galleryValidator.js";
-import { createGalleryContent, UpdateGallary } from "../../controllers/Gallery.js";
-import { SetHomeContent, UpdateHomeContent } from "../../controllers/HomeContent.js";
+import {
+  createGalleryContent,
+  UpdateGallary,
+} from "../../controllers/Gallery.js";
+import {
+  SetHomeContent,
+  UpdateHomeContent,
+} from "../../controllers/HomeContent.js";
 import { AddLegal } from "../../controllers/Legal.js";
 import { AddMaintenance } from "../../controllers/Maintenance.js";
 import { AddFeaturedArticles } from "../../controllers/MediaFeaturedArticles.js";
-import { AddPricing, DeletePricing, UpdatePricing } from "../../controllers/Pricing.js";
-import { DeleteProperty, SetProperty, UpdateProperty } from "../../controllers/Properties.js";
+import {
+  AddPricing,
+  DeletePricing,
+  UpdatePricing,
+} from "../../controllers/Pricing.js";
+import {
+  DeleteProperty,
+  SetProperty,
+  UpdateProperty,
+} from "../../controllers/Properties.js";
 import { AddRequirements } from "../../controllers/Requirements.js";
 import { SetProviders } from "../../controllers/ServiceProviders.js";
 import { SetService } from "../../controllers/Services.js";
-import { DeleteSubscription, GetSubscriptions } from "../../controllers/Subscriptions.js";
+import {
+  DeleteSubscription,
+  GetSubscriptions,
+} from "../../controllers/Subscriptions.js";
 import { SetTestimonials } from "../../controllers/Testimonials.js";
-import { AddThirdPartyLogos, UpdateThirdPartyLogos } from "../../controllers/ThirdPartyLogos.js";
+import {
+  AddThirdPartyLogos,
+  UpdateThirdPartyLogos,
+} from "../../controllers/ThirdPartyLogos.js";
 import { SetUtility } from "../../controllers/Utility.js";
 import { AddVideoGuide } from "../../controllers/VideoGuides.js";
+import { getPropertyListByAdmin } from "../../controllers/admin/properties/propertiesController.js";
 
 const router = express.Router();
 
@@ -95,6 +136,7 @@ router.delete("/pricing/:id", DeletePricing);
 
 // Properties Routes
 router.post("/properties/", SetProperty);
+router.get("/properties/", getPropertyListByAdmin);
 router.delete("/properties/:id", DeleteProperty);
 router.put("/properties/:id", UpdateProperty);
 
@@ -107,7 +149,7 @@ router.post("/providers/", SetProviders);
 // Services Routes -  Cleaning & Maintenance, Interior Design
 router.post("/services/add-service", SetService);
 
-// subscriptions Routes 
+// subscriptions Routes
 router.get("/subscriptions/", GetSubscriptions);
 router.delete("/subscriptions/:id", DeleteSubscription);
 
