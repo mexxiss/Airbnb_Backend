@@ -17,7 +17,7 @@ export const Login = async (req, res, next) => {
       return next(new apiError(400, "Email is not Registered"));
     }
 
-    if (!user.compareBcryptPassworSd(password)) {
+    if (!user.compareBcryptPassword(password)) {
       return next(new apiError(400, "Password is Incorrect"));
     }
 

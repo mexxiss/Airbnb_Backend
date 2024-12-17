@@ -25,6 +25,7 @@ import { SetTestimonials } from "../../controllers/admin/content/testimonials.co
 import { AddThirdPartyLogos, UpdateThirdPartyLogos } from "../../controllers/admin/content/thirdpartylogos.controllers.js";
 import { SetUtility } from "../../controllers/admin/providers/taxutility.controllers.js";
 import { AddVideoGuide } from "../../controllers/admin/content/guides.controllers.js";
+import { GetUserPaymentDetails } from "../../controllers/admin/users/bankdetails.controllers.js";
 
 const router = express.Router();
 
@@ -86,6 +87,9 @@ router.post("/maintenance/", AddMaintenance);
 
 // Media Featured Articles Routes
 router.post("/featured-articles/", AddFeaturedArticles);
+
+// Payment Details Routes
+router.get("/bank-details/:id", GetUserPaymentDetails)
 
 // Pricing Content Routes
 router.post("/pricing/", AddPricing);

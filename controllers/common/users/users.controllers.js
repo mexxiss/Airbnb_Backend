@@ -1,6 +1,7 @@
 import { UserModel } from "../../../models/Users.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
+import { BlacklistModel } from "../../../models/Blacklist.js";
 
 export const ChangePassword = async (req, res, next) => {
   // #swagger.tags = ['Users']
@@ -48,7 +49,7 @@ export const Logout = async (req, res, next) => {
       .status(200)
       .json(new apiResponse(200, { user }, "Logout Successful"));
   } catch (error) {
-    return next(new apiError(500, `Server Error: ${error}`));
+    return next(new apiError(500, `Logout Server Error: ${error}`));
   }
 };
 
