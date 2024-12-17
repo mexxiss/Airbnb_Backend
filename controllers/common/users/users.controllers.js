@@ -26,8 +26,8 @@ export const ChangePassword = async (req, res, next) => {
 export const Logout = async (req, res, next) => {
   // #swagger.tags = ['Users']
   const user_id = req._id;
-  const token = req.token;
-
+  const token = req.user?.token;
+  
   try {
     const blacklistCheck = await BlacklistModel.findOne({ token });
 
