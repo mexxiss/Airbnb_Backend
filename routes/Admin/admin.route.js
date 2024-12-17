@@ -1,72 +1,30 @@
 import express from "express";
-import { GetUser, SignUp, UpdateUser } from "../../controllers/Users.js";
-import {
-  getAllUsers,
-  getUserById,
-  softDeleteUserById,
-  updateUserById,
-} from "../../controllers/admin/user-controllers/usersControllers.js";
+import { getAllUsers, getUserById, SignUp, softDeleteUserById, updateUserById, } from "../../controllers/admin/users/users.controllers.js";
 import amenitiesValidator from "../../utils/validations/amenitiesValidatior.js";
-import {
-  createAmenities,
-  deleteAmenities,
-  getAllAmenities,
-  getAmenitiesById,
-  updateAmenities,
-} from "../../controllers/Amenities.js";
-import {
-  AddBlogCategory,
-  GetBlogCategories,
-} from "../../controllers/BlogCategory.js";
-import { AddBlogs } from "../../controllers/Blogs.js";
-import {
-  DeleteBookedDates,
-  UpdateBookedDates,
-} from "../../controllers/BookedDates.js";
-import { getContactus, updateContactUs } from "../../controllers/ContactUs.js";
-import { SetDubaiDetails } from "../../controllers/Dubai.js";
-import { DeleteFaq, SetFaqs, UpdateFaq } from "../../controllers/Faq.js";
-import {
-  DeleteGallaryType,
-  SetGallaryType,
-} from "../../controllers/GallaryTypes.js";
 import galleryValidator from "../../utils/validations/galleryValidator.js";
-import {
-  createGalleryContent,
-  UpdateGallary,
-} from "../../controllers/Gallery.js";
-import {
-  SetHomeContent,
-  UpdateHomeContent,
-} from "../../controllers/HomeContent.js";
-import { AddLegal } from "../../controllers/Legal.js";
-import { AddMaintenance } from "../../controllers/Maintenance.js";
-import { AddFeaturedArticles } from "../../controllers/MediaFeaturedArticles.js";
-import {
-  AddPricing,
-  DeletePricing,
-  UpdatePricing,
-} from "../../controllers/Pricing.js";
-import {
-  DeleteProperty,
-  SetProperty,
-  UpdateProperty,
-} from "../../controllers/Properties.js";
-import { AddRequirements } from "../../controllers/Requirements.js";
-import { SetProviders } from "../../controllers/ServiceProviders.js";
-import { SetService } from "../../controllers/Services.js";
-import {
-  DeleteSubscription,
-  GetSubscriptions,
-} from "../../controllers/Subscriptions.js";
-import { SetTestimonials } from "../../controllers/Testimonials.js";
-import {
-  AddThirdPartyLogos,
-  UpdateThirdPartyLogos,
-} from "../../controllers/ThirdPartyLogos.js";
-import { SetUtility } from "../../controllers/Utility.js";
-import { AddVideoGuide } from "../../controllers/VideoGuides.js";
-import { getPropertyListByAdmin } from "../../controllers/admin/properties/propertiesController.js";
+import { DeleteProperty, getPropertyListByAdmin, SetProperty, UpdateProperty } from "../../controllers/admin/properties/properties.controllers.js";
+import { createAmenities, deleteAmenities, getAllAmenities, getAmenitiesById, updateAmenities } from "../../controllers/admin/amenitites/amenities.controllers.js";
+import { AddBlogs } from "../../controllers/admin/blogs/blogs.controllers.js";
+import { AddBlogCategory, GetBlogCategories } from "../../controllers/admin/blogs/blogcategories.controllers.js";
+import { DeleteBookedDates, UpdateBookedDates } from "../../controllers/admin/booking/dates.controllers.js";
+import { updateContactUs } from "../../controllers/admin/contact/contact.controllers.js";
+import { SetDubaiDetails } from "../../controllers/admin/content/airbnbdubai.controllers.js";
+import { DeleteFaq, SetFaqs, UpdateFaq } from "../../controllers/admin/content/faqs.controllers.js";
+import { DeleteGallaryType, SetGallaryType } from "../../controllers/admin/properties/gallerytypes.controllers.js";
+import { createGalleryContent, UpdateGallary } from "../../controllers/admin/properties/gallery.controllers.js";
+import { SetHomeContent, UpdateHomeContent } from "../../controllers/admin/content/homecontent.controllers.js";
+import { AddLegal } from "../../controllers/admin/content/legal.controllers.js";
+import { AddMaintenance } from "../../controllers/admin/properties/maintenance.controllers.js";
+import { AddFeaturedArticles } from "../../controllers/admin/content/featuredarticles.controllers.js";
+import { AddPricing, DeletePricing, UpdatePricing } from "../../controllers/admin/content/pricing.controllers.js";
+import { AddRequirements } from "../../controllers/admin/content/requirements.controllers.js";
+import { SetProviders } from "../../controllers/admin/providers/providers.controllers.js";
+import { SetService } from "../../controllers/admin/content/services.controllers.js";
+import { DeleteSubscription, GetSubscriptions } from "../../controllers/admin/subscriptions/subscriptions.controllers.js";
+import { SetTestimonials } from "../../controllers/admin/content/testimonials.controllers.js";
+import { AddThirdPartyLogos, UpdateThirdPartyLogos } from "../../controllers/admin/content/thirdpartylogos.controllers.js";
+import { SetUtility } from "../../controllers/admin/providers/taxutility.controllers.js";
+import { AddVideoGuide } from "../../controllers/admin/content/guides.controllers.js";
 
 const router = express.Router();
 
