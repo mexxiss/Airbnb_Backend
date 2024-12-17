@@ -26,6 +26,8 @@ import { AddThirdPartyLogos, UpdateThirdPartyLogos } from "../../controllers/adm
 import { SetUtility } from "../../controllers/admin/providers/taxutility.controllers.js";
 import { AddVideoGuide } from "../../controllers/admin/content/guides.controllers.js";
 import { GetUserPaymentDetails } from "../../controllers/admin/users/bankdetails.controllers.js";
+import { Auth } from "../../middleware/auth.js";
+import { Role } from "../../utils/validations/roleValidator.js";
 
 const router = express.Router();
 
