@@ -1,7 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
 import { apiError } from "../utils/apiError.js";
-import { BlacklistModel } from "../models/Blacklist.js";
-
 const Auth = async (req, res, next) => {
   const authorizationHeader = req.header("Authorization");
 
