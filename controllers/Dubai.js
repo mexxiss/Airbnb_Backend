@@ -3,6 +3,7 @@ import { apiError } from '../utils/apiError.js';
 import { DubaiModel } from '../models/Dubai.js';
 
 export const GetDubaiDetails = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const details = await DubaiModel.find().limit(1);
         return res.status(200).json(details[0]);
@@ -12,6 +13,7 @@ export const GetDubaiDetails = async (req, res, next) => {
 }
 
 export const SetDubaiDetails = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { section1, section2, section3, section4, section5 } = req.body;
 
     if (!section1 || !section2 || !section3 || !section4 || !section5) {

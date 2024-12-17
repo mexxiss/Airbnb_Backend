@@ -3,6 +3,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 import { apiError } from "../utils/apiError.js";
 
 export const SetUtility = async(req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {vat_tax_rate, tourism_tax_rate} = req.body;
 
     try {

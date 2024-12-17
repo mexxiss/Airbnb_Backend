@@ -4,6 +4,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const createGalleryContent = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const { img_url, type } = req.body;
     const newGallery = new GalleryModel({ img_url, type });
@@ -18,6 +19,7 @@ export const createGalleryContent = async (req, res) => {
 };
 
 export const getGalleryImagesByQuery = async (req, res) => {
+  // #swagger.tags = ['General']
   try {
     const { id, page = 1, limit = 12 } = req.query; // type as id
     const query = {};
@@ -46,6 +48,7 @@ export const getGalleryImagesByQuery = async (req, res) => {
 };
 
 export const UpdateGallary = async (req, res, next) => {
+  // #swagger.tags = ['Admin']
   const { type } = req.body;
   const { id } = req.params;
 

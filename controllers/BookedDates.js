@@ -6,6 +6,7 @@ import { UtilityModel } from "../models/Utility.js";
 import mongoose from "mongoose";
 
 export const GetFilteredDates = async (req, res, next) => {
+    // #swagger.tags = ['Users']
     const { start_date, property } = req.query;
 
     if (!property || !mongoose.isValidObjectId(property)) {
@@ -215,6 +216,7 @@ export const GetFilteredDates = async (req, res, next) => {
 };
 
 export const GetBookedDates = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const { property } = req.query;
         const query = { checkout_date: { $gte: new Date() } };
@@ -232,6 +234,7 @@ export const GetBookedDates = async (req, res, next) => {
 };
 
 export const SetBookedDates = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const { checkin_date, checkout_date, property } = req.body;
     const checkinDateISO = new Date(checkin_date).toISOString();
     const checkoutDateISO = new Date(checkout_date).toISOString();
@@ -259,6 +262,7 @@ export const SetBookedDates = async (req, res, next) => {
 }
 
 export const UpdateBookedDates = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { id } = req.params; 
     const { checkin_date, checkout_date } = req.body; 
 
@@ -285,6 +289,7 @@ export const UpdateBookedDates = async (req, res, next) => {
 
 
 export const DeleteBookedDates = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { id } = req.params;
 
     if (!id) {

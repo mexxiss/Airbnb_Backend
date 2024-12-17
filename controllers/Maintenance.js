@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const AddMaintenance = async(req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {issue, status, cost, property} = req.body;
 
     if(!issue || !cost || !property) {

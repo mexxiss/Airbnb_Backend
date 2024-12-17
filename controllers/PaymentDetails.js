@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { PaymentDetailsModel } from "../models/PaymentDetails.js";
 
 export const SetPaymentDetails = async(req, res, next) => {
+    // #swagger.tags = ['Users']
     const user_id = req._id;
     const {accountHolderName, accountNumber, bankName, swiftCode, iban, paymentMethod, currency, address} = req.body;
     
@@ -19,6 +20,7 @@ export const SetPaymentDetails = async(req, res, next) => {
 }
 
 export const GetPaymentDetails = async (req, res, next) => {
+    // #swagger.tags = ['Users']
     const user_id = req._id;
 
     if( !user_id ) {
@@ -34,6 +36,7 @@ export const GetPaymentDetails = async (req, res, next) => {
 }
 
 export const UpdatePaymentDetails = async (req, res, next) => {
+    // #swagger.tags = ['Users']
     const { updates } = req.body;
     const { id } = req.params;
     const user_id = req._id;

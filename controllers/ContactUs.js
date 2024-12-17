@@ -5,6 +5,7 @@ import { sendAcknowledgmentEmail } from "../utils/sendAcknowledgmentEmail.js";
 import sendQueryContactEmail from "../utils/sendQueryContactEmail.js";
 
 export const createContactus = async (req, res) => {
+  // #swagger.tags = ['General']
   try {
     const contact = new ContactUsModel(req.body);
     const savedContact = await contact.save();
@@ -19,6 +20,7 @@ export const createContactus = async (req, res) => {
 };
 
 export const getContactus = async (req, res) => {
+  // #swagger.tags = ['General']
   try {
     const contacts = await ContactUsModel.find();
     res.status(200).json({
@@ -32,6 +34,7 @@ export const getContactus = async (req, res) => {
 };
 
 export const sendContactQuery = async (req, res) => {
+  // #swagger.tags = ['General']
   try {
     const { fullname, email, phone, subject, message } = req.body;
 
@@ -83,6 +86,7 @@ export const sendContactQuery = async (req, res) => {
 };
 
 export const updateContactUs = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const allowedItems = ["emails", "phones", "location"];
 

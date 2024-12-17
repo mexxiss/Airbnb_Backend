@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetPricings = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const pricings = await PricingModel.find();
         return res.status(200).json(new apiResponse(200, pricings, "Pricings retrieved successfully"));
@@ -12,6 +13,7 @@ export const GetPricings = async (req, res, next) => {
 }
 
 export const AddPricing = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {title, description, figures, icon, offers} = req.body;
 
     if(!title || !description || !figures || !icon || !offers || !Array.isArray(offers)) {
@@ -27,6 +29,7 @@ export const AddPricing = async (req, res, next) => {
 }
 
 export const DeletePricing = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {id} = req.params;
 
     if (!id) {
@@ -42,6 +45,7 @@ export const DeletePricing = async (req, res, next) => {
 }
 
 export const UpdatePricing = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {id} = req.params;
     const {updates} = req.body;
 

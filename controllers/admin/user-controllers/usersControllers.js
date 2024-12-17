@@ -1,6 +1,7 @@
 import { UserModel } from "../../../models/Users.js";
 
 const getAllUsers = async (req, res) => {
+  // #swagger.tags = ['Admin']
   const { page = 1, limit = 10 } = req.query;
 
   try {
@@ -29,6 +30,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
+  // #swagger.tags = ['Admin']
   const { id } = req.params;
 
   try {
@@ -47,6 +49,7 @@ const getUserById = async (req, res) => {
 };
 
 const softDeleteUserById = async (req, res) => {
+  // #swagger.tags = ['Admin']
   const { id } = req.params;
 
   try {
@@ -71,6 +74,7 @@ const softDeleteUserById = async (req, res) => {
 };
 
 const updateUserById = async (req, res) => {
+  // #swagger.tags = ['Admin']
   const { id } = req.params;
   const updateData = req.body;
   try {

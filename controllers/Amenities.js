@@ -1,12 +1,10 @@
 import { AmenitiesModel } from "../models/Amenities.js";
 
-// create amenities
-
 const createAmenities = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const { title, icon } = req.body;
 
-    // Validate request
     if (!title || !icon) {
       return res.status(400).json({ error: "Title and icon are required." });
     }
@@ -23,9 +21,8 @@ const createAmenities = async (req, res) => {
   }
 };
 
-// get all amenities
-
 const getAllAmenities = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const amenities = await AmenitiesModel.find();
     res.status(200).json({ msg: "data feched succefully", data: amenities });
@@ -34,13 +31,11 @@ const getAllAmenities = async (req, res) => {
   }
 };
 
-// get amenities by id
-
 const getAmenitiesById = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const { id } = req.params;
 
-    // Validate ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid amenity ID." });
     }
@@ -56,19 +51,16 @@ const getAmenitiesById = async (req, res) => {
   }
 };
 
-// update amenities by id
-
 const updateAmenities = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const { id } = req.params;
     const { title, icon } = req.body;
 
-    // Validate ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid amenity ID." });
     }
 
-    // Validate input
     if (!title && !icon) {
       return res.status(400).json({
         error: "At least one field (title or icon) is required to update.",
@@ -91,13 +83,11 @@ const updateAmenities = async (req, res) => {
   }
 };
 
-// delete amenities by id
-
 const deleteAmenities = async (req, res) => {
+  // #swagger.tags = ['Admin']
   try {
     const { id } = req.params;
 
-    // Validate ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid amenity ID." });
     }

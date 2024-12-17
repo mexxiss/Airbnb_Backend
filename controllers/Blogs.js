@@ -4,6 +4,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetBlogs = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const { page = 1, limit = 6 } = req.query;
 
     try {
@@ -33,6 +34,7 @@ export const GetBlogs = async (req, res, next) => {
 };
 
 export const GetBlog = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const { id } = req.params;
 
     if (!id || !mongoose.isValidObjectId(id)) {
@@ -59,6 +61,7 @@ export const GetBlog = async (req, res, next) => {
 };
 
 export const AddBlogs = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { title, subtitle, body, tags, added_on, category, thumbnail } = req.body;
 
     try {

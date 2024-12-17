@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const SetService = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {name} = req.body;
     if(!name) {
         return next(new apiError(400, "Name not provided"));
@@ -17,6 +18,7 @@ export const SetService = async (req, res, next) => {
 }
 
 export const GetServices = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const services = await ServicesModel.find();
         return res.status(200).json(new apiResponse(200, services, "Services Retrieved Successfully"));

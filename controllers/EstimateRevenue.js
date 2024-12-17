@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const AddRevenueDetails = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const { area, beds } = req.body;
 
     if (!area || !Array.isArray(beds)) {
@@ -18,6 +19,7 @@ export const AddRevenueDetails = async (req, res, next) => {
 }
 
 export const GetAreas = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const regions = [
         "Al Barsha South",
         "Al Furjan",

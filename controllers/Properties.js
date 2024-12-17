@@ -6,12 +6,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 import mongoose from "mongoose";
 
 export const GetAllProperties = async (req, res, next) => {
-    // const user_id = req._id;
-
-    // if(!user_id) {
-    //     return next(new apiError(400, "User required"))
-    // }
-
+    // #swagger.tags = ['General']
     try {
         const properties = await PropertiesModel.find().populate('property_images').select('title description property_images property_details.rooms_count status');
         return res.status(200).json(new apiResponse(200, properties, "Property retrieved successfully"));
@@ -21,6 +16,7 @@ export const GetAllProperties = async (req, res, next) => {
 }
 
 export const GetAllPropertiesByUser = async (req, res, next) => {
+    // #swagger.tags = ['Users']
     const user_id = req._id;
 
     if(!user_id) {
@@ -37,6 +33,7 @@ export const GetAllPropertiesByUser = async (req, res, next) => {
 
 
 export const GetPropertyObj = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const { id } = req.params;
     const totals = {
         total_stay_charges: 0,
@@ -89,6 +86,7 @@ export const GetPropertyObj = async (req, res, next) => {
 };
 
 export const SetProperty = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { title, description, property_images, property_details, address, discounts_percentage, costs, property_check_details, staying_rules, cancellation_policy, amenities, important_information } = req.body;
 
     try {
@@ -101,6 +99,7 @@ export const SetProperty = async (req, res, next) => {
 }
 
 export const DeleteProperty = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { id } = req.params;
     if (!id) {
         return next(new apiError(400, "Document ID required"));
@@ -115,6 +114,7 @@ export const DeleteProperty = async (req, res, next) => {
 }
 
 export const UpdateProperty = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { id } = req.params;
     const { updates } = req.body;
 

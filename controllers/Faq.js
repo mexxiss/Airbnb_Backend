@@ -12,6 +12,7 @@ export const GetFaqs = async (req, res, next) => {
 }
 
 export const GetFilteredFaqs = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const { page } = req.query;
     const query = {};
 
@@ -28,6 +29,7 @@ export const GetFilteredFaqs = async (req, res, next) => {
 }
 
 export const SetFaqs = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { question, answer, page } = req.body;
 
     if (!question || !answer || !page) {
@@ -43,6 +45,7 @@ export const SetFaqs = async (req, res, next) => {
 }
 
 export const DeleteFaq = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { id } = req.params;
 
     if (!id) {
@@ -58,6 +61,7 @@ export const DeleteFaq = async (req, res, next) => {
 }
 
 export const UpdateFaq = async (req, res) => {
+    // #swagger.tags = ['Admin']
     try {
         const { id } = req.params;
         const { question, answer, page } = req.body;

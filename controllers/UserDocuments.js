@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { UserDocumentsModel } from "../models/UserDocuments.js";
 
 export const SetUserDocument = async(req, res, next) => {
+    // #swagger.tags = ['Users']
     const user_id = req._id;
     const {title, expiry_date, note, document, property} = req.body;
     
@@ -19,6 +20,7 @@ export const SetUserDocument = async(req, res, next) => {
 }
 
 export const GetUserDocuments = async (req, res, next) => {
+    // #swagger.tags = ['Users']
     const {property} = req.query || req.params;
     const user_id = req._id;
     
@@ -35,6 +37,7 @@ export const GetUserDocuments = async (req, res, next) => {
 }
 
 export const UpdateUserDocuments = async (req, res, next) => {
+    // #swagger.tags = ['Users']
     const {id} = req.params || req.query;
     const user_id = req._id;
     const {updates} = req.body;

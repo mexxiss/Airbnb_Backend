@@ -4,6 +4,7 @@ import { PropertyUtilitiesModel } from "../models/PropertyUtilities.js";
 import mongoose from "mongoose";
 
 export const SetPropertyUtility = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const {
     name,
     provider_name,
@@ -45,6 +46,7 @@ export const SetPropertyUtility = async (req, res, next) => {
 };
 
 export const GetPropertyUtilities = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const { property } = req.query;
   const user_id = req._id;
 
@@ -65,6 +67,7 @@ export const GetPropertyUtilities = async (req, res, next) => {
 };
 
 export const UpdatePropertyUtility = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const { id } = req.params || req.query; // Property ID
   const user_id = req._id; // Authenticated user ID
   const { updates } = req.body; // Utilities to update or create

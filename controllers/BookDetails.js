@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetBookDetails = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const {id} = req.params;
 
     try {
@@ -14,6 +15,7 @@ export const GetBookDetails = async (req, res, next) => {
 }
 
 export const SetBookDetails = async (req, res, next) => {
+    // #swagger.tags = ['General']
     const {first_name, last_name, email, guests, phone_number, message, promo_code, newsletter_agree, property, booked_dates} = req.body;
     try {
         const details = await BookDetailsModel.create({first_name, last_name, email, guests, phone_number, message, promo_code, newsletter_agree, property, booked_dates});

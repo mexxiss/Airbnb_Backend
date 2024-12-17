@@ -4,6 +4,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const SetGallaryType = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { name } = req.body;
 
     if (!name) {
@@ -19,6 +20,7 @@ export const SetGallaryType = async (req, res, next) => {
 }
 
 export const GetGallaryTypes = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const gallaryTypes = await GallaryTypesModel.find().sort({name: 1});
         return res.status(200).json(new apiResponse(200, gallaryTypes, "Gallary Types Retrieved Successfully"))
@@ -28,6 +30,7 @@ export const GetGallaryTypes = async (req, res, next) => {
 }
 
 export const DeleteGallaryType = async(req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {id} = req.params;
 
     try {

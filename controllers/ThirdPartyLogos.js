@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetThirdPartyLogos = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const guides = await ThirdPartyLogoModel.find();
         return res.status(200).json(new apiResponse(200, guides, "Logos Retrieved Successfully"))
@@ -12,6 +13,7 @@ export const GetThirdPartyLogos = async (req, res, next) => {
 }
 
 export const AddThirdPartyLogos = async(req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {logo, name, type} = req.body;
 
     try {
@@ -23,6 +25,7 @@ export const AddThirdPartyLogos = async(req, res, next) => {
 }
 
 export const UpdateThirdPartyLogos = async (req, res, next) => {
+    // #swagger.tags = ['Admin']
     const {id} = req.params;
     const {updates} = req.body;
 

@@ -31,8 +31,6 @@ const router = express.Router();
 
 // Authentication Routes
 router.post("/signup", SignUp);
-router.put("/", UpdateUser);
-router.get("/", GetUser);
 
 // users crud apis
 router.get("/users", getAllUsers);

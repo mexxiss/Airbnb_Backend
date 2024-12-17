@@ -21,6 +21,11 @@ const PropertiesSchema = new Schema({
             message: "At least one image is required for the property.",
         },
     },
+    property_types: {
+        type: String,
+        enum: ['apartment', 'villas', 'flat', 'independent floor'],
+        default: 'apartment'
+    },
     property_details: {
         furnishing: {
             type: String,
@@ -31,6 +36,11 @@ const PropertiesSchema = new Schema({
             type: Number,
             min: 1,
             max: 20
+        },
+        bhk: {
+            type: String,
+            enum: ['1rk', '1bhk', '2bhk', '3bhk', '3+bhk'],
+            default: '1bhk'
         },
         rooms_count: {
             type: Number,

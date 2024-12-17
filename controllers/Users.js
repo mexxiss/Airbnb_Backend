@@ -7,6 +7,7 @@ import { generatePassword } from "../utils/generatePassword.js";
 import { BlacklistModel } from "../models/Blacklist.js";
 
 export const SignUp = async (req, res, next) => {
+  // #swagger.tags = ['Admin']
   const { first_name, last_name, email, phone, role, address } = req.body;
 
   const requiredFields = [first_name, last_name, email, phone, address];
@@ -61,6 +62,7 @@ export const SignUp = async (req, res, next) => {
 };
 
 export const Login = async (req, res, next) => {
+  // #swagger.tags = ['General']
   const { email, password } = req.body;
 
   const requiredFields = [email, password];
@@ -95,6 +97,7 @@ export const Login = async (req, res, next) => {
 };
 
 export const ChangePassword = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const user_id = req._id;
   const { current_pass, new_pass } = req.body;
 
@@ -114,6 +117,7 @@ export const ChangePassword = async (req, res, next) => {
 };
 
 export const Logout = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const user_id = req._id;
   const token = req.token;
 
@@ -143,6 +147,7 @@ export const Logout = async (req, res, next) => {
 };
 
 export const GetUser = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const user_id = req._id;
   if (!user_id) {
     return next(new apiError(400, "User Id not provided"));
@@ -160,6 +165,7 @@ export const GetUser = async (req, res, next) => {
 };
 
 export const UpdateUser = async (req, res, next) => {
+  // #swagger.tags = ['Users']
   const user_id = req._id;
   const { updates } = req.body;
 

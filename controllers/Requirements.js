@@ -3,6 +3,7 @@ import { apiError } from "../utils/apiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 export const GetRequirements = async (req, res, next) => {
+    // #swagger.tags = ['General']
     try {
         const requirements = await RequirementsModel.find();
         return res.status(200).json(new apiResponse(200, requirements, "Requirements Retrieved Successfully"))
@@ -12,6 +13,7 @@ export const GetRequirements = async (req, res, next) => {
 }
 
 export const AddRequirements = async(req, res, next) => {
+    // #swagger.tags = ['Admin']
     const { head, points } = req.body;
 
     if ( !head || !points ) {

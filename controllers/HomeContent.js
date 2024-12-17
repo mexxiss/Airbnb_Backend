@@ -5,6 +5,7 @@ import { cloudinary } from "../uploads/cloudinary.js";
 import { formatNumber, formatWithCommas } from "../utils/commons.js";
 
 export const GetHomeContent = async (req, res, next) => {
+  // #swagger.tags = ['General']
   try {
     const doc = await HomeContentModel.find();
     const otherObj = {
@@ -32,6 +33,7 @@ export const GetHomeContent = async (req, res, next) => {
 };
 
 export const SetHomeContent = async (req, res, next) => {
+  // #swagger.tags = ['Admin']
   const {
     banner_images,
     what_people_says,
@@ -69,6 +71,7 @@ export const SetHomeContent = async (req, res, next) => {
 };
 
 export const UpdateHomeContent = async (req, res, next) => {
+  // #swagger.tags = ['Admin']
   const { id } = req.params;
   const { banner_images, what_people_says, features } = req.body;
 
