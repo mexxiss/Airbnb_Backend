@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { BookedDatesModel } from "../../../models/BookedDates.js";
 import { apiError } from "../../../utils/apiError.js";
 
