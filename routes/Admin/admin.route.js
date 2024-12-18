@@ -2,7 +2,7 @@ import express from "express";
 import { getAllUsers, getUserById, SignUp, softDeleteUserById, updateUserById, } from "../../controllers/admin/users/users.controllers.js";
 import amenitiesValidator from "../../utils/validations/amenitiesValidatior.js";
 import galleryValidator from "../../utils/validations/galleryValidator.js";
-import { DeleteProperty, getPropertyListByAdmin, SetProperty, UpdateProperty } from "../../controllers/admin/properties/properties.controllers.js";
+import { DeleteProperty, getPropertyListByAdmin, GetUserProperties, SetProperty, UpdateProperty } from "../../controllers/admin/properties/properties.controllers.js";
 import { createAmenities, deleteAmenities, getAllAmenities, getAmenitiesById, updateAmenities } from "../../controllers/admin/amenitites/amenities.controllers.js";
 import { AddBlogs } from "../../controllers/admin/blogs/blogs.controllers.js";
 import { AddBlogCategory, GetBlogCategories } from "../../controllers/admin/blogs/blogcategories.controllers.js";
@@ -103,6 +103,7 @@ router.post("/properties/", SetProperty);
 router.get("/properties/", getPropertyListByAdmin);
 router.delete("/properties/:id", DeleteProperty);
 router.put("/properties/:id", UpdateProperty);
+router.get("/properties/:user", GetUserProperties)
 
 // Requirements Routes
 router.post("/requirements/", AddRequirements);

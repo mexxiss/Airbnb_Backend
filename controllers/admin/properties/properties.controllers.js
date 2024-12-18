@@ -69,3 +69,15 @@ export const UpdateProperty = async (req, res, next) => {
       return next(new apiError(500, `Server Error: ${error}`))
   }
 }
+
+export const GetUserProperties = async (req, res, next) => {
+  // #swagger.tags = ['Admin']
+  const user = req.params;
+  
+  try {
+    const properties = await PropertiesModel.find({user})
+    return res.status(200).json(properties);
+  } catch ( error ) {
+    return next(new apiError(500, `Server Error: ${error}`))
+  }
+}

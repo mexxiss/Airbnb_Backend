@@ -33,7 +33,7 @@ router.get("/properties", GetAllPropertiesByUser);
 router.post("/property-utilities/", SetPropertyUtility);
 router.get("/property-utilities/", GetPropertyUtilities);
 router.put("/property-utilities/:id", UpdatePropertyUtility);
-
+ 
 // Service Providers Routes
 router.get("/providers/", GetProviders);
 
@@ -45,7 +45,5 @@ router.post("/upload/multiple", upload.array("files"), UploadMultiple);
 router.get("/user-documents/", GetUserDocuments);
 router.post("/user-documents/", SetUserDocument);
 router.put("/user-documents/:id", UpdateUserDocuments);
-
-
 
 export default router;
