@@ -1,33 +1,81 @@
 import express from "express";
-import { getAllUsers, getUserById, SignUp, softDeleteUserById, updateUserById, } from "../../controllers/admin/users/users.controllers.js";
+import {
+  getAllUsers,
+  getUserById,
+  SignUp,
+  softDeleteUserById,
+  updateUserById,
+} from "../../controllers/admin/users/users.controllers.js";
 import amenitiesValidator from "../../utils/validations/amenitiesValidatior.js";
 import galleryValidator from "../../utils/validations/galleryValidator.js";
-import { DeleteProperty, getPropertyListByAdmin, GetUserProperties, SetProperty, UpdateProperty } from "../../controllers/admin/properties/properties.controllers.js";
-import { createAmenities, deleteAmenities, getAllAmenities, getAmenitiesById, updateAmenities } from "../../controllers/admin/amenitites/amenities.controllers.js";
+import {
+  DeleteProperty,
+  getPropertyListByAdmin,
+  GetUserProperties,
+  SetProperty,
+  UpdateProperty,
+} from "../../controllers/admin/properties/properties.controllers.js";
+import {
+  createAmenities,
+  deleteAmenities,
+  getAllAmenities,
+  getAmenitiesById,
+  updateAmenities,
+} from "../../controllers/admin/amenitites/amenities.controllers.js";
 import { AddBlogs } from "../../controllers/admin/blogs/blogs.controllers.js";
-import { AddBlogCategory, GetBlogCategories } from "../../controllers/admin/blogs/blogcategories.controllers.js";
-import { DeleteBookedDates, UpdateBookedDates } from "../../controllers/admin/booking/dates.controllers.js";
+import {
+  AddBlogCategory,
+  GetBlogCategories,
+} from "../../controllers/admin/blogs/blogcategories.controllers.js";
+import {
+  DeleteBookedDates,
+  UpdateBookedDates,
+} from "../../controllers/admin/booking/dates.controllers.js";
 import { updateContactUs } from "../../controllers/admin/contact/contact.controllers.js";
 import { SetDubaiDetails } from "../../controllers/admin/content/airbnbdubai.controllers.js";
-import { DeleteFaq, SetFaqs, UpdateFaq } from "../../controllers/admin/content/faqs.controllers.js";
-import { DeleteGallaryType, SetGallaryType } from "../../controllers/admin/properties/gallerytypes.controllers.js";
-import { createGalleryContent, UpdateGallary } from "../../controllers/admin/properties/gallery.controllers.js";
-import { SetHomeContent, UpdateHomeContent } from "../../controllers/admin/content/homecontent.controllers.js";
+import {
+  DeleteFaq,
+  SetFaqs,
+  UpdateFaq,
+} from "../../controllers/admin/content/faqs.controllers.js";
+import {
+  DeleteGallaryType,
+  SetGallaryType,
+} from "../../controllers/admin/properties/gallerytypes.controllers.js";
+import {
+  createGalleryContent,
+  UpdateGallary,
+} from "../../controllers/admin/properties/gallery.controllers.js";
+import {
+  SetHomeContent,
+  UpdateHomeContent,
+} from "../../controllers/admin/content/homecontent.controllers.js";
 import { AddLegal } from "../../controllers/admin/content/legal.controllers.js";
 import { AddMaintenance } from "../../controllers/admin/properties/maintenance.controllers.js";
 import { AddFeaturedArticles } from "../../controllers/admin/content/featuredarticles.controllers.js";
-import { AddPricing, DeletePricing, UpdatePricing } from "../../controllers/admin/content/pricing.controllers.js";
+import {
+  AddPricing,
+  DeletePricing,
+  UpdatePricing,
+} from "../../controllers/admin/content/pricing.controllers.js";
 import { AddRequirements } from "../../controllers/admin/content/requirements.controllers.js";
 import { SetProviders } from "../../controllers/admin/providers/providers.controllers.js";
 import { SetService } from "../../controllers/admin/content/services.controllers.js";
-import { DeleteSubscription, GetSubscriptions } from "../../controllers/admin/subscriptions/subscriptions.controllers.js";
+import {
+  DeleteSubscription,
+  GetSubscriptions,
+} from "../../controllers/admin/subscriptions/subscriptions.controllers.js";
 import { SetTestimonials } from "../../controllers/admin/content/testimonials.controllers.js";
-import { AddThirdPartyLogos, UpdateThirdPartyLogos } from "../../controllers/admin/content/thirdpartylogos.controllers.js";
+import {
+  AddThirdPartyLogos,
+  UpdateThirdPartyLogos,
+} from "../../controllers/admin/content/thirdpartylogos.controllers.js";
 import { SetUtility } from "../../controllers/admin/providers/taxutility.controllers.js";
 import { AddVideoGuide } from "../../controllers/admin/content/guides.controllers.js";
-import { GetUserPaymentDetails } from "../../controllers/admin/users/bankdetails.controllers.js";
-import { Auth } from "../../middleware/auth.js";
-import { Role } from "../../utils/validations/roleValidator.js";
+import {
+  GetUserPaymentDetails,
+  UpdateBankDetailsById,
+} from "../../controllers/admin/users/bankdetails.controllers.js";
 
 const router = express.Router();
 
@@ -91,7 +139,8 @@ router.post("/maintenance/", AddMaintenance);
 router.post("/featured-articles/", AddFeaturedArticles);
 
 // Payment Details Routes
-router.get("/bank-details/:id", GetUserPaymentDetails)
+router.get("/bank-details/:id", GetUserPaymentDetails);
+router.put("/bank-details/:id", UpdateBankDetailsById);
 
 // Pricing Content Routes
 router.post("/pricing/", AddPricing);
@@ -103,7 +152,7 @@ router.post("/properties/", SetProperty);
 router.get("/properties/", getPropertyListByAdmin);
 router.delete("/properties/:id", DeleteProperty);
 router.put("/properties/:id", UpdateProperty);
-router.get("/properties/:user", GetUserProperties)
+router.get("/properties/:user", GetUserProperties);
 
 // Requirements Routes
 router.post("/requirements/", AddRequirements);
