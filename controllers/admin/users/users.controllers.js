@@ -26,7 +26,15 @@ export const SignUp = async (req, res, next) => {
       return next(new apiError(400, "User already exists"));
     }
     const password = generatePassword();
-    const newUser = await UserModel.create({ first_name, last_name, email, password, phone, role, address });
+    const newUser = await UserModel.create({
+      first_name,
+      last_name,
+      email,
+      password,
+      phone,
+      role,
+      address,
+    });
 
     const replacements = {
       title: "Welcome On-board",
@@ -37,7 +45,7 @@ export const SignUp = async (req, res, next) => {
         </div>
         <p>We recommend changing your password after your first login for security purposes.</p>
         <p>If you have any questions or need assistance, feel free to reach out to our support team at ${process.env.MAIL_FROM}.</p>
-        <p>Thank you for choosing ${Mexxiss}. We look forward to serving you!</p>`,
+        <p>Thank you for choosing Mexxiss. We look forward to serving you!</p>`,
     };
 
     const adminReplacements = {
@@ -56,10 +64,16 @@ export const SignUp = async (req, res, next) => {
     };
 
     await Promise.all([
-      mailSender(process.env.MAIL_FROM, `Login Credentials Successfully Generated for ${first_name}`, adminReplacements),
+      mailSender(
+        process.env.MAIL_FROM,
+        `Login Credentials Successfully Generated for ${first_name}`,
+        adminReplacements
+      ),
       mailSender(email[0], "Welcome On-board", replacements),
     ]);
-    return res.status(201).json(new apiResponse(201, newUser._id, "User created Successfully"));
+    return res
+      .status(201)
+      .json(new apiResponse(201, newUser._id, "User created Successfully"));
   } catch (error) {
     console.log(error);
     return next(new apiError(500, error.message || "Internal server error"));
