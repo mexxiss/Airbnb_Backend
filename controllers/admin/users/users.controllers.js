@@ -1,17 +1,18 @@
 import { UserModel } from "../../../models/Users.js";
-
-import validator from "validator";
 import { generatePassword } from "../../../utils/generatePassword.js";
 import { mailSender } from "../../../utils/mailSender.js";
+import { apiError } from "../../../utils/apiError.js";
+import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const SignUp = async (req, res, next) => {
   // #swagger.tags = ['Admin']
-  /*  #swagger.requestBody = {
+  // #swagger.summary = "Admin can create login credentials for Property Owner. On creation, password string will be shared to admin and Property Owner through Emails."
+  /* #swagger.requestBody = {
       required: true,
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/SignUpRequest'"
+            $ref: "#/components/schemas/SignUpRequest"
           }  
         }
       }
@@ -58,7 +59,7 @@ export const SignUp = async (req, res, next) => {
       mailSender(process.env.MAIL_FROM, `Login Credentials Successfully Generated for ${first_name}`, adminReplacements),
       mailSender(email[0], "Welcome On-board", replacements),
     ]);
-    return res.status(201).json(new apiResponse(201, { newUser, password }, "User created Successfully"));
+    return res.status(201).json(new apiResponse(201, newUser._id, "User created Successfully"));
   } catch (error) {
     console.log(error);
     return next(new apiError(500, error.message || "Internal server error"));

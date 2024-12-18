@@ -46,20 +46,7 @@ const doc = {
         },
         required: ['first_name', 'last_name', 'email', 'phone', 'address'],
       },
-      ApiResponse: {
-        type: 'object',
-        properties: {
-          status: { type: 'integer', example: 201 },
-          data: {
-            type: 'object',
-            properties: {
-              newUser: { $ref: '#/components/schemas/SignUpRequest' },
-              password: { type: 'string', example: 'GeneratedPassword123' },
-            },
-          },
-          message: { type: 'string', example: 'User created Successfully' },
-        },
-      },
+      
     }
   },
   basePath: '/api/v1',
