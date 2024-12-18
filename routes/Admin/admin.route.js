@@ -11,6 +11,7 @@ import galleryValidator from "../../utils/validations/galleryValidator.js";
 import {
   DeleteProperty,
   getPropertyListByAdmin,
+  GetUserProperties,
   SetProperty,
   UpdateProperty,
 } from "../../controllers/admin/properties/properties.controllers.js";
