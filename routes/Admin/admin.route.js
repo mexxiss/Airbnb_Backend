@@ -74,7 +74,7 @@ import { SetUtility } from "../../controllers/admin/providers/taxutility.control
 import { AddVideoGuide } from "../../controllers/admin/content/guides.controllers.js";
 import {
   GetUserPaymentDetails,
-  UpdateBankDetailsById,
+  UpsertBankDetailsById,
 } from "../../controllers/admin/users/bankdetails.controllers.js";
 import { signUpValidator } from "../../utils/validations/signupValidator.js";
 
@@ -141,7 +141,7 @@ router.post("/featured-articles/", AddFeaturedArticles);
 
 // Payment Details Routes
 router.get("/bank-details/:id", GetUserPaymentDetails);
-router.put("/bank-details/:id", UpdateBankDetailsById);
+router.put("/bank-details/:id", UpsertBankDetailsById);
 
 // Pricing Content Routes
 router.post("/pricing/", AddPricing);
