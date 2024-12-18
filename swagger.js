@@ -15,6 +15,52 @@ const doc = {
         scheme: 'bearer',
       },
     },
+    schemas: {
+      SignUpRequest: {
+        type: 'object',
+        properties: {
+          first_name: { type: 'string', example: 'John' },
+          last_name: { type: 'string', example: 'Doe' },
+          email: {
+            type: 'array',
+            items: { type: 'string', format: 'email', example: 'john.doe@example.com' },
+          },
+          phone: { type: 'array', items: { type: 'string', format: 'string', example: '+919876543210' } },
+          role: {
+            type: 'string',
+            enum: ['Owner', 'Admin'],
+            example: 'Admin',
+          },
+          address: { 
+            type: 'object', 
+            example: {
+              building_no: "123",
+              city: "Springfield",
+              street: "Main Street",
+              area: "Downtown",
+              landmark: "Near City Mall",
+              country: "Dubai",
+              pincode: "123456"
+            } 
+          },
+        },
+        required: ['first_name', 'last_name', 'email', 'phone', 'address'],
+      },
+      ApiResponse: {
+        type: 'object',
+        properties: {
+          status: { type: 'integer', example: 201 },
+          data: {
+            type: 'object',
+            properties: {
+              newUser: { $ref: '#/components/schemas/SignUpRequest' },
+              password: { type: 'string', example: 'GeneratedPassword123' },
+            },
+          },
+          message: { type: 'string', example: 'User created Successfully' },
+        },
+      },
+    }
   },
   basePath: '/api/v1',
   security: [
@@ -36,30 +82,10 @@ const doc = {
       description: "Other general routes",
     },
   ],
-  paths: {
-    '/users': {
-      get: {
-        tags: ['Users'],
-        summary: 'Get all users',
-        responses: {
-          '200': { description: 'Success' }
-        }
-      }
-    },
-    '/admin': {
-      get: {
-        tags: ['Admin'],
-        summary: 'Admin route',
-        responses: {
-          '200': { description: 'Success' }
-        }
-      }
-    },
-  }
 };
 
 const outputFile = './swagger.json';
-const endpointsFiles = [ './routes/index.js' ];
+const endpointsFiles = ['./routes/index.js'];
 
 // Generate Swagger documentation
 swaggerAutogen({ openapi: '3.0.0' })(outputFile, endpointsFiles, doc);
