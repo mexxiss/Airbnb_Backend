@@ -4,6 +4,17 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const AddPricing = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can add Pricing to be retrieved on Pricings Page on frontend"
+    // #swagger.description = "> #TODO: Created document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/PricingsRequest" }  
+            }
+          }
+      } 
+    */
     const {title, description, figures, icon, offers} = req.body;
 
     if(!title || !description || !figures || !icon || !offers || !Array.isArray(offers)) {
@@ -20,6 +31,9 @@ export const AddPricing = async (req, res, next) => {
 
 export const DeletePricing = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can delete Pricing by specifying ID within request parameters"
+    // #swagger.description = "> #TODO: Deleted document is being sent back through response that may be unnecessary",
+
     const {id} = req.params;
 
     if (!id) {
@@ -36,6 +50,17 @@ export const DeletePricing = async (req, res, next) => {
 
 export const UpdatePricing = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can update Pricing to be retrieved on Pricings Page on frontend by specifying ID witin params."
+    // #swagger.description = "> #TODO: Updated document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/UpdatesRequest" }  
+            }
+          }
+      } 
+    */
     const {id} = req.params;
     const {updates} = req.body;
 

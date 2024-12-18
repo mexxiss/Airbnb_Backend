@@ -6,7 +6,7 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const SignUp = async (req, res, next) => {
   // #swagger.tags = ['Admin']
-  // #swagger.summary = "Admin can create login credentials for Property Owner. On creation, password string will be shared to admin and Property Owner through Emails."
+  // #swagger.summary = "Admin can create login credentials for Property Owner by sending details and AUTHORIZED BEARER TOKEN in header. On creation, password string will be shared to admin and Property Owner through Emails."
   /* #swagger.requestBody = {
       required: true,
       content: {
@@ -68,8 +68,9 @@ export const SignUp = async (req, res, next) => {
 
 export const getAllUsers = async (req, res) => {
   // #swagger.tags = ['Admin']
-  const { page = 1, limit = 10 } = req.query;
+  // #swagger.summary = "Admin can view the list of users by passing AUTHORIZED BEARER TOKEN in header and query parameters - limit and page"
 
+  const { page = 1, limit = 10 } = req.query;
   try {
     const adminId = req?.user?.id;
     const users = await UserModel.find({ _id: { $ne: adminId } })
@@ -97,6 +98,8 @@ export const getAllUsers = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "Admin can view the details of the user passing its ID inside path and AUTHORIZED BEARER TOKEN in header."
+
   const { id } = req.params;
 
   try {
@@ -116,6 +119,9 @@ export const getUserById = async (req, res) => {
 
 export const softDeleteUserById = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "Admin can disable the user, by passing the AUTHORIZED BEARER TOKEN in header and user ID in path, from utilizing the property management platform."
+  // #swagger.description = "> #TODO: Response might be unnecessarily long",
+
   const { id } = req.params;
 
   try {
@@ -141,6 +147,8 @@ export const softDeleteUserById = async (req, res) => {
 
 export const updateUserById = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "Admin can update the user details by passing AUTHORIZED BEARER TOKEN in header and user ID in path"
+
   const { id } = req.params;
   const updateData = req.body;
   try {

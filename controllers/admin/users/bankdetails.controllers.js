@@ -4,6 +4,8 @@ import { PaymentDetailsModel } from "../../../models/PaymentDetails.js";
 
 export const GetUserPaymentDetails = async (req, res, next) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can fetch the bank details of specific user using the ID passed in params"
+  
   const user_id = req?.params?.id;
 
   if (!user_id) {
@@ -20,6 +22,18 @@ export const GetUserPaymentDetails = async (req, res, next) => {
 
 export const UpdateBankDetailsById = async (req, res, next) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can update the bank details of specific user using the ID passed in params and the updated fields as an object - updates - in request body"
+  /* #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/UpdatesRequest"
+          }  
+        }
+      }
+    } 
+  */
 
   const user_id = req?.params?.id;
   const updates = req?.body;
