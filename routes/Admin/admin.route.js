@@ -76,11 +76,12 @@ import {
   GetUserPaymentDetails,
   UpdateBankDetailsById,
 } from "../../controllers/admin/users/bankdetails.controllers.js";
+import { signUpValidator } from "../../utils/validations/signupValidator.js";
 
 const router = express.Router();
 
 // Authentication Routes
-router.post("/signup", SignUp);
+router.post("/signup", signUpValidator, SignUp);
 
 // users crud apis
 router.get("/users", getAllUsers);

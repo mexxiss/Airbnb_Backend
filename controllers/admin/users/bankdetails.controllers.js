@@ -20,27 +20,6 @@ export const GetUserPaymentDetails = async (req, res, next) => {
 
 export const UpdateBankDetailsById = async (req, res, next) => {
   // #swagger.tags = ['Admin']
-  // #swagger.description = 'Update bank details for a specific user by user ID'
-  /*
-#swagger.parameters['id'] = {
-  in: 'path',
-  required: true,
-  description: 'The ID of the user whose bank details need to be updated',
-  type: 'string'
-}
-#swagger.parameters['body'] = {
-  in: 'body',
-  required: true,
-  schema: {
-    accountHolderName: 'Updated Name',
-    bankName: 'Updated Bank Name',
-    currency: 'USD',
-    iban: 'Updated IBAN',
-    accountNumber: 'Updated Account Number',
-    address: 'Updated Address'
-  }
-}
-*/
 
   const user_id = req?.params?.id;
   const updates = req?.body;
@@ -50,11 +29,10 @@ export const UpdateBankDetailsById = async (req, res, next) => {
   }
 
   try {
-    // Find the bank details by user ID and update them
     const updatedDetails = await PaymentDetailsModel.findOneAndUpdate(
       { user: user_id },
       updates,
-      { new: true, runValidators: true } // Return the updated document and validate the inputs
+      { new: true, runValidators: true } 
     );
 
     if (!updatedDetails) {

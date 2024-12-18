@@ -2,34 +2,22 @@ import { UserModel } from "../../../models/Users.js";
 
 import validator from "validator";
 import { generatePassword } from "../../../utils/generatePassword.js";
+import { mailSender } from "../../../utils/mailSender.js";
 
 export const SignUp = async (req, res, next) => {
   // #swagger.tags = ['Admin']
+  /*  #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/SignUpRequest'"
+          }  
+        }
+      }
+    } 
+  */
   const { first_name, last_name, email, phone, role, address } = req.body;
-
-  const requiredFields = [first_name, last_name, email, phone, address];
-  const allFieldsFilled = requiredFields.every(
-    (field) => field !== undefined && field !== null && field !== ""
-  );
-
-  if (!allFieldsFilled) {
-    return next(new apiError(400, "All Fields are Required"));
-  }
-
-  if (!Array.isArray(email) || email.length === 0) {
-    return next(new apiError(400, "Email field must be a non-empty array"));
-  }
-
-  const invalidEmails = email.filter((e) => !validator.isEmail(e));
-  if (invalidEmails.length > 0) {
-    return next(
-      new apiError(400, `Invalid email format for: ${invalidEmails.join(", ")}`)
-    );
-  }
-
-  if (role && !["Owner", "Admin"].includes(role)) {
-    return next(new apiError(400, "Invalid role"));
-  }
 
   try {
     const user = await UserModel.findOne({ email: { $in: email } });
@@ -37,21 +25,40 @@ export const SignUp = async (req, res, next) => {
       return next(new apiError(400, "User already exists"));
     }
     const password = generatePassword();
-    console.log(password);
-    const newUser = await UserModel.create({
-      first_name,
-      last_name,
-      email,
-      password,
-      phone,
-      role,
-      address,
-    });
-    return res
-      .status(201)
-      .json(
-        new apiResponse(201, { newUser, password }, "User created Successfully")
-      );
+    const newUser = await UserModel.create({ first_name, last_name, email, password, phone, role, address });
+
+    const replacements = {
+      title: "Welcome On-board",
+      text: `Welcome to Property Management! We’re excited to have you on board. Below are your login credentials to access your account and manage your properties efficiently.`,
+      moreDetails: `<div class="credentials">
+            <p>Email: ${email[0]}</p>
+            <p>Password: ${password}</p>
+        </div>
+        <p>We recommend changing your password after your first login for security purposes.</p>
+        <p>If you have any questions or need assistance, feel free to reach out to our support team at ${process.env.MAIL_FROM}.</p>
+        <p>Thank you for choosing ${Mexxiss}. We look forward to serving you!</p>`,
+    };
+
+    const adminReplacements = {
+      title: "Credentials Generated",
+      text: `This is to confirm that the login credentials for Mexxiss have been successfully generated for the user [User's Name]. Below are the details:`,
+      moreDetails: `div class="details">
+            <p><strong>User Details:</strong></p>
+            <p>Name: ${first_name} ${last_name}</p>
+            <p>Email: ${email[0]}</p>
+            <p><strong>Account Details:</strong></p>
+            <p>Generated Password: ${password}</p>
+        </div>
+        <p>Please ensure that the user is informed of these credentials securely. You can share the credentials with the user via email or any secure communication channel.</p>
+        <p>If you did not initiate this action or need assistance, please contact our support team immediately at ${process.env.MAIL_FROM}.</p>
+        <p>Thank you for managing the user accounts efficiently!</p>`,
+    };
+
+    await Promise.all([
+      mailSender(process.env.MAIL_FROM, `Login Credentials Successfully Generated for ${first_name}`, adminReplacements),
+      mailSender(email[0], "Welcome On-board", replacements),
+    ]);
+    return res.status(201).json(new apiResponse(201, { newUser, password }, "User created Successfully"));
   } catch (error) {
     console.log(error);
     return next(new apiError(500, error.message || "Internal server error"));

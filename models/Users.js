@@ -22,7 +22,6 @@ const UserSchema = new Schema(
     },
     phone: {
       type: [String],
-      required: true,
       validate: [
         {
           validator: function (phones) {
