@@ -4,6 +4,8 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const GetGallaryTypes = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = "Get all gallary types for mapping on website's UI - Gallary Page"
+    
     try {
         const gallaryTypes = await GallaryTypesModel.find().sort({name: 1});
         return res.status(200).json(new apiResponse(200, gallaryTypes, "Gallary Types Retrieved Successfully"))

@@ -4,7 +4,18 @@ import { UserDocumentsModel } from "../../../models/UserDocuments.js";
 
 export const SetUserDocument = async(req, res, next) => {
     // #swagger.tags = ['Users']
-    const user_id = req._id;
+    // #swagger.summary = "AUTHENTICATED Owner or Admin can set User Document by passing ID through JWT Token"
+    // #swagger.description = "> TODO: Created document is sent back that may be unnecessary."
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: { $ref: "#/components/schema/UserDocumentsRequest" }
+            }
+        }
+    } 
+    */
+    const user_id = req?.user?.id;
     const {title, expiry_date, note, document, property} = req.body;
     
     if( !user_id ) {
@@ -21,8 +32,11 @@ export const SetUserDocument = async(req, res, next) => {
 
 export const GetUserDocuments = async (req, res, next) => {
     // #swagger.tags = ['Users']
-    const {property} = req.query || req.params;S
-    const user_id = req._id;
+    // #swagger.summary = "Get User Documents by passing property ID through query or params and user ID through JWT Token"
+    // #swagger.description = "> TODO: Retrieved documents are sent back that may contain unnecessary information."
+
+    const {property} = req.query || req.params;
+    const user_id = req?.user?.id;
     
     if( !user_id ) {
         return next(new apiError(400, `User required`));
@@ -38,8 +52,19 @@ export const GetUserDocuments = async (req, res, next) => {
 
 export const UpdateUserDocuments = async (req, res, next) => {
     // #swagger.tags = ['Users']
+    // #swagger.summary = "Update User Documents by passing ID through params or query and user ID through JWT Token"
+    // #swagger.description = "> TODO: Updated document is sent back that may be unnecessary."
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: { $ref: "#/components/schema/UpdatesRequest" }
+            }
+        }
+    } 
+    */
     const {id} = req.params || req.query;
-    const user_id = req._id;
+    const user_id = req?.updates?.id;
     const {updates} = req.body;
 
     if (!updates) {

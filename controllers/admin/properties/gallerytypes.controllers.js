@@ -10,7 +10,7 @@ export const SetGallaryType = async (req, res, next) => {
         required: true,
           content: {
             "application/json": {
-              schema: { name: "gallary type" }  
+              schema: { $ref: "#/components/schemas/GallaryTypeRequest" }
             }
           }
       } 

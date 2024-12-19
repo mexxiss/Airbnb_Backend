@@ -5,6 +5,18 @@ import mongoose from "mongoose";
 
 export const SetPropertyUtility = async (req, res, next) => {
   // #swagger.tags = ['Users']
+  // #swagger.summary = "Set Property Utility for a Property by User"
+  // #swagger.description = "Created document may contain unnecessary fields."
+  /* #swagger.requestBody = {
+      required: true,
+      content: {
+        'application/json': {
+          schema: { $ref: "#/components/schema/PropertyUtilityRequest" }
+        }
+      }
+    }
+  */
+  const user_id = req?.user?.id;
   const {
     name,
     provider_name,
@@ -34,6 +46,7 @@ export const SetPropertyUtility = async (req, res, next) => {
       uploads,
       property,
       already_have_account,
+      user: user_id,
     });
     return res
       .status(200)
@@ -47,8 +60,11 @@ export const SetPropertyUtility = async (req, res, next) => {
 
 export const GetPropertyUtilities = async (req, res, next) => {
   // #swagger.tags = ['Users']
+  // #swagger.summary = "Get Property Utility for a Property"
+  // #swagger.description = "Retrieved document may contain unnecessary fields."
+
   const { property } = req.query;
-  const user_id = req._id;
+  const user_id = req?.user?.id;
 
   if (!user_id) {
     return next(new apiError(400, `User required`));
@@ -68,6 +84,17 @@ export const GetPropertyUtilities = async (req, res, next) => {
 
 export const UpdatePropertyUtility = async (req, res, next) => {
   // #swagger.tags = ['Users']
+  // #swagger.summary = "Update Property Utility for a Property by property ID through query or params"
+  // #swagger.description = "Retrieved document may contain unnecessary fields."
+  /* #swagger.requestBody = {
+      required: true,
+      content: {
+        'application/json': {
+          schema: { $ref: "#/components/schema/UpdatesRequest" }
+        }
+      }
+    }
+  */
   const { id } = req.params || req.query; // Property ID
   const user_id = req._id; // Authenticated user ID
   const { updates } = req.body; // Utilities to update or create

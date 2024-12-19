@@ -4,6 +4,8 @@ import { apiError } from '../../../utils/apiError.js';
 
 export const GetFilteredFaqs = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = 'Get filtered FAQs based on page',
+
     const { page } = req.query;
     const query = {};
 

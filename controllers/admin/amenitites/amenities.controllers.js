@@ -2,6 +2,17 @@ import { AmenitiesModel } from "../../../models/Amenities.js";
 
 export const createAmenities = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can add new amenities to the list"
+  // #swagger.description = "> #TODO: Created document is being sent back through response that may be unnecessary",
+  /* #swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: { $ref: "#/components/schemas/AmenitiesRequest" }  
+              }
+          }
+      }
+  */
   try {
     const { title, icon } = req.body;
 
@@ -23,6 +34,9 @@ export const createAmenities = async (req, res) => {
 
 export const getAllAmenities = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can retrieve all amenities from the list"
+  // #swagger.description = "> #TODO: Retrieved documents are being sent back through response that may contain unnecessary information",
+
   try {
     const amenities = await AmenitiesModel.find();
     res.status(200).json({ msg: "data feched succefully", data: amenities });
@@ -33,6 +47,9 @@ export const getAllAmenities = async (req, res) => {
 
 export const getAmenitiesById = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can retrieve amenity by passing ID within path"
+  // #swagger.description = "> #TODO: Retrieved document is being sent back through response that may contain unnecessary information",
+
   try {
     const { id } = req.params;
 
@@ -53,6 +70,18 @@ export const getAmenitiesById = async (req, res) => {
 
 export const updateAmenities = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can update existing amenities by passing ID within path"
+  // #swagger.description = "> #TODO: Updated document is being sent back through response that may be unnecessary",
+  /* #swagger.requestBody = {
+          required: true,
+          content: {
+              "application/json": {
+                  schema: { $ref: "#/components/schemas/AmenitiesRequest" }  
+              }
+          }
+      }
+  */
+
   try {
     const { id } = req.params;
     const { title, icon } = req.body;
@@ -85,6 +114,9 @@ export const updateAmenities = async (req, res) => {
 
 export const deleteAmenities = async (req, res) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can delete non-required amenity by passing ID within path"
+  // #swagger.description = "> #TODO: Deleted document is being sent back through response that may contain unnecessary information",
+
   try {
     const { id } = req.params;
 

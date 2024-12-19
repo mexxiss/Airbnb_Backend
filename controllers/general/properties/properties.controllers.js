@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 export const GetAllProperties = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = 'Get all properties with images and details populated along with other selected fields - Properties Page',
     try {
         const properties = await PropertiesModel.find().populate('property_images').select('title description property_images property_details.rooms_count status');
         return res.status(200).json(new apiResponse(200, properties, "Property retrieved successfully"));
@@ -17,6 +18,7 @@ export const GetAllProperties = async (req, res, next) => {
 
 export const GetPropertyObj = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = 'Get a single property with images and details populated - Property Page',
     const { id } = req.params;
     const totals = {
         total_stay_charges: 0,

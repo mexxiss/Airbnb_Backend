@@ -49,7 +49,17 @@ const doc = {
           description: "Unique identifier for the resource",
         },
         description: "The ID of the resource to retrieve or modify",
-      }
+      },
+      PropertyParameter: {
+        in: "query",
+        name: "property",
+        required: true,
+        schema: {
+          type: "string",
+          description: "Unique ObjectId for collection Property",
+        },
+        description: "The ID of the property to retrieve or modify",
+      },
     },
     schemas: {
       SignUpRequest: {
@@ -66,6 +76,31 @@ const doc = {
           landmark: "Near City Mall",
           country: "Dubai",
           pincode: "123456"
+        }
+      },
+      UserDocumentsRequest: {
+        title: "document_title",
+        expiry_date: "document_expiry_date",
+        note: "document_note",
+        document: "cloudinary_document_url",
+        property: "object_id_of_property"
+      },
+      PaymentDetailsRequest: {
+        accountHolderName: "account_holder_name",
+        accountNumber: "account_number",
+        bankName: "bank_name",
+        swiftCode: "swift_code",
+        iban: "iban",
+        paymentMethod: "payment_method",
+        currency: "AED",
+        address: {
+          building_no: "bank_building_no",
+          city: "bank_city",
+          street: "bank_street",
+          area: "bank_area",
+          landmark: "bank_landmark",
+          country: "bank_country",
+          pincode: "bank_pincode"
         }
       },
       UpdatesRequest: {
@@ -213,7 +248,96 @@ const doc = {
         figures: "pricing_figures - Free/17%", 
         icon: "pricing_cloudinary_icon_url", 
         offers: ["pricing_plan_offers"]
-      }
+      },
+      RequirementsRequest: {
+        head: "requirement_head",
+        points: ["requirement_points"]
+      },
+      ServicesRequest: {
+        name: "service_name"
+      },
+      TestimonialsRequest: {
+        comment: "testimonial_comment",
+        name: "testimonial_name",
+        designation: "testimonial_designation"
+      },
+      ThirdPartyLogosRequest: {
+        logo: "cloudinary_logo_url",
+        name: "logo_brand_name",
+        type: "trusted/listed"
+      },
+      AmenitiesRequest: {
+        name: "amenity_name",
+        icon: "amenity_cloudinary_icon_url" 
+      },
+      GallaryTypeRequest: {
+        name: "gallary_type_name"
+      },
+      ContactUsRequest: {
+        emails: ["company_contact_email"],
+        phones: ["company_contact_phone"],
+        location: {
+          address: "company_contact_address",
+          city: "company_contact_city",
+          country: "company_contact_country",
+          pincode: "company_contact_pincode",
+          state: "company_contact_state",
+          coordinates: [{lat: 123.456, long: 123.456}]
+        }
+      },
+      BookedDatesRequest: {
+        checkin_date: "checkin_date",
+        checkout_date: "checkout_date",
+        property: "property_object_id"
+      },
+      UpdateBookedDatesRequest: {
+        checkin_date: "checkin_date",
+        checkout_date: "checkout_date"
+      },
+      BookDetailsRequest: {
+        first_name: "first_name",
+        last_name: "last_name",
+        email: "email",
+        guests: 3,
+        phone_number: "phone_number",
+        message: "message",
+        promo_code: "promo_code",
+        newsletter_agree: true,
+        property: "property_object_id",
+        booked_dates: "booked_dates_object_ids"
+      },
+      BlogCategoryRequest: {
+        name: "blog_category_name"
+      },
+      BlogsRequest: {
+        title: "blog_title",
+        subtitle: "blog_subtitle",
+        body: "blog_body_in_html",
+        tags: ["blog_tags"],
+        added_on: "blog_added_on",
+        category: "blog_category_object_id",
+        thumbnail: "blog_thumbnail_image_url"
+      },
+      UploadMultipleFiles: {
+        files: ["file1", "file2"],
+      },
+      UploadSingleFile: {
+        file: "file",
+      },
+      PropertyUtilityRequest: {
+        name: "utility_name",
+        provider_name: "provider_name",
+        account_no: "account_no",
+        paid_by: "Owner/Company",
+        web_login: "web_login",
+        web_pass: "web_pass",
+        already_have_account: true,
+        link: "link",
+        uploads: "uploads",
+        type: "other",
+        property: "property_object_id",
+        user_id: "user_object_id"
+      },
     }
   },
   basePath: '/api/v1',

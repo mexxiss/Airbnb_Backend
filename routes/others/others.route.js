@@ -2,11 +2,11 @@ import express from "express";
 import { contactValidator, contactQuerySendValidator } from "../../utils/validations/contactvalidator.js";
 import { Login } from "../../controllers/general/users/users.controllers.js";
 import { GetBlog, GetBlogs } from "../../controllers/general/blogs/blogs.controllers.js";
-import { GetBookDetails, SetBookDetails } from "../../controllers/general/booking/details.controllers.js";
+import { SetBookDetails } from "../../controllers/general/booking/details.controllers.js";
 import { GetBookedDates, SetBookedDates } from "../../controllers/general/booking/dates.controllers.js";
-import { createContactus, getContactus, sendContactQuery } from "../../controllers/general/contact/contact.controllers.js";
+import { getContactus, sendContactQuery } from "../../controllers/general/contact/contact.controllers.js";
 import { GetDubaiDetails } from "../../controllers/general/content/airbnbdubai.controllers.js";
-import { AddRevenueDetails, GetAreas } from "../../controllers/general/content/estimaterevenue.controllers.js";
+import { GetAreas } from "../../controllers/general/content/estimaterevenue.controllers.js";
 import { GetFilteredFaqs } from "../../controllers/general/content/faqs.controllers.js";
 import { GetGallaryTypes } from "../../controllers/general/properties/gallerytypes.controllers.js";
 import { getGalleryImagesByQuery } from "../../controllers/general/properties/gallery.controllers.js";
@@ -32,7 +32,6 @@ router.get("/blogs/", GetBlogs);
 router.get("/blogs/:id", GetBlog);
 
 // Book Details Routes
-router.get("/book-details/:id", GetBookDetails);
 router.post("/book-details/", SetBookDetails);
 
 // Booked Dates Routes
@@ -41,14 +40,12 @@ router.post("/booked-dates/", SetBookedDates);
 
 // Contact Us Routes
 router.get("/contact-us/", getContactus);
-router.post("/contact-us/", contactValidator, createContactus);
 router.post("/contact-us/query", contactQuerySendValidator, sendContactQuery);
 
 // Airbnb Dubai Content Routes
 router.get("/airbnb-dubai/", GetDubaiDetails);
 
 // Estimate Revenue Routes
-router.post("/estimate-revenue/", AddRevenueDetails);
 router.get("/estimate-revenue/", GetAreas);
 
 //FAQs Routes

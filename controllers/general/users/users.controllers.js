@@ -4,6 +4,8 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const Login = async (req, res, next) => {
   // #swagger.tags = ['General']
+  // #swagger.summary = "Login User"
+  
   const { email, password } = req.body;
 
   const requiredFields = [email, password];

@@ -2,24 +2,10 @@ import { EstimateRevenueModel } from "../../../models/EstimateRevenue.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
 
-export const AddRevenueDetails = async (req, res, next) => {
-    // #swagger.tags = ['General']
-    const { area, beds } = req.body;
-
-    if (!area || !Array.isArray(beds)) {
-        return next(new apiError(400, "Incomplete Parameters"));
-    }
-
-    try {
-        const revenue = await EstimateRevenueModel.create({ area, beds });
-        return res.status(200).json(new apiResponse(200, revenue, "Revenue created successfully"));
-    } catch (error) {
-        return next(new apiError(500, `Server Error: ${error}`));
-    }
-}
-
 export const GetAreas = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = 'Endpoint to get areas & bedrooms to map on website's UI - Estimate Revenue Page'
+
     const regions = [
         "Al Barsha South",
         "Al Furjan",
@@ -60,5 +46,5 @@ export const GetAreas = async (req, res, next) => {
         "Five Bed",
         "Six Bed"
     ]
-    return res.status(200).json({regions, bedrooms})
+    return res.status(200).json({ regions, bedrooms })
 }
