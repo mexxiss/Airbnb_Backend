@@ -5,6 +5,18 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const AddFeaturedArticles = async(req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can add Featured Articles"
+    // #swagger.description = "> #TODO: Created document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/FeaturedArticlesRequest" }  
+            }
+          }
+      } 
+    */
+
     const {third_party, headline, link, added_on} = req.body;
 
     if (!third_party || !mongoose.isValidObjectId(third_party)) 

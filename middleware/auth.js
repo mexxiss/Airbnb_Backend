@@ -11,8 +11,7 @@ const Auth = async (req, res, next) => {
   }
   const token = authorizationHeader.split(" ")[1];
   const { JWT_SECRET } = process.env;
-  console.log(token);
-
+  
   if (!token) {
     return res.status(401).json(new apiError(401, "", "Not Authorized"));
   }

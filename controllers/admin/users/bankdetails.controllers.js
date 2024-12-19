@@ -4,6 +4,8 @@ import { PaymentDetailsModel } from "../../../models/PaymentDetails.js";
 
 export const GetUserPaymentDetails = async (req, res, next) => {
   // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can fetch the bank details of specific user using the ID passed in params"
+  
   const user_id = req?.params?.id;
 
   if (!user_id) {
@@ -20,26 +22,17 @@ export const GetUserPaymentDetails = async (req, res, next) => {
 
 export const UpsertBankDetailsById = async (req, res, next) => {
   // #swagger.tags = ['Admin']
-  // #swagger.description = 'Create or update bank details for a specific user by user ID'
-  /*
-  #swagger.parameters['id'] = {
-    in: 'path',
-    required: true,
-    description: 'The ID of the user whose bank details need to be created or updated',
-    type: 'string'
-  }
-  #swagger.parameters['body'] = {
-    in: 'body',
-    required: true,
-    schema: {
-      accountHolderName: 'Updated Name',
-      bankName: 'Updated Bank Name',
-      currency: 'USD',
-      iban: 'Updated IBAN',
-      accountNumber: 'Updated Account Number',
-      address: 'Updated Address'
-    }
-  }
+  // #swagger.summary = "AUTHORIZED Admin can update the bank details of specific user using the ID passed in params and the updated fields as an object - updates - in request body"
+  /* #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/UpdatesRequest"
+          }  
+        }
+      }
+    } 
   */
 
   const user_id = req?.params?.id;

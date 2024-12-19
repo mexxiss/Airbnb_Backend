@@ -4,6 +4,9 @@ import { apiError } from '../../../utils/apiError.js';
 
 export const GetFaqs = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can view the list of all FAQs on its Admin Panel"
+    // #swagger.description = "> #TODO: Retrieved documents being sent back through response may contain unnecessary information",
+
     try {
         const faqs = await FaqModel.find();
         return res.status(200).json(new apiResponse(200, faqs, "Faqs retrieved successfully"));
@@ -14,6 +17,17 @@ export const GetFaqs = async (req, res, next) => {
 
 export const SetFaqs = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can add new FAQs"
+    // #swagger.description = "> #TODO: Created document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/FaqsRequest" }  
+            }
+          }
+      } 
+    */
     const { question, answer, page } = req.body;
 
     if (!question || !answer || !page) {
@@ -30,6 +44,9 @@ export const SetFaqs = async (req, res, next) => {
 
 export const DeleteFaq = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can delete any non-required FAQs by specifying ID within params"
+    // #swagger.description = "> #TODO: Deleted document is being sent back through response that may be unnecessary",
+
     const { id } = req.params;
 
     if (!id) {
@@ -46,6 +63,18 @@ export const DeleteFaq = async (req, res, next) => {
 
 export const UpdateFaq = async (req, res) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can update existing FAQs by specifying ID within params"
+    // #swagger.description = "> #TODO: Updated document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/FaqsRequest" }  
+            }
+          }
+      } 
+    */
+
     try {
         const { id } = req.params;
         const { question, answer, page } = req.body;
