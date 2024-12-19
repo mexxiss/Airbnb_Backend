@@ -1,5 +1,15 @@
 export const UploadMultiple = async (req, res, next) => {
     // #swagger.tags = ['Users']
+    // #swagger.summary = "Upload Multiple Files"
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            'multipart/form-data': {
+                schema: { $ref: "#/components/schema/UploadMultipleFiles" }
+            }
+        }
+    }
+    */
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json(new apiResponse(400, null, "No files uploaded"));
@@ -20,6 +30,16 @@ export const UploadMultiple = async (req, res, next) => {
 
 export const UploadSingle = async (req, res) => {
     // #swagger.tags = ['Users']
+    // #swagger.summary = "Upload Single File"
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            'multipart/form-data': {
+                schema: { $ref: "#/components/schema/UploadSingleFile" }
+            }
+        }
+    }
+    */    
     try {
         res.status(200).json({ imageUrl: req.file.path });
     } catch (error) {

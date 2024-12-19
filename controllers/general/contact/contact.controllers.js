@@ -2,23 +2,11 @@ import { ContactUsModel } from "../../../models/ContactUs.js";
 import SendQuery from "../../../models/SendContactQuery.js";
 import { mailSender } from "../../../utils/mailSender.js";
 
-export const createContactus = async (req, res) => {
-  // #swagger.tags = ['General']
-  try {
-    const contact = new ContactUsModel(req.body);
-    const savedContact = await contact.save();
-    res.status(201).json({
-      success: true,
-      data: savedContact,
-      msg: "contact created successfully",
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
 export const getContactus = async (req, res) => {
   // #swagger.tags = ['General']
+  // #swagger.summary = 'Endpoint to get company contact details to map on website's UI'
+  // #swagger.description = '> #TODO: Retrieved contact details of the company may contain non-required information.'
+
   try {
     const contacts = await ContactUsModel.find();
     res.status(200).json({
@@ -33,6 +21,8 @@ export const getContactus = async (req, res) => {
 
 export const sendContactQuery = async (req, res) => {
   // #swagger.tags = ['General']
+  // #swagger.summary = 'Endpoint to send contact query to the company. This will send an email to the company and an acknowledgment email to the user.'
+
   try {
     const { fullname, email, phone, subject, message } = req.body;
 

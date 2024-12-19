@@ -4,7 +4,10 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const GetAllPropertiesByUser = async (req, res, next) => {
     // #swagger.tags = ['Users']
-    const user_id = req._id;
+    // #swagger.summary = "Get All Properties by User ID through JWT Token",
+    // #swagger.description = "Retrieved documents may contain unnecessary fields."
+    
+    const user_id = req?.user?.id;
 
     if (!user_id) {
         return next(new apiError(400, "User required"))

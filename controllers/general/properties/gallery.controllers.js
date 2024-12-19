@@ -2,6 +2,8 @@ import { GalleryModel } from "../../../models/Gallery.js";
 
 export const getGalleryImagesByQuery = async (req, res) => {
   // #swagger.tags = ['General']
+  // #swagger.summary = "Get gallery images with pagination - Gallery Page"
+  
   try {
     const { id, page = 1, limit = 12 } = req.query; // type as id
     const query = {};

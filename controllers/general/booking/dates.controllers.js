@@ -6,13 +6,17 @@ import { UtilityModel } from "../../../models/Utility.js";
 
 export const GetBookedDates = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = "Get all booked dates for a property"
+    // #swagger.description = "> #TODO: Retrieved documents are being sent back through response that may contain unnecessary information",
+
     try {
         const { property } = req.query;
-        const query = { checkout_date: { $gte: new Date() } };
 
-        if (property) {
-            query.property = property;
+        if (!property || !mongoose.isValidObjectId(property)) {
+            return next(new apiError(400, "Property id not provided or invalid"));
         }
+
+        const query = { checkout_date: { $gte: new Date() }, property: property };
 
         const dates = await BookedDatesModel.find(query);
 
@@ -24,6 +28,18 @@ export const GetBookedDates = async (req, res, next) => {
 
 export const SetBookedDates = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = "Set booked dates or reserve dates for a property"
+    // #swagger.description = "> #TODO: Created document is being sent back through response that may contain unnecessary information",
+    /* #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/components/schemas/BookedDatesRequest" }  
+                }
+            }
+        }
+    */
+
     const { checkin_date, checkout_date, property } = req.body;
     const checkinDateISO = new Date(checkin_date).toISOString();
     const checkoutDateISO = new Date(checkout_date).toISOString();

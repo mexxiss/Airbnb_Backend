@@ -4,6 +4,8 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const GetRequirements = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = "Get all requirements for mapping on website's UI - Requirements Page"
+    
     try {
         const requirements = await RequirementsModel.find();
         return res.status(200).json(new apiResponse(200, requirements, "Requirements Retrieved Successfully"))

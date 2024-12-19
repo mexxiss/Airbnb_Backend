@@ -31,7 +31,7 @@ import {
   DeleteBookedDates,
   UpdateBookedDates,
 } from "../../controllers/admin/booking/dates.controllers.js";
-import { updateContactUs } from "../../controllers/admin/contact/contact.controllers.js";
+import { createContactus, updateContactUs } from "../../controllers/admin/contact/contact.controllers.js";
 import { SetDubaiDetails } from "../../controllers/admin/content/airbnbdubai.controllers.js";
 import {
   DeleteFaq,
@@ -77,6 +77,9 @@ import {
   UpsertBankDetailsById,
 } from "../../controllers/admin/users/bankdetails.controllers.js";
 import { signUpValidator } from "../../utils/validations/signupValidator.js";
+import { GetBookDetails } from "../../controllers/admin/booking/details.controllers.js";
+import { contactValidator } from "../../utils/validations/contactvalidator.js";
+import { AddRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
 
 const router = express.Router();
 
@@ -107,11 +110,18 @@ router.post("/blogs/", AddBlogs);
 router.put("/booked-dates/:id", UpdateBookedDates);
 router.delete("/booked-dates/:id", DeleteBookedDates);
 
+// Book Details Routes
+router.get("/book-details/:id", GetBookDetails);
+
 // Contact Us Routes
+router.post("/contact-us/", contactValidator, createContactus);
 router.put("/contact-us/:id", updateContactUs);
 
 // Airbnb Dubai Content Routes
 router.post("/airbnb-dubai/", SetDubaiDetails);
+
+// Estimate Revenue Routes
+router.post("/estimate-revenue/", AddRevenueDetails);
 
 // FAQs Routes
 router.post("/faqs/", SetFaqs);

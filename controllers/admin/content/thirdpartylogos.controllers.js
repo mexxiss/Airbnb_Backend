@@ -4,6 +4,17 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const AddThirdPartyLogos = async(req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can add third party information to be retrieved on frontend"
+    // #swagger.description = "> #TODO: Created document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+          content: {
+            "application/json": {
+              schema: { $ref: "#/components/schemas/ThirdPartyLogosRequest" }  
+            }
+          }
+      } 
+    */
     const {logo, name, type} = req.body;
 
     try {
@@ -16,6 +27,17 @@ export const AddThirdPartyLogos = async(req, res, next) => {
 
 export const UpdateThirdPartyLogos = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can update third party information by sending the document ID within path"
+    // #swagger.description = "> #TODO: Updated document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            "application/json": {
+                schema: { $ref: "#/components/schemas/UpdatesRequest" }  
+            }
+        }
+      } 
+    */
     const {id} = req.params;
     const {updates} = req.body;
 

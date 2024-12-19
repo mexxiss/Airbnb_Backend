@@ -4,6 +4,9 @@ import { apiError } from "../../../utils/apiError.js";
 
 export const GetFilteredDates = async (req, res, next) => {
     // #swagger.tags = ['Users']
+    // #swagger.summary = "Get Filtered Dates for a Property by start_date and property ID provided through query"
+    // #swagger.description = "Retrieved documents may contain unnecessary fields."
+
     const { start_date, property } = req.query;
 
     if (!property || !mongoose.isValidObjectId(property)) {

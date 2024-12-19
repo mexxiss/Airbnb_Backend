@@ -4,8 +4,19 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const UpdateBookedDates = async (req, res, next) => {
     // #swagger.tags = ['Admin']
-    const { id } = req.params; 
-    const { checkin_date, checkout_date } = req.body; 
+    // #swagger.summary = "AUTHORIZED Admin can update dates booked (from frontend) by sending the document ID within path"
+    // #swagger.description = "> #TODO: Updated document is being sent back through response that may be unnecessary",
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            "application/json": {
+                schema: { $ref: "#/components/schemas/UpdateBookedDatesRequest" }  
+            }
+        }
+      } 
+    */
+    const { id } = req.params;
+    const { checkin_date, checkout_date } = req.body;
 
     try {
         const isoCheckinDate = new Date(checkin_date).toISOString();
@@ -31,6 +42,9 @@ export const UpdateBookedDates = async (req, res, next) => {
 
 export const DeleteBookedDates = async (req, res, next) => {
     // #swagger.tags = ['Admin']
+    // #swagger.summary = "AUTHORIZED Admin can delete any reservation by passing ID within path"
+    // #swagger.description = "> #TODO: Deleted document is being sent back through response that may contain unnecessary information",
+
     const { id } = req.params;
 
     if (!id) {

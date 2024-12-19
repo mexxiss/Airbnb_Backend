@@ -5,6 +5,8 @@ import { formatNumber, formatWithCommas } from "../../../utils/commons.js";
 
 export const GetHomeContent = async (req, res, next) => {
   // #swagger.tags = ['General']
+  // #swagger.summary = 'Get Home Content for the home page of the website',
+
   try {
     const doc = await HomeContentModel.find();
     const otherObj = {

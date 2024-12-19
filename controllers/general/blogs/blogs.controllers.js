@@ -5,6 +5,8 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const GetBlogs = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = "Get all blogs with pagination and sorting by date added in descending order"
+
     const { page = 1, limit = 6 } = req.query;
 
     try {
@@ -35,6 +37,8 @@ export const GetBlogs = async (req, res, next) => {
 
 export const GetBlog = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = "Get a single blog by id with related blogs in the same category"
+
     const { id } = req.params;
 
     if (!id || !mongoose.isValidObjectId(id)) {
@@ -50,7 +54,7 @@ export const GetBlog = async (req, res, next) => {
         const relatedBlogs = await BlogsModel.find({
             // category: blog.category,
             _id: { $ne: id },
-        }).select("title subtitle added_on thumbnail").sort({createdAt: -1}).limit(6); 
+        }).select("title subtitle added_on thumbnail").sort({ createdAt: -1 }).limit(6);
 
         return res.status(200).json(
             new apiResponse(200, { blog, relatedBlogs }, "Blog fetched successfully")

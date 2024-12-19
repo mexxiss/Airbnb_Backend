@@ -30,6 +30,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Logout User and Blacklist Token for Security Purposes",
         "description": "",
         "responses": {
           "200": {
@@ -46,6 +47,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "AUTHENTICATED Owner OR Admin can Change Password",
         "description": "",
         "responses": {
           "200": {
@@ -79,6 +81,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "AUTHENTICATED Owner OR Admin to Update its Details by ID from JWT Token.",
         "description": "",
         "responses": {
           "200": {
@@ -107,6 +110,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "AUTHENTICATED Owner OR Admin to get its Details by ID from JWT Token.",
         "description": "",
         "responses": {
           "200": {
@@ -123,7 +127,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Get Filtered Dates for a Property by start_date and property ID provided through query",
+        "description": "Retrieved documents may contain unnecessary fields.",
         "parameters": [
           {
             "name": "start_date",
@@ -155,7 +160,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "AUTHENTICATED Owner or Admin can set Payment Details by passing ID through JWT Token",
+        "description": "> TODO: Created document is sent back that may be unnecessary.",
         "responses": {
           "200": {
             "description": "OK"
@@ -165,36 +171,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "accountHolderName": {
-                    "example": "any"
-                  },
-                  "accountNumber": {
-                    "example": "any"
-                  },
-                  "bankName": {
-                    "example": "any"
-                  },
-                  "swiftCode": {
-                    "example": "any"
-                  },
-                  "iban": {
-                    "example": "any"
-                  },
-                  "paymentMethod": {
-                    "example": "any"
-                  },
-                  "currency": {
-                    "example": "any"
-                  },
-                  "address": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schema/PaymentDetailsRequest"
               }
             }
           }
@@ -204,7 +185,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Get Payment Details by passing user ID through JWT Token",
+        "description": "> TODO: Retrieved details are sent back that may contain unnecessary information.",
         "responses": {
           "200": {
             "description": "OK"
@@ -220,7 +202,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Update Payment Details by passing ID through params or query and user ID through JWT Token",
+        "description": "> TODO: Updated document is sent back that may be unnecessary.",
         "parameters": [
           {
             "name": "id",
@@ -240,15 +223,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "updates": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schema/UpdatesRequest"
               }
             }
           }
@@ -260,7 +239,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Get All Properties by User ID through JWT Token",
+        "description": "Retrieved documents may contain unnecessary fields.",
         "responses": {
           "200": {
             "description": "OK"
@@ -276,7 +256,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Set Property Utility for a Property by User",
+        "description": "Created document may contain unnecessary fields.",
         "responses": {
           "200": {
             "description": "OK"
@@ -286,42 +267,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  },
-                  "provider_name": {
-                    "example": "any"
-                  },
-                  "account_no": {
-                    "example": "any"
-                  },
-                  "paid_by": {
-                    "example": "any"
-                  },
-                  "web_login": {
-                    "example": "any"
-                  },
-                  "web_pass": {
-                    "example": "any"
-                  },
-                  "link": {
-                    "example": "any"
-                  },
-                  "uploads": {
-                    "example": "any"
-                  },
-                  "property": {
-                    "example": "any"
-                  },
-                  "already_have_account": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schema/PropertyUtilityRequest"
               }
             }
           }
@@ -331,7 +281,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Get Property Utility for a Property",
+        "description": "Retrieved document may contain unnecessary fields.",
         "parameters": [
           {
             "name": "property",
@@ -356,7 +307,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Update Property Utility for a Property by property ID through query or params",
+        "description": "Retrieved document may contain unnecessary fields.",
         "parameters": [
           {
             "name": "id",
@@ -376,15 +328,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "updates": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schema/UpdatesRequest"
               }
             }
           }
@@ -396,7 +344,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Get All Service Providers List from the Database Collection",
+        "description": "Retrieved documents may contain unnecessary fields.",
         "responses": {
           "200": {
             "description": "OK"
@@ -412,6 +361,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Upload Single File",
         "description": "",
         "responses": {
           "200": {
@@ -423,6 +373,16 @@
           "500": {
             "description": "Internal Server Error"
           }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schema/UploadSingleFile"
+              }
+            }
+          }
         }
       }
     },
@@ -431,6 +391,7 @@
         "tags": [
           "Users"
         ],
+        "summary": "Upload Multiple Files",
         "description": "",
         "responses": {
           "200": {
@@ -442,6 +403,16 @@
           "401": {
             "description": "Unauthorized"
           }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schema/UploadMultipleFiles"
+              }
+            }
+          }
         }
       }
     },
@@ -450,7 +421,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Get User Documents by passing property ID through query or params and user ID through JWT Token",
+        "description": "> TODO: Retrieved documents are sent back that may contain unnecessary information.",
         "parameters": [
           {
             "name": "property",
@@ -473,7 +445,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "AUTHENTICATED Owner or Admin can set User Document by passing ID through JWT Token",
+        "description": "> TODO: Created document is sent back that may be unnecessary.",
         "responses": {
           "200": {
             "description": "OK"
@@ -483,27 +456,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "expiry_date": {
-                    "example": "any"
-                  },
-                  "note": {
-                    "example": "any"
-                  },
-                  "document": {
-                    "example": "any"
-                  },
-                  "property": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schema/UserDocumentsRequest"
               }
             }
           }
@@ -515,7 +472,8 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "summary": "Update User Documents by passing ID through params or query and user ID through JWT Token",
+        "description": "> TODO: Updated document is sent back that may be unnecessary.",
         "parameters": [
           {
             "name": "id",
@@ -535,15 +493,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "updates": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schema/UpdatesRequest"
               }
             }
           }
@@ -713,7 +667,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add new amenities to the list",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
         "responses": {
           "201": {
             "description": "Created"
@@ -729,18 +684,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "icon": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/AmenitiesRequest"
               }
             }
           }
@@ -750,7 +698,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can retrieve all amenities from the list",
+        "description": "> #TODO: Retrieved documents are being sent back through response that may contain unnecessary information",
         "responses": {
           "200": {
             "description": "OK"
@@ -769,7 +718,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can delete non-required amenity by passing ID within path",
+        "description": "> #TODO: Deleted document is being sent back through response that may contain unnecessary information",
         "parameters": [
           {
             "name": "id",
@@ -802,7 +752,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can update existing amenities by passing ID within path",
+        "description": "> #TODO: Updated document is being sent back through response that may be unnecessary",
         "parameters": [
           {
             "name": "id",
@@ -831,18 +782,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "icon": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/AmenitiesRequest"
               }
             }
           }
@@ -852,7 +796,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can retrieve amenity by passing ID within path",
+        "description": "> #TODO: Retrieved document is being sent back through response that may contain unnecessary information",
         "parameters": [
           {
             "name": "id",
@@ -887,7 +832,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add new blog category",
+        "description": "> #TODO: Created documents is being sent back through response that may be unnecessary",
         "responses": {
           "200": {
             "description": "OK"
@@ -897,15 +843,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/BlogCategoryRequest"
               }
             }
           }
@@ -915,7 +857,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can view all blog categories available",
+        "description": "> #TODO: Retrieved documents are being sent back through response that may contain unnecessary information",
         "responses": {
           "200": {
             "description": "OK"
@@ -931,7 +874,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add new blogs to the website",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
         "responses": {
           "200": {
             "description": "OK"
@@ -941,33 +885,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "subtitle": {
-                    "example": "any"
-                  },
-                  "body": {
-                    "example": "any"
-                  },
-                  "tags": {
-                    "example": "any"
-                  },
-                  "added_on": {
-                    "example": "any"
-                  },
-                  "category": {
-                    "example": "any"
-                  },
-                  "thumbnail": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/BlogsRequest"
               }
             }
           }
@@ -979,7 +901,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can update dates booked (from frontend) by sending the document ID within path",
+        "description": "> #TODO: Updated document is being sent back through response that may be unnecessary",
         "parameters": [
           {
             "name": "id",
@@ -1005,18 +928,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "checkin_date": {
-                    "example": "any"
-                  },
-                  "checkout_date": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdateBookedDatesRequest"
               }
             }
           }
@@ -1026,7 +942,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can delete any reservation by passing ID within path",
+        "description": "> #TODO: Deleted document is being sent back through response that may contain unnecessary information",
         "parameters": [
           {
             "name": "id",
@@ -1047,12 +964,73 @@
         }
       }
     },
+    "/admin/book-details/{id}": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "AUTHORIZED Admin can get specific booking details by ID of the booking",
+        "description": "> #TODO: Retrieved document is being sent back through response that may contain unnecessary information",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/admin/contact-us/": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "AUTHORIZED Admin can add company contact information",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactUsRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/contact-us/{id}": {
       "put": {
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can update contact information by sending the document ID within path",
+        "description": "> #TODO: Updated document is being sent back through response that may be unnecessary",
         "parameters": [
           {
             "name": "id",
@@ -1081,15 +1059,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "location": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/ContactUsRequest"
               }
             }
           }
@@ -1117,6 +1091,40 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AirbnbDubaiRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/estimate-revenue/": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "AUTHORIZED Admin can setup the estimated revenue for different areas and beds.",
+        "description": "> #TODO: NEEDS TO WORK ON ENDPOINT AS PER CALCULATIONS AND REQUIREMENTS.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "area": {
+                    "example": "any"
+                  },
+                  "beds": {
+                    "example": "any"
+                  }
+                }
               }
             }
           }
@@ -1241,7 +1249,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "name": "gallary type"
+                "$ref": "#/components/schemas/GallaryTypeRequest"
               }
             }
           }
@@ -1533,6 +1541,9 @@
           "200": {
             "description": "OK"
           },
+          "201": {
+            "description": "Created"
+          },
           "401": {
             "description": "Unauthorized"
           }
@@ -1793,7 +1804,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add Requirements to be retrieved on Requirements Page on frontend",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
         "responses": {
           "200": {
             "description": "OK"
@@ -1803,18 +1815,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "head": {
-                    "example": "any"
-                  },
-                  "points": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/RequirementsRequest"
               }
             }
           }
@@ -1853,7 +1858,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add any new Service to be retrieved on Services Dropdown tab in Navbar on frontend",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
         "responses": {
           "200": {
             "description": "OK"
@@ -1863,15 +1869,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/ServicesRequest"
               }
             }
           }
@@ -1927,7 +1929,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add testimonials to be retrieved on frontend",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
         "responses": {
           "200": {
             "description": "OK"
@@ -1937,21 +1940,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "comment": {
-                    "example": "any"
-                  },
-                  "name": {
-                    "example": "any"
-                  },
-                  "designation": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/TestimonialsRequest"
               }
             }
           }
@@ -1963,7 +1956,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can add third party information to be retrieved on frontend",
+        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
         "responses": {
           "200": {
             "description": "OK"
@@ -1973,21 +1967,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "logo": {
-                    "example": "any"
-                  },
-                  "name": {
-                    "example": "any"
-                  },
-                  "type": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/ThirdPartyLogosRequest"
               }
             }
           }
@@ -1999,7 +1983,8 @@
         "tags": [
           "Admin"
         ],
-        "description": "",
+        "summary": "AUTHORIZED Admin can update third party information by sending the document ID within path",
+        "description": "> #TODO: Updated document is being sent back through response that may be unnecessary",
         "parameters": [
           {
             "name": "id",
@@ -2019,15 +2004,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "updates": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdatesRequest"
               }
             }
           }
@@ -2093,6 +2074,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Login User",
         "description": "",
         "responses": {
           "200": {
@@ -2126,6 +2108,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all blogs with pagination and sorting by date added in descending order",
         "description": "",
         "parameters": [
           {
@@ -2158,32 +2141,7 @@
         "tags": [
           "General"
         ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/book-details/{id}": {
-      "get": {
-        "tags": [
-          "General"
-        ],
+        "summary": "Get a single blog by id with related blogs in the same category",
         "description": "",
         "parameters": [
           {
@@ -2210,7 +2168,8 @@
         "tags": [
           "General"
         ],
-        "description": "",
+        "summary": "Save booking details to the database",
+        "description": "> #TODO: Created document is being sent back through response that may contain unnecessary information",
         "responses": {
           "200": {
             "description": "OK"
@@ -2220,42 +2179,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "first_name": {
-                    "example": "any"
-                  },
-                  "last_name": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "guests": {
-                    "example": "any"
-                  },
-                  "phone_number": {
-                    "example": "any"
-                  },
-                  "message": {
-                    "example": "any"
-                  },
-                  "promo_code": {
-                    "example": "any"
-                  },
-                  "newsletter_agree": {
-                    "example": "any"
-                  },
-                  "property": {
-                    "example": "any"
-                  },
-                  "booked_dates": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/BookDetailsRequest"
               }
             }
           }
@@ -2267,7 +2195,8 @@
         "tags": [
           "General"
         ],
-        "description": "",
+        "summary": "Get all booked dates for a property",
+        "description": "> #TODO: Retrieved documents are being sent back through response that may contain unnecessary information",
         "parameters": [
           {
             "name": "property",
@@ -2290,7 +2219,8 @@
         "tags": [
           "General"
         ],
-        "description": "",
+        "summary": "Set booked dates or reserve dates for a property",
+        "description": "> #TODO: Created document is being sent back through response that may contain unnecessary information",
         "responses": {
           "200": {
             "description": "OK"
@@ -2300,21 +2230,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "checkin_date": {
-                    "example": "any"
-                  },
-                  "checkout_date": {
-                    "example": "any"
-                  },
-                  "property": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/BookedDatesRequest"
               }
             }
           }
@@ -2326,56 +2246,11 @@
         "tags": [
           "General"
         ],
-        "description": "",
+        "summary": "Endpoint to get company contact details to map on website",
+        "description": "> #TODO: Retrieved contact details of the company may contain non-required information.",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "General"
-        ],
-        "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "emails": {
-                    "example": "any"
-                  },
-                  "phones": {
-                    "example": "any"
-                  },
-                  "location": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -2385,6 +2260,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Endpoint to send contact query to the company. This will send an email to the company and an acknowledgment email to the user.",
         "description": "",
         "responses": {
           "200": {
@@ -2433,11 +2309,9 @@
         "tags": [
           "General"
         ],
-        "description": "",
+        "summary": "Endpoint to get Airbnb Dubai details to map on website",
+        "description": "> #TODO: Retrieved documents may contain non-required information.",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -2445,46 +2319,13 @@
       }
     },
     "/estimate-revenue/": {
-      "post": {
-        "tags": [
-          "General"
-        ],
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "area": {
-                    "example": "any"
-                  },
-                  "beds": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "tags": [
           "General"
         ],
+        "summary": "Endpoint to get areas & bedrooms to map on website",
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           }
@@ -2496,6 +2337,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get filtered FAQs based on page",
         "description": "",
         "parameters": [
           {
@@ -2521,6 +2363,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all gallary types for mapping on website's UI - Gallary Page",
         "description": "",
         "responses": {
           "200": {
@@ -2537,6 +2380,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get gallery images with pagination - Gallery Page",
         "description": "",
         "parameters": [
           {
@@ -2579,6 +2423,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get Home Content for the home page of the website",
         "description": "",
         "responses": {
           "200": {
@@ -2595,6 +2440,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all legals, Terms & Conditions, Privacy Policy, and Refund Policy, for mapping on website's UI",
         "description": "",
         "responses": {
           "200": {
@@ -2611,6 +2457,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all featured articles with third party information populated",
         "description": "",
         "responses": {
           "200": {
@@ -2627,6 +2474,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all pricings for mapping on website's UI - Pricings Page",
         "description": "",
         "responses": {
           "200": {
@@ -2643,6 +2491,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all properties with images and details populated along with other selected fields - Properties Page",
         "description": "",
         "responses": {
           "200": {
@@ -2659,6 +2508,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get a single property with images and details populated - Property Page",
         "description": "",
         "parameters": [
           {
@@ -2685,6 +2535,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all requirements for mapping on website's UI - Requirements Page",
         "description": "",
         "responses": {
           "200": {
@@ -2701,6 +2552,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all services for mapping on website's UI - Services Dropdown on Navbar",
         "description": "",
         "responses": {
           "200": {
@@ -2717,6 +2569,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Set Subscription for Newsletter",
         "description": "",
         "responses": {
           "200": {
@@ -2747,6 +2600,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all testimonials for mapping on website's UI - Testimonials carousel on Home Page",
         "description": "",
         "responses": {
           "200": {
@@ -2763,6 +2617,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all third party logos for mapping on website's UI - Component",
         "description": "",
         "responses": {
           "200": {
@@ -2779,6 +2634,7 @@
         "tags": [
           "General"
         ],
+        "summary": "Get all video guides for mapping on website's UI - Videos Page",
         "description": "",
         "responses": {
           "200": {
@@ -2832,6 +2688,16 @@
           "description": "Unique identifier for the resource"
         },
         "description": "The ID of the resource to retrieve or modify"
+      },
+      "PropertyParameter": {
+        "in": "query",
+        "name": "property",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "description": "Unique ObjectId for collection Property"
+        },
+        "description": "The ID of the property to retrieve or modify"
       }
     },
     "schemas": {
@@ -2899,6 +2765,97 @@
               "pincode": {
                 "type": "string",
                 "example": "123456"
+              }
+            }
+          }
+        }
+      },
+      "UserDocumentsRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "document_title"
+          },
+          "expiry_date": {
+            "type": "string",
+            "example": "document_expiry_date"
+          },
+          "note": {
+            "type": "string",
+            "example": "document_note"
+          },
+          "document": {
+            "type": "string",
+            "example": "cloudinary_document_url"
+          },
+          "property": {
+            "type": "string",
+            "example": "object_id_of_property"
+          }
+        }
+      },
+      "PaymentDetailsRequest": {
+        "type": "object",
+        "properties": {
+          "accountHolderName": {
+            "type": "string",
+            "example": "account_holder_name"
+          },
+          "accountNumber": {
+            "type": "string",
+            "example": "account_number"
+          },
+          "bankName": {
+            "type": "string",
+            "example": "bank_name"
+          },
+          "swiftCode": {
+            "type": "string",
+            "example": "swift_code"
+          },
+          "iban": {
+            "type": "string",
+            "example": "iban"
+          },
+          "paymentMethod": {
+            "type": "string",
+            "example": "payment_method"
+          },
+          "currency": {
+            "type": "string",
+            "example": "AED"
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "building_no": {
+                "type": "string",
+                "example": "bank_building_no"
+              },
+              "city": {
+                "type": "string",
+                "example": "bank_city"
+              },
+              "street": {
+                "type": "string",
+                "example": "bank_street"
+              },
+              "area": {
+                "type": "string",
+                "example": "bank_area"
+              },
+              "landmark": {
+                "type": "string",
+                "example": "bank_landmark"
+              },
+              "country": {
+                "type": "string",
+                "example": "bank_country"
+              },
+              "pincode": {
+                "type": "string",
+                "example": "bank_pincode"
               }
             }
           }
@@ -3655,6 +3612,352 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "RequirementsRequest": {
+        "type": "object",
+        "properties": {
+          "head": {
+            "type": "string",
+            "example": "requirement_head"
+          },
+          "points": {
+            "type": "array",
+            "example": [
+              "requirement_points"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ServicesRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "service_name"
+          }
+        }
+      },
+      "TestimonialsRequest": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "example": "testimonial_comment"
+          },
+          "name": {
+            "type": "string",
+            "example": "testimonial_name"
+          },
+          "designation": {
+            "type": "string",
+            "example": "testimonial_designation"
+          }
+        }
+      },
+      "ThirdPartyLogosRequest": {
+        "type": "object",
+        "properties": {
+          "logo": {
+            "type": "string",
+            "example": "cloudinary_logo_url"
+          },
+          "name": {
+            "type": "string",
+            "example": "logo_brand_name"
+          },
+          "type": {
+            "type": "string",
+            "example": "trusted/listed"
+          }
+        }
+      },
+      "AmenitiesRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "amenity_name"
+          },
+          "icon": {
+            "type": "string",
+            "example": "amenity_cloudinary_icon_url"
+          }
+        }
+      },
+      "GallaryTypeRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "gallary_type_name"
+          }
+        }
+      },
+      "ContactUsRequest": {
+        "type": "object",
+        "properties": {
+          "emails": {
+            "type": "array",
+            "example": [
+              "company_contact_email"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "phones": {
+            "type": "array",
+            "example": [
+              "company_contact_phone"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "address": {
+                "type": "string",
+                "example": "company_contact_address"
+              },
+              "city": {
+                "type": "string",
+                "example": "company_contact_city"
+              },
+              "country": {
+                "type": "string",
+                "example": "company_contact_country"
+              },
+              "pincode": {
+                "type": "string",
+                "example": "company_contact_pincode"
+              },
+              "state": {
+                "type": "string",
+                "example": "company_contact_state"
+              },
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "lat": {
+                      "type": "number",
+                      "example": 123.456
+                    },
+                    "long": {
+                      "type": "number",
+                      "example": 123.456
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "BookedDatesRequest": {
+        "type": "object",
+        "properties": {
+          "checkin_date": {
+            "type": "string",
+            "example": "checkin_date"
+          },
+          "checkout_date": {
+            "type": "string",
+            "example": "checkout_date"
+          },
+          "property": {
+            "type": "string",
+            "example": "property_object_id"
+          }
+        }
+      },
+      "UpdateBookedDatesRequest": {
+        "type": "object",
+        "properties": {
+          "checkin_date": {
+            "type": "string",
+            "example": "checkin_date"
+          },
+          "checkout_date": {
+            "type": "string",
+            "example": "checkout_date"
+          }
+        }
+      },
+      "BookDetailsRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "first_name"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "last_name"
+          },
+          "email": {
+            "type": "string",
+            "example": "email"
+          },
+          "guests": {
+            "type": "number",
+            "example": 3
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "phone_number"
+          },
+          "message": {
+            "type": "string",
+            "example": "message"
+          },
+          "promo_code": {
+            "type": "string",
+            "example": "promo_code"
+          },
+          "newsletter_agree": {
+            "type": "boolean",
+            "example": true
+          },
+          "property": {
+            "type": "string",
+            "example": "property_object_id"
+          },
+          "booked_dates": {
+            "type": "string",
+            "example": "booked_dates_object_ids"
+          }
+        }
+      },
+      "BlogCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "blog_category_name"
+          }
+        }
+      },
+      "BlogsRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "blog_title"
+          },
+          "subtitle": {
+            "type": "string",
+            "example": "blog_subtitle"
+          },
+          "body": {
+            "type": "string",
+            "example": "blog_body_in_html"
+          },
+          "tags": {
+            "type": "array",
+            "example": [
+              "blog_tags"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "added_on": {
+            "type": "string",
+            "example": "blog_added_on"
+          },
+          "category": {
+            "type": "string",
+            "example": "blog_category_object_id"
+          },
+          "thumbnail": {
+            "type": "string",
+            "example": "blog_thumbnail_image_url"
+          }
+        }
+      },
+      "UploadMultipleFiles": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "example": [
+              "file1",
+              "file2"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UploadSingleFile": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "example": "file"
+          }
+        }
+      },
+      "PropertyUtilityRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "utility_name"
+          },
+          "provider_name": {
+            "type": "string",
+            "example": "provider_name"
+          },
+          "account_no": {
+            "type": "string",
+            "example": "account_no"
+          },
+          "paid_by": {
+            "type": "string",
+            "example": "Owner/Company"
+          },
+          "web_login": {
+            "type": "string",
+            "example": "web_login"
+          },
+          "web_pass": {
+            "type": "string",
+            "example": "web_pass"
+          },
+          "already_have_account": {
+            "type": "boolean",
+            "example": true
+          },
+          "link": {
+            "type": "string",
+            "example": "link"
+          },
+          "uploads": {
+            "type": "string",
+            "example": "uploads"
+          },
+          "type": {
+            "type": "string",
+            "example": "other"
+          },
+          "property": {
+            "type": "string",
+            "example": "property_object_id"
+          },
+          "user_id": {
+            "type": "string",
+            "example": "user_object_id"
           }
         }
       }

@@ -4,7 +4,18 @@ import { PaymentDetailsModel } from "../../../models/PaymentDetails.js";
 
 export const SetPaymentDetails = async(req, res, next) => {
     // #swagger.tags = ['Users']
-    const user_id = req._id;
+    // #swagger.summary = "AUTHENTICATED Owner or Admin can set Payment Details by passing ID through JWT Token"
+    // #swagger.description = "> TODO: Created document is sent back that may be unnecessary."
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: { $ref: "#/components/schema/PaymentDetailsRequest" }
+            }
+        }
+    }
+    */
+    const user_id = req?.user?.id;
     const {accountHolderName, accountNumber, bankName, swiftCode, iban, paymentMethod, currency, address} = req.body;
     
     if( !user_id ) {
@@ -21,7 +32,10 @@ export const SetPaymentDetails = async(req, res, next) => {
 
 export const GetPaymentDetails = async (req, res, next) => {
     // #swagger.tags = ['Users']
-    const user_id = req._id;
+    // #swagger.summary = "Get Payment Details by passing user ID through JWT Token"
+    // #swagger.description = "> TODO: Retrieved details are sent back that may contain unnecessary information."
+
+    const user_id = req?.user?.id;
 
     if( !user_id ) {
         return next(new apiError(400, `User required`));
@@ -37,9 +51,20 @@ export const GetPaymentDetails = async (req, res, next) => {
 
 export const UpdatePaymentDetails = async (req, res, next) => {
     // #swagger.tags = ['Users']
+    // #swagger.summary = "Update Payment Details by passing ID through params or query and user ID through JWT Token"
+    // #swagger.description = "> TODO: Updated document is sent back that may be unnecessary."
+    /* #swagger.requestBody = {
+        required: true,
+        content: {
+            'application/json': {
+                schema: { $ref: "#/components/schema/UpdatesRequest" }
+            }
+        }
+    }
+    */
     const { updates } = req.body;
     const { id } = req.params;
-    const user_id = req._id;
+    const user_id = req?.user?.id;
 
     if (!updates) {
         return next(new apiError(400, `Payment Details Update required`));

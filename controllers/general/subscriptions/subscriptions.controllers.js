@@ -4,6 +4,7 @@ import { apiResponse } from "../../../utils/apiResponse.js";
 
 export const SetSubscription = async (req, res, next) => {
     // #swagger.tags = ['General']
+    // #swagger.summary = 'Set Subscription for Newsletter'
     const {email} = req.body;
 
     if (!email) return next(new apiError(400, "Email is required"));

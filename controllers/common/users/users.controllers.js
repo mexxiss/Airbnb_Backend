@@ -5,7 +5,9 @@ import { BlacklistModel } from "../../../models/Blacklist.js";
 
 export const ChangePassword = async (req, res, next) => {
   // #swagger.tags = ['Users']
-  const user_id = req._id;
+  // #swagger.summary = "AUTHENTICATED Owner OR Admin can Change Password"
+
+  const user_id = req?.user?.id;
   const { current_pass, new_pass } = req.body;
 
   try {
@@ -17,7 +19,7 @@ export const ChangePassword = async (req, res, next) => {
     await user.save();
     return res
       .status(200)
-      .json(new apiResponse(200, { user }, "password changed"));
+      .json(new apiResponse(200, [], "password changed"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
@@ -25,7 +27,9 @@ export const ChangePassword = async (req, res, next) => {
 
 export const Logout = async (req, res, next) => {
   // #swagger.tags = ['Users']
-  const user_id = req._id;
+  // #swagger.summary = "Logout User and Blacklist Token for Security Purposes"
+
+  const user_id = req?.user?.id;
   const token = req.user?.token;
   
   try {
@@ -55,7 +59,9 @@ export const Logout = async (req, res, next) => {
 
 export const GetUser = async (req, res, next) => {
   // #swagger.tags = ['Users']
-  const user_id = req._id;
+  // #swagger.summary = "AUTHENTICATED Owner OR Admin to get its Details by ID from JWT Token."
+
+  const user_id = req?.user?.id;
   if (!user_id) {
     return next(new apiError(400, "User Id not provided"));
   }
@@ -73,7 +79,9 @@ export const GetUser = async (req, res, next) => {
 
 export const UpdateUser = async (req, res, next) => {
   // #swagger.tags = ['Users']
-  const user_id = req._id;
+  // #swagger.summary = "AUTHENTICATED Owner OR Admin to Update its Details by ID from JWT Token."
+  
+  const user_id = req?.user?.id;
   const { updates } = req.body;
 
   if (!user_id) {
