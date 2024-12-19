@@ -49,9 +49,9 @@ export const SetProperty = async (req, res, next) => {
       await property?.addStayingRules(staying_rules);
       return res.status(200).json(new apiResponse(200, property, "Property created successfully"));
   } catch (error) {
-      return next(new apiError(500, `Server Error: ${error}`));
+    return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
 
 export const DeleteProperty = async (req, res, next) => {
   // #swagger.tags = ['Admin']
@@ -64,12 +64,14 @@ export const DeleteProperty = async (req, res, next) => {
   }
 
   try {
-      const property = await PropertiesModel.deleteOne({ _id: id });
-      return res.status(200).json(new apiResponse(200, property, "Property deleted successfully"));
+    const property = await PropertiesModel.deleteOne({ _id: id });
+    return res
+      .status(200)
+      .json(new apiResponse(200, property, "Property deleted successfully"));
   } catch (error) {
-      return next(new apiError(500, `Server Error: ${error}`));
+    return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
 
 export const UpdateProperty = async (req, res, next) => {
   // #swagger.tags = ['Admin']
@@ -88,28 +90,35 @@ export const UpdateProperty = async (req, res, next) => {
   const { updates } = req.body;
 
   if (!id) {
-      return next(new apiError(400, "Document ID required"));
+    return next(new apiError(400, "Document ID required"));
   }
 
   try {
-      const property = await PropertiesModel.findByIdAndUpdate(id, { $set: updates }, { new: true, runValidators: true });
-      return res.status(200).json(new apiResponse(200, property, "Property Updated Successfully"))
+    const property = await PropertiesModel.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      { new: true, runValidators: true }
+    );
+    return res
+      .status(200)
+      .json(new apiResponse(200, property, "Property Updated Successfully"));
   } catch (error) {
-      return next(new apiError(500, `Server Error: ${error}`))
+    return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
 
 export const GetUserProperties = async (req, res, next) => {
   // #swagger.tags = ['Admin']
   // #swagger.summary = "AUTHORIZED Admin can view properties of any selected user by specifying id of the user as USER within params"
   // #swagger.description = "> #TODO: Each document of properties list may have unnecessary data being sent back to client",
 
-  const user = req.params;
+  const user = req.params.user;
   
   try {
-    const properties = await PropertiesModel.find({user})
-    return res.status(200).json(properties);
-  } catch ( error ) {
-    return next(new apiError(500, `Server Error: ${error}`))
+    const properties = await PropertiesModel.find({ user });
+    const propertiesCounts = await PropertiesModel.countDocuments({ user });
+    return res.status(200).json({ properties, totalCount: propertiesCounts });
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
