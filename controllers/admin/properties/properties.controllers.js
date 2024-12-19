@@ -42,12 +42,39 @@ export const SetProperty = async (req, res, next) => {
         }
     } 
   */
-  const { title, description, property_images, property_details, address, discounts_percentage, costs, property_check_details, staying_rules, cancellation_policy, amenities, important_information } = req.body;
+  const {
+    title,
+    description,
+    property_images,
+    property_details,
+    address,
+    discounts_percentage,
+    costs,
+    property_check_details,
+    staying_rules,
+    cancellation_policy,
+    amenities,
+    important_information,
+  } = req.body;
 
   try {
-      const property = await PropertiesModel.create({ title, description, property_images, property_details, address, discounts_percentage, costs, property_check_details, cancellation_policy, amenities, important_information });
-      await property?.addStayingRules(staying_rules);
-      return res.status(200).json(new apiResponse(200, property, "Property created successfully"));
+    const property = await PropertiesModel.create({
+      title,
+      description,
+      property_images,
+      property_details,
+      address,
+      discounts_percentage,
+      costs,
+      property_check_details,
+      cancellation_policy,
+      amenities,
+      important_information,
+    });
+    await property?.addStayingRules(staying_rules);
+    return res
+      .status(200)
+      .json(new apiResponse(200, property, "Property created successfully"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
@@ -60,7 +87,7 @@ export const DeleteProperty = async (req, res, next) => {
 
   const { id } = req.params;
   if (!id || !mongoose.isValidObjectId(id)) {
-      return next(new apiError(400, "Document ID required"));
+    return next(new apiError(400, "Document ID required"));
   }
 
   try {
@@ -113,7 +140,7 @@ export const GetUserProperties = async (req, res, next) => {
   // #swagger.description = "> #TODO: Each document of properties list may have unnecessary data being sent back to client",
 
   const user = req.params.user;
-  
+
   try {
     const properties = await PropertiesModel.find({ user });
     const propertiesCounts = await PropertiesModel.countDocuments({ user });
