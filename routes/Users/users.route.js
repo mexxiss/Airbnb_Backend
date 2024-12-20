@@ -9,6 +9,7 @@ import { GetProviders } from "../../controllers/common/providers/providers.contr
 import {upload} from "../../uploads/multer.js";
 import { UploadMultiple, UploadSingle } from "../../controllers/common/upload/upload.controllers.js";
 import { GetUserDocuments, SetUserDocument, UpdateUserDocuments } from "../../controllers/common/users/documents.controllers.js";
+import { createPropertyUtility, deletePropertyUtilityById, getPropertyUtilityById, UpdatePropertyUtilityById } from "../../controllers/common/properties/utilitiesmanager.controllers.js";
 
 const router = express.Router();
 
@@ -34,6 +35,12 @@ router.post("/property-utilities/", SetPropertyUtility);
 router.get("/property-utilities/", GetPropertyUtilities);
 router.put("/property-utilities/:id", UpdatePropertyUtility);
  
+// Property Utilities Manager Routes
+router.post("/utilities/", createPropertyUtility);
+router.get("/utilities", getPropertyUtilityById);
+router.put("/utilities/:id", UpdatePropertyUtilityById);
+router.delete("/utilities/:id", deletePropertyUtilityById);
+
 // Service Providers Routes
 router.get("/providers/", GetProviders);
 

@@ -144,8 +144,8 @@ const PropertiesSchema = new Schema({
         }
     },
     staying_rules: {
-        type: [String],
-        default: ["Please don't forget to send your passport/valid ID as well as those checking in with you. This is a strict requirement of Dubai's Economy and Tourism Department (DET)"]
+        type: String,
+        default: "<p>Please don't forget to send your passport/valid ID as well as those checking in with you. This is a strict requirement of Dubai's Economy and Tourism Department (DET)</p>"
     },
     cancellation_policy: {
         type: String,
@@ -157,20 +157,7 @@ const PropertiesSchema = new Schema({
         required: true,
         default: []
     },
-    important_information: {
-        about_space: {
-            type: String,
-        },
-        guest_access: {
-            type: String
-        },
-        getting_around: {
-            type: String
-        },
-        other: {
-            type: String
-        }
-    },
+    important_information: String,
     status: {
         type: String,
         enum: ["Active", "Inactive"],

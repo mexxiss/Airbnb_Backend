@@ -52,7 +52,8 @@ jobs:
             echo "Stopping and removing the existing container..."
             docker stop airbnb-management-backend-container || true
             docker rm airbnb-management-backend-container || true
-
+            docker system prune -f
+            
             # Step 3: Run a new container with environment variables
             echo "Running the new Docker container..."
             docker run -d \
