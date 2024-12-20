@@ -31,7 +31,10 @@ import {
   DeleteBookedDates,
   UpdateBookedDates,
 } from "../../controllers/admin/booking/dates.controllers.js";
-import { createContactus, updateContactUs } from "../../controllers/admin/contact/contact.controllers.js";
+import {
+  createContactus,
+  updateContactUs,
+} from "../../controllers/admin/contact/contact.controllers.js";
 import { SetDubaiDetails } from "../../controllers/admin/content/airbnbdubai.controllers.js";
 import {
   DeleteFaq,
@@ -40,10 +43,12 @@ import {
 } from "../../controllers/admin/content/faqs.controllers.js";
 import {
   DeleteGallaryType,
+  GetAllGalleryTypes,
   SetGallaryType,
 } from "../../controllers/admin/properties/gallerytypes.controllers.js";
 import {
   createGalleryContent,
+  DeleteGallery,
   UpdateGallary,
 } from "../../controllers/admin/properties/gallery.controllers.js";
 import {
@@ -129,12 +134,14 @@ router.delete("/faqs/:id", DeleteFaq);
 router.put("/faqs/:id", UpdateFaq);
 
 // Gallary Types Routes
+router.get("/gallery-types/", GetAllGalleryTypes);
 router.post("/gallery-types/", SetGallaryType);
 router.delete("/gallery-types/:id", DeleteGallaryType);
 
 // Gallery Routes
 router.post("/gallery/", galleryValidator, createGalleryContent);
 router.put("/gallery/:id", UpdateGallary);
+router.delete("/gallery/:id", DeleteGallery);
 
 // Home Content Routes
 router.post("/home-content/", SetHomeContent);
