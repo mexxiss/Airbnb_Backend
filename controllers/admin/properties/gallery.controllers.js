@@ -1,6 +1,7 @@
 import { GalleryModel } from "../../../models/Gallery.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
+import mongoose from "mongoose";
 
 export const createGalleryContent = async (req, res) => {
   // #swagger.tags = ['Admin']

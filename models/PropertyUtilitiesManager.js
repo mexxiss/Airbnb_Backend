@@ -2,20 +2,133 @@ import { Schema, model } from "mongoose";
 
 const PropertyUtilitiesManagerSchema = new Schema(
   {
-    utility_name: {
-      type: String,
+    internet: {
+      service_providers: String,
+      web_login: String,
+      web_pass: String,
+      service_name: {
+        type: String,
+        default: "Internet",
+      },
+      account_no: String,
+      paid_by: {
+        type: String,
+        required: true,
+        enum: ["Owner", "Company"],
+      },
+      already_have_account: {
+        type: Boolean,
+        default: false,
+      },
+      firld_name: {
+        type: String,
+        default: "internet"
+      },
     },
-    manage_allow: {
-      type: Boolean,
-      default: false,
+    electricity_water: {
+      service_providers: String,
+      web_login: String,
+      web_pass: String,
+      service_name: {
+        type: String,
+        default: "Electricity & Water",
+      },
+      account_no: String,
+      paid_by: {
+        type: String,
+        required: true,
+        enum: ["Owner", "Company"],
+      },
+      already_have_account: {
+        type: Boolean,
+        default: false,
+      },
+      field_name: {
+        type: String,
+        default: "electricity_water"
+      },
     },
+    gas: {
+      service_providers: String,
+      web_login: String,
+      web_pass: String,
+      service_name: {
+        type: String,
+        default: "Gas",
+      },
+      account_no: String,
+      paid_by: {
+        type: String,
+        required: true,
+        enum: ["Owner", "Company"],
+      },
+      already_have_account: {
+        type: Boolean,
+        default: false,
+      },
+      field_name: {
+        type: String,
+        default: "gas"
+      },
+    },
+    chiller: {
+      service_providers: String,
+      web_login: String,
+      web_pass: String,
+      service_name: {
+        type: String,
+        default: "Chiller",
+      },
+      account_no: String,
+      paid_by: {
+        type: String,
+        required: true,
+        enum: ["Owner", "Company"],
+      },
+      already_have_account: {
+        type: Boolean,
+        default: false,
+      },
+      field_name: {
+        type: String,
+        default: "chiller"
+      },
+    },
+    other: [{
+      service_providers: String,
+      web_login: String,
+      web_pass: String,
+      service_name: {
+        type: String,
+        default: "Others",
+      },
+      account_no: String,
+      paid_by: {
+        type: String,
+        required: true,
+        enum: ["Owner", "Company"],
+      },
+      already_have_account: {
+        type: Boolean,
+        default: false,
+      },
+      link: String,
+      uploaded_docs: {
+        name: String,
+        url: String,
+      },
+      field_name: {
+        type: String,
+        default: "other"
+      },
+    }],
     property: {
       type: Schema.Types.ObjectId,
-      ref: "properties",
+      ref: "property",
     },
-    user_id: {
+    user: {
       type: Schema.Types.ObjectId,
-      ref: "users",
+      ref: "user",
     },
   },
   { timestamps: true }

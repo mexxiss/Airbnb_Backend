@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { GalleryModel } from "../../../models/Gallery.js";
 
 export const getGalleryImagesByQuery = async (req, res) => {
