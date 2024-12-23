@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const PropertyUtilitiesManagerSchema = new Schema(
   {
     internet: {
-      service_providers: String,
+      service_provider: String,
       web_login: String,
       web_pass: String,
       service_name: {
@@ -20,13 +20,13 @@ const PropertyUtilitiesManagerSchema = new Schema(
         type: Boolean,
         default: false,
       },
-      firld_name: {
+      field_name: {
         type: String,
         default: "internet"
       },
     },
     electricity_water: {
-      service_providers: String,
+      service_provider: String,
       web_login: String,
       web_pass: String,
       service_name: {
@@ -49,7 +49,7 @@ const PropertyUtilitiesManagerSchema = new Schema(
       },
     },
     gas: {
-      service_providers: String,
+      service_provider: String,
       web_login: String,
       web_pass: String,
       service_name: {
@@ -72,7 +72,7 @@ const PropertyUtilitiesManagerSchema = new Schema(
       },
     },
     chiller: {
-      service_providers: String,
+      service_provider: String,
       web_login: String,
       web_pass: String,
       service_name: {
@@ -95,7 +95,8 @@ const PropertyUtilitiesManagerSchema = new Schema(
       },
     },
     other: [{
-      service_providers: String,
+      temp_id: Number,
+      service_provider: String,
       web_login: String,
       web_pass: String,
       service_name: {
@@ -113,10 +114,7 @@ const PropertyUtilitiesManagerSchema = new Schema(
         default: false,
       },
       link: String,
-      uploaded_docs: {
-        name: String,
-        url: String,
-      },
+      uploaded_docs: String,
       field_name: {
         type: String,
         default: "other"
