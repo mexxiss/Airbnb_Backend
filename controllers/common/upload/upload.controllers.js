@@ -1,3 +1,6 @@
+import { apiError } from "../../../utils/apiError.js";
+import { apiResponse } from "../../../utils/apiResponse.js";
+
 export const UploadMultiple = async (req, res, next) => {
     // #swagger.tags = ['Users']
     // #swagger.summary = "Upload Multiple Files"
