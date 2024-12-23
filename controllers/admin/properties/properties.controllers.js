@@ -11,6 +11,7 @@ export const getPropertyListByAdmin = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
     const properties = await PropertiesModel.find({})
+      .populate("property_images")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
