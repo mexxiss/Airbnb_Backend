@@ -156,8 +156,8 @@ const doc = {
           beds_count: 3,
           bathrooms_count: 1,
           furnishing: "Premium/Standard",
-          wifi: {name: "property_wifi_name", password: "property_wifi_password"},
-          permit: {permit_code: "property_permit_code", permit_expiry_date: "property_permit_expiry_date"},
+          wifi: { name: "property_wifi_name", password: "property_wifi_password" },
+          permit: { permit_code: "property_permit_code", permit_expiry_date: "property_permit_expiry_date" },
           parking_no: "property_parking_no"
         },
         address: {
@@ -173,18 +173,13 @@ const doc = {
         costs: {
           currency: "AED",
           security_details: "The damage deposit will be taken at arrival and returned 7-14 days after chekout, subject to a damage inspection of the property.",
-          prices: { security_amount: 2000, price_per_night: 1000, cleaning_fee: 330},
+          prices: { security_amount: 2000, price_per_night: 1000, cleaning_fee: 330 },
         },
-        property_check_details: { check_in: "15:00", check_out: "11:00"},
-        staying_rules: ["Please don't forget to send your passport/valid ID as well as those checking in with you. This is a strict requirement of Dubai's Economy and Tourism Department (DET)"],
+        property_check_details: { check_in: "15:00", check_out: "11:00" },
+        staying_rules: "staying_rules_in_html",
         cancellation_policy: "You can cancel the reservation free of charge until 14 days before arrival. The total reservation price will be charged if you cancel within 14 days of arrival.",
         amenities: ["objectIds_from_amenities_collection"],
-        important_information: {
-          about_space: "About_property_space",
-          guest_access: "property_guest_access",
-          getting_around: "property_getting_around",
-          other: "property_other_info"
-        },
+        important_information: "important_information_about_property_in_html",
         user: "objectId_of_property_owner_from_user_collection",
         status: "Active/Inactive"
       },
@@ -195,13 +190,13 @@ const doc = {
       },
       FeaturedArticlesRequest: {
         third_party: "ObjectId to Third Party Logos",
-        headline: "headline_of_featured_article", 
-        added_on: "date_when_featured", 
+        headline: "headline_of_featured_article",
+        added_on: "date_when_featured",
         link: "link_to_featured_articleS"
       },
       VideoGuidesRequest: {
-        video_url: "cloudinary_url_of_video", 
-        title: "Title_of_Video_Guide", 
+        video_url: "cloudinary_url_of_video",
+        title: "Title_of_Video_Guide",
         thumbnail: "thumbnail_image_for_video"
       },
       HomeContentRequest: {
@@ -221,32 +216,32 @@ const doc = {
           description: "features_description"
         }],
         cleaning_maintenance: {
-          what_inclued: [{title: "title_text", description: "description_text"}]
+          what_inclued: [{ title: "title_text", description: "description_text" }]
         },
         interior_design_page: {
           description: "description_for_interior_design_page",
-          what_inclued: [{title: "title_text", description: "description_text", others: ["other_points"]}]
+          what_inclued: [{ title: "title_text", description: "description_text", others: ["other_points"] }]
         },
         listing_management: {
           title: "title_for_listing_management",
           description: "description_for_listing_management",
-          what_inclued: [{title: "title_text", description: "description_text"}]
+          what_inclued: [{ title: "title_text", description: "description_text" }]
         },
         management_support: {
           title: "title_for_management_support",
           description: "description_for_management_support",
-          bottom_content: [{title: "title_text", description: "description_text"}]
+          bottom_content: [{ title: "title_text", description: "description_text" }]
         }
       },
       LegalsRequest: {
-        body: "html_body_for_legals", 
+        body: "html_body_for_legals",
         title: "Terms & Conditions/Privacy Policy/Refund Policy"
       },
       PricingsRequest: {
         title: "pricing_title - On-Boarding",
-        description: "pricing_description", 
-        figures: "pricing_figures - Free/17%", 
-        icon: "pricing_cloudinary_icon_url", 
+        description: "pricing_description",
+        figures: "pricing_figures - Free/17%",
+        icon: "pricing_cloudinary_icon_url",
         offers: ["pricing_plan_offers"]
       },
       RequirementsRequest: {
@@ -268,7 +263,7 @@ const doc = {
       },
       AmenitiesRequest: {
         name: "amenity_name",
-        icon: "amenity_cloudinary_icon_url" 
+        icon: "amenity_cloudinary_icon_url"
       },
       GallaryTypeRequest: {
         name: "gallary_type_name"
@@ -282,7 +277,7 @@ const doc = {
           country: "company_contact_country",
           pincode: "company_contact_pincode",
           state: "company_contact_state",
-          coordinates: [{lat: 123.456, long: 123.456}]
+          coordinates: [{ lat: 123.456, long: 123.456 }]
         }
       },
       BookedDatesRequest: {
@@ -337,6 +332,62 @@ const doc = {
         type: "other",
         property: "property_object_id",
         user_id: "user_object_id"
+      },
+      UtilityManagementRequest: {
+        internet: {
+          web_login: "web_login",
+          web_pass: "web_pass",
+          service_provider: "service_provider",
+          service_name: "Internet",
+          account_no: "account_no",
+          paid_by: "Owner/Company",
+          already_have_account: true,
+          type: "internet"
+        },
+        electricity_water: {
+          web_login: "web_login",
+          web_pass: "web_pass",
+          service_provider: "service_provider",
+          service_name: "Electricity & Water",
+          account_no: "account_no",
+          paid_by: "Owner/Company",
+          already_have_account: true,
+          type: "electricity_water"
+        },
+        gas: {
+          web_login: "web_login",
+          web_pass: "web_pass",
+          service_provider: "service_provider",
+          service_name: "Gas",
+          account_no: "account_no",
+          paid_by: "Owner/Company",
+          already_have_account: true,
+          type: "gas"
+        },
+        chiller: {
+          web_login: "web_login",
+          web_pass: "web_pass",
+          service_provider: "service_provider",
+          service_name: "Chiller",
+          account_no: "account_no",
+          paid_by: "Owner/Company",
+          already_have_account: true,
+          type: "chiller"
+        },
+        other: [{
+          web_login: "web_login",
+          web_pass: "web_pass",
+          service_provider: "service_provider",
+          service_name: "Other",
+          account_no: "account_no",
+          paid_by: "Owner/Company",
+          already_have_account: true,
+          link: "link",
+          uploads: ["uploads"],
+          type: "other"
+        }],
+        property: "property_object_id",
+        user: "user_object_id",
       },
     }
   },

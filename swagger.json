@@ -3302,25 +3302,8 @@
             }
           },
           "important_information": {
-            "type": "object",
-            "properties": {
-              "about_space": {
-                "type": "string",
-                "example": "About_property_space"
-              },
-              "guest_access": {
-                "type": "string",
-                "example": "property_guest_access"
-              },
-              "getting_around": {
-                "type": "string",
-                "example": "property_getting_around"
-              },
-              "other": {
-                "type": "string",
-                "example": "property_other_info"
-              }
-            }
+            "type": "string",
+            "example": "important_information_about_property_in_html"
           },
           "user": {
             "type": "string",

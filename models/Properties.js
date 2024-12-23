@@ -151,7 +151,7 @@ const PropertiesSchema = new Schema(
     staying_rules: {
       type: String,
       default:
-        "Please don't forget to send your passport/valid ID as well as those checking in with you. This is a strict requirement of Dubai's Economy and Tourism Department (DET)",
+        "<p>Please don't forget to send your passport/valid ID as well as those checking in with you. This is a strict requirement of Dubai's Economy and Tourism Department (DET)</p>",
     },
     cancellation_policy: {
       type: String,

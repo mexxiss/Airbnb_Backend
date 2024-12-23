@@ -10,7 +10,6 @@ export const mailSender = async (email, subject, replacements) => {
             html = html.replace(regex, replacements[key]);
         });
         
-        console.log(email)
 
         let transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,

@@ -67,12 +67,12 @@ export const SetProperty = async (req, res, next) => {
       address,
       discounts_percentage,
       costs,
+      staying_rules,
       property_check_details,
       cancellation_policy,
       amenities,
       important_information,
     });
-    await property?.addStayingRules(staying_rules);
     return res
       .status(200)
       .json(new apiResponse(200, property, "Property created successfully"));
