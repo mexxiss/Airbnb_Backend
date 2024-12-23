@@ -59,6 +59,7 @@ export const SetProperty = async (req, res, next) => {
 
   try {
     const property = await PropertiesModel.create({
+      ...req?.body,
       title,
       description,
       property_images,
