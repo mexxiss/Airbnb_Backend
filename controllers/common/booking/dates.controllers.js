@@ -14,7 +14,9 @@ export const GetFilteredDates = async (req, res, next) => {
     }
 
     const start_date_ISO = new Date(start_date).toISOString();
-    const s_date = start_date ? new Date(start_date_ISO) : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    const s_date = start_date
+        ? new Date(start_date_ISO)
+        : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
     const e_date = new Date(s_date);
     e_date.setMonth(e_date.getMonth() + 4);
@@ -29,7 +31,7 @@ export const GetFilteredDates = async (req, res, next) => {
                     property: new mongoose.Types.ObjectId(property),
                     $expr: {
                         $and: [
-                            { $gte: ["$checkout_date", s_date] },
+                            { $gte: ["$checkout_date", firstOfMonth] },
                             { $lte: ["$checkin_date", e_date] }
                         ]
                     }
