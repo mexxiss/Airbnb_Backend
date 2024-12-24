@@ -13,6 +13,11 @@ const BookedDatesSchema = new Schema({
         type: Number,
         required: true,
     },
+    source: {
+        type: String,
+        default: "booking.com",
+        required: true
+    },
     cost_details: {
         currency: {
             type: String,
@@ -57,6 +62,11 @@ const BookedDatesSchema = new Schema({
     property: {
         type: Schema.Types.ObjectId,
         ref: "properties",
+        required: true
+    },
+    book_details: {
+        type: Schema.Types.ObjectId,
+        ref: "bookDetails",
         required: true
     }
 }, { timestamps: true });

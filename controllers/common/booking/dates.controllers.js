@@ -13,7 +13,7 @@ export const GetFilteredDates = async (req, res, next) => {
         return next(new apiError(400, "Valid Property ID not provided"));
     }
 
-    const start_date_ISO = new Date(start_date).toISOString();
+    const start_date_ISO = start_date ? new Date(start_date).toISOString() : null;
     const s_date = start_date
         ? new Date(start_date_ISO)
         : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -35,6 +35,20 @@ export const GetFilteredDates = async (req, res, next) => {
                             { $lte: ["$checkin_date", e_date] }
                         ]
                     }
+                }
+            },
+            {
+                $lookup: {
+                    from: "bookdetails", // Collection name of BookDetailsModel
+                    localField: "_id", // Field in BookedDates that references BookDetails
+                    foreignField: "booked_dates", // Field in BookDetails that references BookedDates
+                    as: "book_details", // Alias for the joined data
+                }
+            },
+            {
+                $unwind: {
+                    path: "$book_details",
+                    preserveNullAndEmptyArrays: true, // In case there are no matching book_details
                 }
             },
             {
@@ -197,7 +211,16 @@ export const GetFilteredDates = async (req, res, next) => {
                                 checkin_date: 1,
                                 checkout_date: 1,
                                 property: 1,
-                                nights_count_dynamic: 1
+                                nights_count_dynamic: 1,
+                                first_name: "$book_details.first_name",
+                                last_name: "$book_details.last_name",
+                                guest_count: "$book_details.guests",
+                                source: 1,
+                                revenue_gross: {
+                                    $subtract: ["$cost_details.net_charges", "$cost_details.cleaning_fee"]
+                                },
+                                maintenance_fee: "$cost_details.cleaning_fee",
+                                total_gross: "$cost_details.net_charges",
                             }
                         }
                     ]
