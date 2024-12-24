@@ -120,7 +120,8 @@ const doc = {
       },
       GallaryRequest: {
         img_url: "cloudinary image url",
-        type: "gallary_type_object_id"
+        type: "gallary_type_object_id",
+        property: "properties_object_id"
       },
       ProvidersRequest: {
         internet: {
@@ -283,7 +284,8 @@ const doc = {
       BookedDatesRequest: {
         checkin_date: "checkin_date",
         checkout_date: "checkout_date",
-        property: "property_object_id"
+        property: "property_object_id",
+        book_details: "book_details_object_id"
       },
       UpdateBookedDatesRequest: {
         checkin_date: "checkin_date",

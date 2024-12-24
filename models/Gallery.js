@@ -5,6 +5,10 @@ const gallerySchema = new mongoose.Schema({
   type: {
     type: Schema.Types.ObjectId,
     ref: "gallarytypes"
+  },
+  property: {
+    type: Schema.Types.ObjectId,
+    required: true
   }
 });
 

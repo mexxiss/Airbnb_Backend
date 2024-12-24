@@ -17,10 +17,10 @@ export const createGalleryContent = async (req, res) => {
     } 
   */
 
-  const { img_url, type } = req.body;
+  const { img_url, type, property } = req.body;
 
   try {
-    const newGallery = new GalleryModel({ img_url, type });
+    const newGallery = new GalleryModel({ img_url, type, property });
     const savedGallery = await newGallery.save();
 
     res
@@ -44,7 +44,7 @@ export const UpdateGallary = async (req, res, next) => {
         }
     } 
   */
-  const { type } = req.body;
+  const { type, property } = req.body;
   const { id } = req.params;
 
   if (!id) {
@@ -54,7 +54,7 @@ export const UpdateGallary = async (req, res, next) => {
   try {
     const gallaryDoc = await GalleryModel.findByIdAndUpdate(
       id,
-      { $set: { type } },
+      { $set: { type, property } },
       { new: true, runValidators: true }
     );
     return res.status(200).json(new apiResponse(200, gallaryDoc, "Done"));
