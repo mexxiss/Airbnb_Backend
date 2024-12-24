@@ -52,9 +52,12 @@ jobs:
             echo "Stopping and removing the existing container..."
             docker stop airbnb-management-backend-container || true
             docker rm airbnb-management-backend-container || true
-            docker system prune -a --volumes
             
-            # Step 3: Run a new container with environment variables
+            # Step 3: Prune unused Docker data
+            echo "Removing all unused Docker resources..."
+            docker system prune -a --volumes -f
+            
+            # Step 4: Run a new container with environment variables
             echo "Running the new Docker container..."
             docker run -d \
               -p 8000:8000 \
