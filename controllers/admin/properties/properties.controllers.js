@@ -11,7 +11,6 @@ export const getPropertyListByAdmin = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
     const properties = await PropertiesModel.find({})
-      .populate("property_images")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
@@ -144,7 +143,10 @@ export const GetUserProperties = async (req, res, next) => {
   const user = req.params.user;
 
   try {
-    const properties = await PropertiesModel.find({ user });
+    const properties = await PropertiesModel.find({ user }).populate({
+      path: "property_images",
+      select: "img_url type",
+    });
     const propertiesCounts = await PropertiesModel.countDocuments({ user });
     return res.status(200).json({ properties, totalCount: propertiesCounts });
   } catch (error) {
