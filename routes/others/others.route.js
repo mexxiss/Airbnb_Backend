@@ -55,7 +55,7 @@ router.get("/faqs/", GetFilteredFaqs);
 router.get("/gallery-types/", GetGallaryTypes);
 
 // Gallery Routes
-router.get("/gallery/", getGalleryImagesByQuery);
+router.get("/gallery", getGalleryImagesByQuery);
 
 // Home Content Routes
 router.get("/home-content/", GetHomeContent);

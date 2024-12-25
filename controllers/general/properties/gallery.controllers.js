@@ -15,7 +15,17 @@ export const getGalleryImagesByQuery = async (req, res) => {
     const pageNumber = Math.max(1, parseInt(page));
     const limitNumber = Math.max(1, parseInt(limit));
 
-    const galleryData = await GalleryModel.find(query).populate("type").skip((pageNumber-1)*limitNumber).limit(limitNumber);
+    const galleryData = await GalleryModel.find(query)
+      .populate("type")
+      .populate({
+        path: "property",
+        select: "title description property_images property_types property_details address costs amenities status", // Selectively project property fields
+        populate: {
+          path: "property_images" // Populate property_images of property
+        }
+      })
+      .skip((pageNumber - 1) * limitNumber)
+      .limit(limitNumber);
 
     return res.status(200).json({
       success: true,
