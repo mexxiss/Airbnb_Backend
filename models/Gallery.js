@@ -8,6 +8,7 @@ const gallerySchema = new mongoose.Schema({
   },
   property: {
     type: Schema.Types.ObjectId,
+    ref: "properties",
     required: true
   }
 });
