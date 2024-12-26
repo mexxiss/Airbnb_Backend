@@ -87,7 +87,7 @@ export const SetProperty = async (req, res, next) => {
 
     // Step 2: Update the gallery documents
     if (property_images && property_images.length > 0) {
-      const objectIdImages = property_images.map(id => mongoose.Types.ObjectId(id));
+      const objectIdImages = property_images.map(id => new mongoose.Types.ObjectId(id));
       const updatedGallery = await GalleryModel.updateMany(
         { _id: { $in: objectIdImages } },
         { $set: { property: createdProperty._id } }
