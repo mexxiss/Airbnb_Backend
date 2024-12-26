@@ -55,11 +55,6 @@ const BookDetailsSchema = new Schema({
         ref: "properties",
         required: true,
     },
-    booked_dates: {
-        type: Schema.Types.ObjectId,
-        ref: "bookedDates",
-        required: true
-    },
     status: { type: String, enum: ['Confirmed', 'Cancelled', 'Checked Out'], default: 'Confirmed' }
 }, { timestamps: true });
 

@@ -14,7 +14,6 @@ const PropertiesSchema = new Schema(
     property_images: {
       type: [Schema.Types.ObjectId],
       ref: "gallery",
-      required: true,
       validate: {
         validator: function (value) {
           return (
