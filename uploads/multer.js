@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
         folder: `uploads/${req.query.folder || ""}`,
         allowed_formats: [
           "jpg", "png", "jpeg", "gif", "ico", "svg",
-          "mp4", "avi", "mov", "mkv", "webm", "webp", "pdf"
+          "mp4", "avi", "mov", "mkv", "webm", "webp", "pdf", "avif"
         ],
         resource_type: "auto", 
         public_id: `${Date.now()}-${originalNameWithoutExt}`,
