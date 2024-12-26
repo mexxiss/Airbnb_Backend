@@ -45,7 +45,6 @@ export const SetProperty = async (req, res, next) => {
   const {
     title,
     description,
-    property_images,
     property_details,
     address,
     discounts_percentage,
@@ -62,7 +61,6 @@ export const SetProperty = async (req, res, next) => {
       ...req?.body,
       title,
       description,
-      property_images,
       property_details,
       address,
       discounts_percentage,

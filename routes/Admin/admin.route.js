@@ -85,6 +85,7 @@ import { signUpValidator } from "../../utils/validations/signupValidator.js";
 import { GetBookDetails } from "../../controllers/admin/booking/details.controllers.js";
 import { contactValidator } from "../../utils/validations/contactvalidator.js";
 import { AddRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
+import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
 
 const router = express.Router();
 
@@ -197,5 +198,8 @@ router.post("/utility/", SetUtility);
 
 // Video Guides Routes
 router.post("/guides/", AddVideoGuide);
+
+// Dashboard Routes
+router.get("/dashboard", getFigures);
 
 export default router;

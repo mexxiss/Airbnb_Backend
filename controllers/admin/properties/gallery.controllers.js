@@ -27,7 +27,7 @@ export const createGalleryContent = async (req, res) => {
       .status(201)
       .json({ msg: "gallery created successfully", data: savedGallery });
   } catch (error) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
