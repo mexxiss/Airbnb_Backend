@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { PropertiesModel } from "../../../models/Properties.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
+import { GalleryModel } from "../../../models/Gallery.js";
 
 export const getPropertyListByAdmin = async (req, res) => {
   // #swagger.tags = ['Admin']
@@ -32,19 +33,20 @@ export const getPropertyListByAdmin = async (req, res) => {
 export const SetProperty = async (req, res, next) => {
   // #swagger.tags = ['Admin']
   // #swagger.summary = "AUTHORIZED Admin can add new property"
-  // #swagger.description = "> #TODO: Created document is being sent back through reponse that may be unnecessary",
+  // #swagger.description = "> Handles property creation and associated gallery updates."
   /* #swagger.requestBody = {
-      required: true,
+        required: true,
         content: {
           "application/json": {
-            schema: { $ref: "#/components/schemas/PropertiesRequest" }  
+            schema: { $ref: "#/components/schemas/PropertiesRequest" }
           }
         }
-    } 
-  */
+  } */
+
   const {
     title,
     description,
+    property_images,
     property_details,
     address,
     discounts_percentage,
@@ -54,13 +56,23 @@ export const SetProperty = async (req, res, next) => {
     cancellation_policy,
     amenities,
     important_information,
+    user
   } = req.body;
 
+  if (!title || !description || !address || !user) {
+    return res
+      .status(400)
+      .json(new apiResponse(400, null, "Missing required fields: title, description, address, or user."));
+  }
+
+  let createdProperty = null; // To store the created property for potential rollback
+
   try {
-    const property = await PropertiesModel.create({
-      ...req?.body,
+    // Step 1: Create the property document
+    createdProperty = await PropertiesModel.create({
       title,
       description,
+      property_images,
       property_details,
       address,
       discounts_percentage,
@@ -70,12 +82,38 @@ export const SetProperty = async (req, res, next) => {
       cancellation_policy,
       amenities,
       important_information,
+      user
     });
+
+    // Step 2: Update the gallery documents
+    if (property_images && property_images.length > 0) {
+      const objectIdImages = property_images.map(id => mongoose.Types.ObjectId(id));
+      const updatedGallery = await GalleryModel.updateMany(
+        { _id: { $in: objectIdImages } },
+        { $set: { property: createdProperty._id } }
+      );
+
+      if (updatedGallery.modifiedCount === 0) {
+        throw new Error("No gallery documents were updated. Rolling back property creation.");
+      }
+    }
+
     return res
-      .status(200)
-      .json(new apiResponse(200, property, "Property created successfully"));
+      .status(201)
+      .json(new apiResponse(201, createdProperty, "Property created successfully"));
   } catch (error) {
-    return next(new apiError(500, `Server Error: ${error}`));
+    console.error("Error during property creation:", error);
+
+    // Cleanup: Rollback created property if an error occurs
+    if (createdProperty) {
+      try {
+        await PropertiesModel.findByIdAndDelete(createdProperty._id);
+      } catch (cleanupError) {
+        console.error("Error during rollback of property creation:", cleanupError);
+      }
+    }
+
+    return next(new apiError(500, "An error occurred while creating the property."));
   }
 };
 
