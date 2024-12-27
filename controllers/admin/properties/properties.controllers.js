@@ -60,7 +60,8 @@ export const SetProperty = async (req, res, next) => {
     cancellation_policy,
     amenities,
     important_information,
-    user,
+    status,
+    user
   } = req.body;
 
   if (!title || !description || !address || !user) {
@@ -92,7 +93,8 @@ export const SetProperty = async (req, res, next) => {
       cancellation_policy,
       amenities,
       important_information,
-      user,
+      status,
+      user
     });
 
     // Step 2: Update the gallery documents
