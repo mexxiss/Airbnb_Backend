@@ -7,11 +7,62 @@ import { GalleryModel } from "../../../models/Gallery.js";
 export const getPropertyListByAdmin = async (req, res) => {
   // #swagger.tags = ['Admin']
   // #swagger.summary = "AUTHORIZED Admin can view the list of properties with a LIMIT of properties on each PAGE"
-  // #swagger.description = "> #TODO: Each document of properties may contain unnecessary data that may not be required on admin panel",
+  // #swagger.description = "> Each document of properties may contain unnecessary data that may not be required on the admin panel."
 
-  const { page = 1, limit = 10 } = req.query;
+  const {
+    startDate,
+    endDate,
+    status = "all",
+    searchTerm = "",
+    page = 1,
+    limit = 10,
+  } = req.query;
+
+  const filterConditions = {};
   try {
-    const properties = await PropertiesModel.find({})
+    // Date range filtering
+    if (startDate && endDate) {
+      filterConditions.createdAt = {
+        $gte: new Date(startDate), // greater than or equal to startDate
+        $lte: new Date(endDate), // less than or equal to endDate
+      };
+    }
+
+    // Status filtering
+    if (status && status !== "all") {
+      filterConditions.status = status;
+    }
+
+    // Search term filtering
+    if (searchTerm) {
+      filterConditions.$or = [
+        { title: { $regex: searchTerm, $options: "i" } },
+        { "address.city": { $regex: searchTerm, $options: "i" } },
+        { "address.area": { $regex: searchTerm, $options: "i" } },
+        { "address.pincode": { $regex: searchTerm, $options: "i" } },
+        { description: { $regex: searchTerm, $options: "i" } },
+        {
+          "property_details.furnishing": { $regex: searchTerm, $options: "i" },
+        },
+        { "property_details.wifi.name": { $regex: searchTerm, $options: "i" } },
+        { "costs.currency": { $regex: searchTerm, $options: "i" } },
+        {
+          "important_information.about_space": {
+            $regex: searchTerm,
+            $options: "i",
+          },
+        },
+        {
+          "important_information.guest_access": {
+            $regex: searchTerm,
+            $options: "i",
+          },
+        },
+      ];
+    }
+
+    // Fetch filtered properties
+    const properties = await PropertiesModel.find(filterConditions)
       .populate({
         path: "property_images",
         select: "img_url type",
@@ -20,7 +71,10 @@ export const getPropertyListByAdmin = async (req, res) => {
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
 
-    const totalProperties = await PropertiesModel.countDocuments({});
+    const totalProperties = await PropertiesModel.countDocuments(
+      filterConditions
+    );
+
     res.status(200).json({
       data: properties,
       currentPage: page,
@@ -61,7 +115,7 @@ export const SetProperty = async (req, res, next) => {
     amenities,
     important_information,
     status,
-    user
+    user,
   } = req.body;
 
   if (!title || !description || !address || !user) {
@@ -94,7 +148,7 @@ export const SetProperty = async (req, res, next) => {
       amenities,
       important_information,
       status,
-      user
+      user,
     });
 
     // Step 2: Update the gallery documents
