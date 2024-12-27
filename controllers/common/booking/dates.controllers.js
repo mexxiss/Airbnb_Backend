@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { BookedDatesModel } from "../../../models/BookedDates.js";
 import { apiError } from "../../../utils/apiError.js";
+import { getDaysInMonth, getOccupancyAggregation } from "../../../utils/bookingPipeline.js";
 
 export const GetFilteredDates = async (req, res, next) => {
     // #swagger.tags = ['Users']
@@ -40,8 +41,8 @@ export const GetFilteredDates = async (req, res, next) => {
             {
                 $lookup: {
                     from: "bookdetails", // Collection name of BookDetailsModel
-                    localField: "_id", // Field in BookedDates that references BookDetails
-                    foreignField: "booked_dates", // Field in BookDetails that references BookedDates
+                    localField: "book_details", // Field in BookedDates that references BookDetails
+                    foreignField: "_id", // Field in BookDetails that references BookedDates
                     as: "book_details", // Alias for the joined data
                 }
             },
@@ -234,7 +235,11 @@ export const GetFilteredDates = async (req, res, next) => {
             }
         ]);
 
-        return res.status(200).json(dates[0]);
+        const occupancyDetails = await BookedDatesModel.aggregate(
+            getOccupancyAggregation(property, firstOfMonth, e_date)
+        );
+
+        return res.status(200).json({dates: dates[0], occupancy: occupancyDetails});
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
     }

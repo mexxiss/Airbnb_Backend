@@ -56,6 +56,7 @@ export const SetProperty = async (req, res, next) => {
     cancellation_policy,
     amenities,
     important_information,
+    status,
     user
   } = req.body;
 
@@ -82,6 +83,7 @@ export const SetProperty = async (req, res, next) => {
       cancellation_policy,
       amenities,
       important_information,
+      status,
       user
     });
 
