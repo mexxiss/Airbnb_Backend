@@ -40,13 +40,13 @@ export const getFigures = async (req, res, next) => {
         // Calculate total bookings for percentage
         const totalBookings = cityBookings.reduce((sum, city) => sum + city.bookingsCount, 0);
 
-        const formattedCities = cityBookings.slice(0, 3).map((city, index) => ({
+        const formattedCities = cityBookings.slice(0, 4).map((city, index) => ({
             name: city._id || "Unknown",
             percentage: ((city.bookingsCount / totalBookings) * 100).toFixed(2),
         }));
 
         const otherBookingsCount = cityBookings
-            .slice(3)
+            .slice(4)
             .reduce((sum, city) => sum + city.bookingsCount, 0);
         if (otherBookingsCount > 0) {
             formattedCities.push({

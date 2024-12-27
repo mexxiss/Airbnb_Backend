@@ -55,7 +55,7 @@ export const SetBookedDates = async (req, res, next) => {
             return next(new apiError(400, "Utility Document Error"));
         }
 
-        const bookedDates = new BookedDatesModel({ checkinDateISO, checkoutDateISO, property, book_details, source });
+        const bookedDates = new BookedDatesModel({ checkin_date: checkinDateISO, checkout_date: checkoutDateISO, property, book_details, source });
         bookedDates.nights_count = await bookedDates.getNightsCount(checkin_date, checkout_date);
         bookedDates.cost_details = await propertyDoc.calculateCosts(bookedDates.nights_count, bookedDates.discount, utility.vat_tax_rate, utility.tourism_tax_rate);
 
