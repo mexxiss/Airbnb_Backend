@@ -12,6 +12,10 @@ export const getPropertyListByAdmin = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   try {
     const properties = await PropertiesModel.find({})
+      .populate({
+        path: "property_images",
+        select: "img_url type",
+      })
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
@@ -63,7 +67,13 @@ export const SetProperty = async (req, res, next) => {
   if (!title || !description || !address || !user) {
     return res
       .status(400)
-      .json(new apiResponse(400, null, "Missing required fields: title, description, address, or user."));
+      .json(
+        new apiResponse(
+          400,
+          null,
+          "Missing required fields: title, description, address, or user."
+        )
+      );
   }
 
   let createdProperty = null; // To store the created property for potential rollback
@@ -89,20 +99,26 @@ export const SetProperty = async (req, res, next) => {
 
     // Step 2: Update the gallery documents
     if (property_images && property_images.length > 0) {
-      const objectIdImages = property_images.map(id => new mongoose.Types.ObjectId(id));
+      const objectIdImages = property_images.map(
+        (id) => new mongoose.Types.ObjectId(id)
+      );
       const updatedGallery = await GalleryModel.updateMany(
         { _id: { $in: objectIdImages } },
         { $set: { property: createdProperty._id } }
       );
 
       if (updatedGallery.modifiedCount === 0) {
-        throw new Error("No gallery documents were updated. Rolling back property creation.");
+        throw new Error(
+          "No gallery documents were updated. Rolling back property creation."
+        );
       }
     }
 
     return res
       .status(201)
-      .json(new apiResponse(201, createdProperty, "Property created successfully"));
+      .json(
+        new apiResponse(201, createdProperty, "Property created successfully")
+      );
   } catch (error) {
     console.error("Error during property creation:", error);
 
@@ -111,11 +127,16 @@ export const SetProperty = async (req, res, next) => {
       try {
         await PropertiesModel.findByIdAndDelete(createdProperty._id);
       } catch (cleanupError) {
-        console.error("Error during rollback of property creation:", cleanupError);
+        console.error(
+          "Error during rollback of property creation:",
+          cleanupError
+        );
       }
     }
 
-    return next(new apiError(500, "An error occurred while creating the property."));
+    return next(
+      new apiError(500, "An error occurred while creating the property.")
+    );
   }
 };
 
@@ -164,7 +185,7 @@ export const UpdateProperty = async (req, res, next) => {
       id,
       { $set: updates },
       { new: true, runValidators: true }
-    );
+    ).populate({ path: "property_images", select: "img_url type" });
     return res
       .status(200)
       .json(new apiResponse(200, property, "Property Updated Successfully"));
