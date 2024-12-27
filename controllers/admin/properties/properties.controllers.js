@@ -183,7 +183,7 @@ export const UpdateProperty = async (req, res, next) => {
       id,
       { $set: updates },
       { new: true, runValidators: true }
-    );
+    ).populate({ path: "property_images", select: "img_url type" });
     return res
       .status(200)
       .json(new apiResponse(200, property, "Property Updated Successfully"));
