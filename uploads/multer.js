@@ -7,6 +7,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
     try {
+      console.log("Upload Middleware: ", file);
       const originalNameWithoutExt = path.parse(file.originalname).name;
       return {
         folder: `uploads/${req.query.folder || ""}`,
@@ -18,6 +19,7 @@ const storage = new CloudinaryStorage({
         public_id: `${Date.now()}-${originalNameWithoutExt}`,
       };
     } catch (error) {
+      console.error("Error during Multer storage setup:", error);
       throw error;
     }
   },

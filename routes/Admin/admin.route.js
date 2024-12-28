@@ -86,6 +86,7 @@ import { GetBookDetails } from "../../controllers/admin/booking/details.controll
 import { contactValidator } from "../../utils/validations/contactvalidator.js";
 import { AddRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
 import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
+import { generatePdf } from "../../controllers/admin/invoices/invoices.controllers.js";
 
 const router = express.Router();
 
@@ -201,5 +202,8 @@ router.post("/guides/", AddVideoGuide);
 
 // Dashboard Routes
 router.get("/dashboard", getFigures);
+
+// Invoice Generator
+router.post("/generate-pdf", generatePdf);
 
 export default router;
