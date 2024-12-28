@@ -37,9 +37,9 @@ export const getPropertiesChartData = async () => {
 
         // Monthly data
         const monthlyData = await Promise.all(
-            Array.from({ length: 6 }, (_, i) => {
+            Array.from({ length: 12 }, (_, i) => {
                 const date = new Date(currentDate);
-                date.setMonth(currentDate.getMonth() - (5 - i)); // Last 6 months
+                date.setMonth(currentDate.getMonth() - (11 - i)); // Last 6 months
 
                 return PropertiesModel.aggregate([
                     {
