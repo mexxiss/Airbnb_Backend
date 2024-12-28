@@ -1,20 +1,26 @@
 import { Schema, model } from "mongoose";
 
 const EstimateRevenueSchema = new Schema({
-    area: {
-        type: String, required: true
+    area_name: { 
+        type: String,
+        required: true
+    },
+    base_price: {
+        type: Number,
+        required: true
     },
     beds: [{
-        name: { type: String, required: true },
-        furnishing: [{
-            name: {
-                type: String,
-                enum: ["Premium", "Standard"],
-                required: true,
-            },
-            price: { type: Number, required: true },
-        }],
-    }], 
-});
+        title: { type: String, required: true },
+        increment: { type: Number, required: true }
+    }],
+    furnishing: [{
+        title: { type: String, required: true, enum: ["Premium", "Standard"] },
+        increment: { type: Number, required: true }
+    }]
+}, { timestamps: true });
+
+EstimateRevenueSchema.methods.calculatePrice = function (beds, furnishing) {
+    return this.base_price * (1 + beds) * (1 + furnishing);
+}
 
 export const EstimateRevenueModel = model("estimaterevenue", EstimateRevenueSchema);
