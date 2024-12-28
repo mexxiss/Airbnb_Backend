@@ -1,7 +1,9 @@
 import { BookedDatesModel } from "../../../models/BookedDates.js";
 import { PropertiesModel } from "../../../models/Properties.js";
 import { UserModel } from "../../../models/Users.js";
-import {apiError} from "../../../utils/apiError.js";
+import { apiError } from "../../../utils/apiError.js";
+import { getPropertiesChartData } from "../../../utils/dashboard/propertieschart.js";
+import { getUsersChartsData } from "../../../utils/dashboard/userstatus.js";
 
 export const getFigures = async (req, res, next) => {
     try {
@@ -37,7 +39,6 @@ export const getFigures = async (req, res, next) => {
             },
         ]);
 
-        // Calculate total bookings for percentage
         const totalBookings = cityBookings.reduce((sum, city) => sum + city.bookingsCount, 0);
 
         const formattedCities = cityBookings.slice(0, 4).map((city, index) => ({
@@ -62,6 +63,8 @@ export const getFigures = async (req, res, next) => {
             totalBookings: totalBookings,
             totalProperties: totalPropertiesCount,
             inactiveProperties: inactivePropertiesCount,
+            usersChart: await getUsersChartsData(),
+            propertiesChart: await getPropertiesChartData()
         };
 
         return res.status(200).json(figures);
