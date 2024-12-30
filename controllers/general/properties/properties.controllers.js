@@ -16,6 +16,15 @@ export const GetAllProperties = async (req, res, next) => {
     }
 }
 
+export const GetFullPropertiesObject = async (req, res, next) => {
+    try {
+        const properties = await PropertiesModel.find();
+        return res.status(200).json(new apiResponse(200, properties, "Property retrieved successfully"));
+    } catch (error) {
+        return next(new apiError(500, `Server Error: ${error}`));
+    }
+}
+
 export const GetPropertyObj = async (req, res, next) => {
     // #swagger.tags = ['General']
     // #swagger.summary = 'Get a single property with images and details populated - Property Page',
