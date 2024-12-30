@@ -87,6 +87,7 @@ import { contactValidator } from "../../utils/validations/contactvalidator.js";
 import { AddRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
 import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
 import { generatePdf } from "../../controllers/admin/invoices/invoices.controllers.js";
+import { SetUIContent } from "../../controllers/admin/content/uicontent.controllers.js";
 
 const router = express.Router();
 
@@ -205,5 +206,8 @@ router.get("/dashboard", getFigures);
 
 // Invoice Generator
 router.post("/generate-pdf", generatePdf);
+
+// UI Content Routes
+router.post("/ui-content/", SetUIContent);
 
 export default router;
