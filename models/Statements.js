@@ -1,16 +1,24 @@
 import { Schema, model } from "mongoose";
 
 const StatementSchema = new Schema({
-    statement: {
+    url: {
         type: String,
         required: true
     },
-    author: {
+    title: {
         type: String,
         required: true
     },
-    publication_date: {
-        type: Date,
+    total_amount: {
+        type: Number,
+        required: true
+    },
+    received_amount: {
+        type: Number,
+        required: true
+    },
+    net_amount_to_pay: {
+        type: Number,
         required: true
     }
 }, { timestamps: true })
