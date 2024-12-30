@@ -5,6 +5,11 @@ const LegalSchema = new Schema({
         type: String,
         required: true,
     },
+    type: {
+        type: String,
+        required: true,
+        enum: ["terms", "privacy", "refund"]
+    },
     body: {
         type: String,
         required: true

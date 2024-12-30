@@ -6,7 +6,7 @@ import { SetBookDetails } from "../../controllers/general/booking/details.contro
 import { GetBookedDates, SetBookedDates } from "../../controllers/general/booking/dates.controllers.js";
 import { getContactus, sendContactQuery } from "../../controllers/general/contact/contact.controllers.js";
 import { GetDubaiDetails } from "../../controllers/general/content/airbnbdubai.controllers.js";
-import { GetAreas } from "../../controllers/general/content/estimaterevenue.controllers.js";
+import { GetAreas, GetEstimatedRevenue } from "../../controllers/general/content/estimaterevenue.controllers.js";
 import { GetFilteredFaqs } from "../../controllers/general/content/faqs.controllers.js";
 import { GetGallaryTypes } from "../../controllers/general/properties/gallerytypes.controllers.js";
 import { getGalleryImagesByQuery } from "../../controllers/general/properties/gallery.controllers.js";
@@ -47,6 +47,7 @@ router.get("/airbnb-dubai/", GetDubaiDetails);
 
 // Estimate Revenue Routes
 router.get("/estimate-revenue/", GetAreas);
+router.get("/estimate-revenue/:id", GetEstimatedRevenue);
 
 //FAQs Routes
 router.get("/faqs/", GetFilteredFaqs);
@@ -61,7 +62,7 @@ router.get("/gallery", getGalleryImagesByQuery);
 router.get("/home-content/", GetHomeContent);
 
 // Legal Routes
-router.get("/legals/", GetLegals);
+router.get("/content", GetLegals);
 
 // Media Featured Articles Routes
 router.get("/featured-articles/", GetFeaturedArticles);
