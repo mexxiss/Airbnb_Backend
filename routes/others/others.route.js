@@ -14,7 +14,7 @@ import { GetHomeContent } from "../../controllers/general/content/homecontent.co
 import { GetLegals } from "../../controllers/general/content/legal.controllers.js";
 import { GetFeaturedArticles } from "../../controllers/general/content/featuredarticles.controllers.js";
 import { GetPricings } from "../../controllers/general/content/pricing.controllers.js";
-import { GetAllProperties, GetPropertyObj } from "../../controllers/general/properties/properties.controllers.js";
+import { GetAllProperties, GetFullPropertiesObject, GetPropertyObj } from "../../controllers/general/properties/properties.controllers.js";
 import { GetRequirements } from "../../controllers/general/content/requirements.controllers.js";
 import { GetServices } from "../../controllers/general/content/services.controllers.js";
 import { SetSubscription } from "../../controllers/general/subscriptions/subscriptions.controllers.js";
@@ -72,6 +72,7 @@ router.get("/pricing/", GetPricings);
 
 // Properties Routes
 router.get("/properties/", GetAllProperties);
+router.get("/properties/all", GetFullPropertiesObject);
 router.get("/properties/:id", GetPropertyObj);
 
 // Requirements Routes
