@@ -150,7 +150,7 @@ router.post("/home-content/", SetHomeContent);
 router.put("/home-content/:id", UpdateHomeContent);
 
 // Legal Routes
-router.post("/legals/", AddLegal);
+router.post("/content/", AddLegal);
 
 // Maintenance Routes
 router.post("/maintenance/", AddMaintenance);
