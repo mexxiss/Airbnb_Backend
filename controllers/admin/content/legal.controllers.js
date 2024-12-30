@@ -15,10 +15,10 @@ export const AddLegal = async (req, res, next) => {
           }
       } 
     */
-    const { body, title } = req.body;
+    const { body, title, type } = req.body;
 
     try {
-        const legal = await LegalModel.create({ title, body });
+        const legal = await LegalModel.create({ title, body, type });
         return res.status(200).json(new apiResponse(200, legal, "Guide Added Successfully"))
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));

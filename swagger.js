@@ -7,7 +7,7 @@ const doc = {
     version: "1.0.0",
     description: "For Airbnb Management Platform",
   },
-  host: 'localhost:8000',
+  host: 'ec2-51-20-4-233.eu-north-1.compute.amazonaws.com:8000',
   components: {
     securitySchemes: {
       bearerAuth: {

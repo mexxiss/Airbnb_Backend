@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8000/api/v1"
+      "url": "http://ec2-51-20-4-233.eu-north-1.compute.amazonaws.com:8000/api/v1"
     }
   ],
   "tags": [
@@ -339,6 +339,147 @@
         }
       }
     },
+    "/users/utilities/": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "AUTHENTICATED Owner OR Admin can create Property Utility for a Property by providing Property ID",
+        "description": "Created document may contain unnecessary fields.",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/UtilityManagementRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/utilities": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/utilities/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "updates": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/users/providers/": {
       "get": {
         "tags": [
@@ -536,9 +677,37 @@
         "tags": [
           "Admin"
         ],
-        "summary": "Admin can view the list of users by passing AUTHORIZED BEARER TOKEN in header and query parameters - limit and page",
+        "summary": "Admin can view the list of users by passing AUTHORIZED BEARER TOKEN in header and query parameters - startDate, endDate, status, searchTerm, role, city, page, and limit",
         "description": "",
         "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDeleted",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "page",
             "in": "query",
@@ -1118,10 +1287,16 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "area": {
+                  "area_name": {
+                    "example": "any"
+                  },
+                  "base_price": {
                     "example": "any"
                   },
                   "beds": {
+                    "example": "any"
+                  },
+                  "furnishing": {
                     "example": "any"
                   }
                 }
@@ -1230,6 +1405,21 @@
       }
     },
     "/admin/gallery-types/": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "AUTHORIZED Admin can fetch all gallery types.",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
       "post": {
         "tags": [
           "Admin"
@@ -1346,6 +1536,32 @@
                 "type": "objectid of gallery type"
               }
             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "AUTHORIZED Admin can delete a gallery document using the ID from the path.",
+        "description": "> Deletes a gallery document by ID and returns the deleted document for reference.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ObjectID of the gallery document to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -1655,10 +1871,13 @@
           "Admin"
         ],
         "summary": "AUTHORIZED Admin can add new property",
-        "description": "> #TODO: Created document is being sent back through reponse that may be unnecessary",
+        "description": "> Handles property creation and associated gallery updates.",
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -1680,8 +1899,36 @@
           "Admin"
         ],
         "summary": "AUTHORIZED Admin can view the list of properties with a LIMIT of properties on each PAGE",
-        "description": "> #TODO: Each document of properties may contain unnecessary data that may not be required on admin panel",
+        "description": "> Each document of properties may contain unnecessary data that may not be required on the admin panel.",
         "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "page",
             "in": "query",
@@ -2069,6 +2316,49 @@
         }
       }
     },
+    "/admin/dashboard": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/admin/generate-pdf": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [
@@ -2332,6 +2622,56 @@
         }
       }
     },
+    "/estimate-revenue/{id}": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Endpoint to get estimated revenue for a given area and bedroom",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "beds",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "furnishing_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/faqs/": {
       "get": {
         "tags": [
@@ -2375,7 +2715,7 @@
         }
       }
     },
-    "/gallery/": {
+    "/gallery": {
       "get": {
         "tags": [
           "General"
@@ -2435,13 +2775,22 @@
         }
       }
     },
-    "/legals/": {
+    "/content": {
       "get": {
         "tags": [
           "General"
         ],
         "summary": "Get all legals, Terms & Conditions, Privacy Policy, and Refund Policy, for mapping on website's UI",
         "description": "",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2919,6 +3268,10 @@
           "type": {
             "type": "string",
             "example": "gallary_type_object_id"
+          },
+          "property": {
+            "type": "string",
+            "example": "properties_object_id"
           }
         }
       },
@@ -3280,13 +3633,8 @@
             }
           },
           "staying_rules": {
-            "type": "array",
-            "example": [
-              "Please don't forget to send your passport/valid ID as well as those checking in with you. This is a strict requirement of Dubai's Economy and Tourism Department (DET)"
-            ],
-            "items": {
-              "type": "string"
-            }
+            "type": "string",
+            "example": "staying_rules_in_html"
           },
           "cancellation_policy": {
             "type": "string",
@@ -3759,6 +4107,10 @@
           "property": {
             "type": "string",
             "example": "property_object_id"
+          },
+          "book_details": {
+            "type": "string",
+            "example": "book_details_object_id"
           }
         }
       },
@@ -3939,6 +4291,220 @@
             "example": "property_object_id"
           },
           "user_id": {
+            "type": "string",
+            "example": "user_object_id"
+          }
+        }
+      },
+      "UtilityManagementRequest": {
+        "type": "object",
+        "properties": {
+          "internet": {
+            "type": "object",
+            "properties": {
+              "web_login": {
+                "type": "string",
+                "example": "web_login"
+              },
+              "web_pass": {
+                "type": "string",
+                "example": "web_pass"
+              },
+              "service_provider": {
+                "type": "string",
+                "example": "service_provider"
+              },
+              "service_name": {
+                "type": "string",
+                "example": "Internet"
+              },
+              "account_no": {
+                "type": "string",
+                "example": "account_no"
+              },
+              "paid_by": {
+                "type": "string",
+                "example": "Owner/Company"
+              },
+              "already_have_account": {
+                "type": "boolean",
+                "example": true
+              },
+              "type": {
+                "type": "string",
+                "example": "internet"
+              }
+            }
+          },
+          "electricity_water": {
+            "type": "object",
+            "properties": {
+              "web_login": {
+                "type": "string",
+                "example": "web_login"
+              },
+              "web_pass": {
+                "type": "string",
+                "example": "web_pass"
+              },
+              "service_provider": {
+                "type": "string",
+                "example": "service_provider"
+              },
+              "service_name": {
+                "type": "string",
+                "example": "Electricity & Water"
+              },
+              "account_no": {
+                "type": "string",
+                "example": "account_no"
+              },
+              "paid_by": {
+                "type": "string",
+                "example": "Owner/Company"
+              },
+              "already_have_account": {
+                "type": "boolean",
+                "example": true
+              },
+              "type": {
+                "type": "string",
+                "example": "electricity_water"
+              }
+            }
+          },
+          "gas": {
+            "type": "object",
+            "properties": {
+              "web_login": {
+                "type": "string",
+                "example": "web_login"
+              },
+              "web_pass": {
+                "type": "string",
+                "example": "web_pass"
+              },
+              "service_provider": {
+                "type": "string",
+                "example": "service_provider"
+              },
+              "service_name": {
+                "type": "string",
+                "example": "Gas"
+              },
+              "account_no": {
+                "type": "string",
+                "example": "account_no"
+              },
+              "paid_by": {
+                "type": "string",
+                "example": "Owner/Company"
+              },
+              "already_have_account": {
+                "type": "boolean",
+                "example": true
+              },
+              "type": {
+                "type": "string",
+                "example": "gas"
+              }
+            }
+          },
+          "chiller": {
+            "type": "object",
+            "properties": {
+              "web_login": {
+                "type": "string",
+                "example": "web_login"
+              },
+              "web_pass": {
+                "type": "string",
+                "example": "web_pass"
+              },
+              "service_provider": {
+                "type": "string",
+                "example": "service_provider"
+              },
+              "service_name": {
+                "type": "string",
+                "example": "Chiller"
+              },
+              "account_no": {
+                "type": "string",
+                "example": "account_no"
+              },
+              "paid_by": {
+                "type": "string",
+                "example": "Owner/Company"
+              },
+              "already_have_account": {
+                "type": "boolean",
+                "example": true
+              },
+              "type": {
+                "type": "string",
+                "example": "chiller"
+              }
+            }
+          },
+          "other": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "web_login": {
+                  "type": "string",
+                  "example": "web_login"
+                },
+                "web_pass": {
+                  "type": "string",
+                  "example": "web_pass"
+                },
+                "service_provider": {
+                  "type": "string",
+                  "example": "service_provider"
+                },
+                "service_name": {
+                  "type": "string",
+                  "example": "Other"
+                },
+                "account_no": {
+                  "type": "string",
+                  "example": "account_no"
+                },
+                "paid_by": {
+                  "type": "string",
+                  "example": "Owner/Company"
+                },
+                "already_have_account": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "link": {
+                  "type": "string",
+                  "example": "link"
+                },
+                "uploads": {
+                  "type": "array",
+                  "example": [
+                    "uploads"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "type": {
+                  "type": "string",
+                  "example": "other"
+                }
+              }
+            }
+          },
+          "property": {
+            "type": "string",
+            "example": "property_object_id"
+          },
+          "user": {
             "type": "string",
             "example": "user_object_id"
           }
