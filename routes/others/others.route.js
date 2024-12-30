@@ -1,12 +1,27 @@
 import express from "express";
-import { contactValidator, contactQuerySendValidator } from "../../utils/validations/contactvalidator.js";
+import {
+  contactValidator,
+  contactQuerySendValidator,
+} from "../../utils/validations/contactvalidator.js";
 import { Login } from "../../controllers/general/users/users.controllers.js";
-import { GetBlog, GetBlogs } from "../../controllers/general/blogs/blogs.controllers.js";
+import {
+  GetBlog,
+  GetBlogs,
+} from "../../controllers/general/blogs/blogs.controllers.js";
 import { SetBookDetails } from "../../controllers/general/booking/details.controllers.js";
-import { GetBookedDates, SetBookedDates } from "../../controllers/general/booking/dates.controllers.js";
-import { getContactus, sendContactQuery } from "../../controllers/general/contact/contact.controllers.js";
+import {
+  GetBookedDates,
+  SetBookedDates,
+} from "../../controllers/general/booking/dates.controllers.js";
+import {
+  getContactus,
+  sendContactQuery,
+} from "../../controllers/general/contact/contact.controllers.js";
 import { GetDubaiDetails } from "../../controllers/general/content/airbnbdubai.controllers.js";
-import { GetAreas, GetEstimatedRevenue } from "../../controllers/general/content/estimaterevenue.controllers.js";
+import {
+  GetAreas,
+  GetEstimatedRevenue,
+} from "../../controllers/general/content/estimaterevenue.controllers.js";
 import { GetFilteredFaqs } from "../../controllers/general/content/faqs.controllers.js";
 import { GetGallaryTypes } from "../../controllers/general/properties/gallerytypes.controllers.js";
 import { getGalleryImagesByQuery } from "../../controllers/general/properties/gallery.controllers.js";
@@ -21,6 +36,7 @@ import { SetSubscription } from "../../controllers/general/subscriptions/subscri
 import { GetTestimonials } from "../../controllers/general/content/testimonials.controllers.js";
 import { GetThirdPartyLogos } from "../../controllers/general/content/thirdpartylogos.controllers.js";
 import { GetVideoGuides } from "../../controllers/general/content/guides.controllers.js";
+import { GetUIContent } from "../../controllers/general/content/uicontent.controllers.js";
 
 const router = express.Router();
 
@@ -92,5 +108,8 @@ router.get("/third-party-logos/", GetThirdPartyLogos);
 
 // Video Guides Routes
 router.get("/guides/", GetVideoGuides);
+
+// UI Content Routes
+router.get("/ui-content/", GetUIContent);
 
 export default router;
