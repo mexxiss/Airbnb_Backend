@@ -88,6 +88,7 @@ import { AddRevenueDetails } from "../../controllers/admin/content/estimatereven
 import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
 import { generatePdf } from "../../controllers/admin/invoices/invoices.controllers.js";
 import { SetUIContent } from "../../controllers/admin/content/uicontent.controllers.js";
+import { addStatement } from "../../controllers/admin/properties/statements.controllers.js";
 
 const router = express.Router();
 
@@ -209,5 +210,8 @@ router.post("/generate-pdf", generatePdf);
 
 // UI Content Routes
 router.post("/ui-content/", SetUIContent);
+
+// Statements Routes
+router.post("/statements", addStatement);
 
 export default router;
