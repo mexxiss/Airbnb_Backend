@@ -51,7 +51,7 @@ export const Logout = async (req, res, next) => {
 
     return res
       .status(200)
-      .json(new apiResponse(200, { user }, "Logout Successful"));
+      .json(new apiResponse(200, "", "Logout Successful"));
   } catch (error) {
     return next(new apiError(500, `Logout Server Error: ${error}`));
   }

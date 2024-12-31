@@ -3,7 +3,7 @@ import {Auth} from "../../middleware/auth.js";
 import { ChangePassword, GetUser, Logout, UpdateUser } from "../../controllers/common/users/users.controllers.js";
 import { GetFilteredDates } from "../../controllers/common/booking/dates.controllers.js";
 import { GetPaymentDetails, SetPaymentDetails, UpdatePaymentDetails } from "../../controllers/common/users/bankdetails.controllers.js";
-import { GetAllPropertiesByUser } from "../../controllers/common/properties/properties.controllers.js";
+import { GetAllPropertiesByUser, GetFullPropertiesObjByUser } from "../../controllers/common/properties/properties.controllers.js";
 import { GetPropertyUtilities, SetPropertyUtility, UpdatePropertyUtility } from "../../controllers/common/properties/utilities.controllers.js";
 import { GetProviders } from "../../controllers/common/providers/providers.controllers.js";
 import {upload} from "../../uploads/multer.js";
@@ -29,6 +29,7 @@ router.put("/payment-details/:id", UpdatePaymentDetails);
 
 // Properties Routes
 router.get("/properties", GetAllPropertiesByUser);
+router.get("/properties/all", GetFullPropertiesObjByUser);
 
 // Property Utilities Routes
 router.post("/property-utilities/", SetPropertyUtility);

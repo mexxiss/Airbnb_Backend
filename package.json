@@ -25,6 +25,7 @@
     "express": "^4.21.1",
     "form-data": "^4.0.1",
     "fs": "^0.0.1-security",
+    "html-pdf-node": "^1.0.8",
     "jsonwebtoken": "^9.0.2",
     "libphonenumber-js": "^1.11.15",
     "mongoose": "^8.8.1",

@@ -1,43 +1,32 @@
 import path from 'path';
 import fs from 'fs';
-import pkg from '@pdftron/pdfnet-node';
-const { PDFNet } = pkg;
+import * as pdf from "html-pdf-node";
 import { fileURLToPath } from 'url';
 import { options } from '../../../helpers/pdfOptions.js';
-import pdf from 'pdf-creator-node';
 import { cloudinary } from '../../../uploads/cloudinary.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// console.log('================================', inputPath, '================================');
-
 export const generatePdf = async (req, res) => {
     try {
         // Paths
-        const htmlPath = path.join(__dirname, '../../../public/invoice_templates/furnishing2.html');
+        const htmlPath = path.join(__dirname, '../../../public/invoice_templates/statement.html');
         const html = fs.readFileSync(htmlPath, 'utf-8');
 
         // Generate data
         const data = req.body.data || [];
-        let array = [];
-        data.forEach(d => {
-            const prod = {
-                name: d.name,
-                description: d.description,
-                unit: d.unit,
-                quantity: d.quantity,
-                price: d.price,
-                total: d.quantity * d.price,
-                imgurl: d.imgurl,
-            };
-            array.push(prod);
-        });
+        const array = data.map(d => ({
+            name: d.name,
+            description: d.description,
+            unit: d.unit,
+            quantity: d.quantity,
+            price: d.price,
+            total: d.quantity * d.price,
+            imgurl: d.imgurl,
+        }));
 
-        let subtotal = 0;
-        array.forEach(i => {
-            subtotal += i.total;
-        });
+        const subtotal = array.reduce((sum, i) => sum + i.total, 0);
         const tax = (subtotal * 20) / 100;
         const grandtotal = subtotal - tax;
 
@@ -51,24 +40,30 @@ export const generatePdf = async (req, res) => {
         const filename = `${Date.now()}_invoice.pdf`;
         const tempPath = path.join(__dirname, `../../../temp/${filename}`);
         const document = {
-            html,
+            content: html,
             data: { products: obj },
-            path: tempPath,
         };
 
         // Generate PDF
-        await pdf.create(document, options);
+        const pdfBuffer = await pdf.generatePdf(document, {
+            format: 'A4', margin: {
+                top: 20,
+                bottom: 20,
+                left: 20,
+                right: 20,
+            }
+        });
 
-        // Read the PDF file as a Buffer
-        const fileBuffer = fs.readFileSync(tempPath);
+        // Save the PDF temporarily
+        fs.writeFileSync(tempPath, pdfBuffer);
 
         // Upload to Cloudinary
         cloudinary.uploader.upload_stream(
             {
                 folder: 'invoices',
                 resource_type: 'raw',
-                public_id: filename, 
-                format: 'pdf', 
+                public_id: filename,
+                format: 'pdf',
             },
             (error, result) => {
                 fs.unlink(tempPath, err => {
@@ -85,8 +80,8 @@ export const generatePdf = async (req, res) => {
                     url: result.secure_url,
                 });
             }
-        ).end(fileBuffer);
-        
+        ).end(pdfBuffer);
+
     } catch (error) {
         console.error('Error generating PDF:', error);
         res.status(500).json({ message: 'Error generating PDF', error: error.message });
