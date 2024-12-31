@@ -39,3 +39,26 @@ export const GetFullPropertiesObjByUser = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${error}`));
     }
 }
+
+export const SetBlockOwnerStay = async (req, res) => {
+    // #swagger.tags = ['Users']
+    // #swagger.summary = "Set Block Owner Stay for Property",
+    // #swagger.description = "User can set block owner stay for their property."
+    
+    const { id } = req.params; //
+    const { block_owner } = req.body;
+
+    if (!block_owner || typeof block_owner !== 'object' || Array.isArray(block_owner)) {
+        return res.status(400).json(new apiResponse(400, "Block Owner Stay must be a valid object"));
+    }
+    
+    try {
+        const property = await PropertiesModel.findByIdAndUpdate(id, { block_owner }, { new: true });
+        if (!property) {
+            return res.status(404).send();
+        }
+        res.status(200).send("Updated successfully");
+    } catch (e) {
+        res.status(500).send(e);
+    }
+}

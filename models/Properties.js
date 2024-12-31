@@ -174,6 +174,14 @@ const PropertiesSchema = new Schema(
       ref: "users",
       required: true,
     },
+    block_owner: {
+      from: {
+        type: Date
+      },
+      to: {
+        type: Date
+      }
+    },
   },
   { timestamps: true }
 );
