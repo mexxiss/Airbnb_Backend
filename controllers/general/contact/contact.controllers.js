@@ -1,6 +1,7 @@
 import { ContactUsModel } from "../../../models/ContactUs.js";
 import SendQuery from "../../../models/SendContactQuery.js";
 import { mailSender } from "../../../utils/mailSender.js";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 export const getContactus = async (req, res) => {
   // #swagger.tags = ['General']
@@ -32,6 +33,21 @@ export const sendContactQuery = async (req, res) => {
         message: "All fields are required.",
       });
     }
+    const formattedPhone = '+'+phone;
+    console.log(formattedPhone);
+
+    // Create the document
+    const sendQuery = await SendQuery.create({
+      fullname,
+      email,
+      phone: formattedPhone,
+      subject,
+      message,
+    });
+
+    await sendQuery.validate();
+
+    // Prepare email content
     const emailSubject = `${subject}`;
     const recipientEmail = process.env.GMAIL; // Admin email where the queries should be sent
 
@@ -40,7 +56,7 @@ export const sendContactQuery = async (req, res) => {
       text: `Congratulations, you have received a new query from ${fullname}. Here is the contact information provided.`,
       moreDetails: `<p><strong>Name:</strong> ${fullname}</p>
       <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone}</p>
+      <p><strong>Phone:</strong> ${formattedPhone}</p>
       <p><strong>Subject:</strong> ${subject}</p>
       <p><strong>Message:</strong></p>
       <p>${message}</p>`,
@@ -52,20 +68,26 @@ export const sendContactQuery = async (req, res) => {
       moreDetails: `<p>If you have any urgent concerns, feel free to reply to this email.</p>`,
     };
 
+    // Send emails
     await Promise.all([
       mailSender(process.env.MAIL_FROM, emailSubject, replacements),
       mailSender(email, "Thanks for contacting us", acknowledgeReplacements),
     ]);
-
-    const sendQuery = new SendQuery(req.body);
-    await sendQuery.save();
 
     res.status(200).json({
       success: true,
       message: "Your query has been submitted successfully.",
     });
   } catch (error) {
-    console.error("Error in /contact route:", error);
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed. Please check your input.",
+        errors: error.errors,
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Something went wrong. Please try again later.",

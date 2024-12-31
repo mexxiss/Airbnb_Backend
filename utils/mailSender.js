@@ -3,7 +3,7 @@ import fs from 'fs/promises';
 
 export const mailSender = async (email, subject, replacements) => {
     try {
-        let html = await fs.readFile("public/invoice_templates/furnishing2.html", "utf-8");
+        let html = await fs.readFile("public/thankyou.html", "utf-8");
 
         Object.keys(replacements).forEach(key => {
             const regex = new RegExp(`{{${key}}}`, "g");

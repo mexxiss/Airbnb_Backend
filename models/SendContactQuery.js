@@ -1,3 +1,4 @@
+import parsePhoneNumberFromString from "libphonenumber-js";
 import { model, Schema } from "mongoose";
 
 // SendQuery Schema
@@ -20,7 +21,15 @@ const sendQuerySchema = new Schema(
     phone: {
       type: String,
       required: [true, "Phone number is required"],
-      minlength: [6, "Number must be at least 3 characters long"],
+      trim: true, // Trim leading/trailing spaces
+      validate: {
+        validator: function (phone) {
+          const phoneNumber = parsePhoneNumberFromString(phone);
+          return phoneNumber && phoneNumber.isValid();
+        },
+        message:
+          "Please provide a valid phone number in international format (e.g., +1234567890).",
+      },
     },
     subject: {
       type: String,
