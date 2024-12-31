@@ -3,12 +3,7 @@ import fs from 'fs/promises';
 
 export const mailSender = async (email, subject, replacements) => {
     try {
-<<<<<<< Updated upstream
         let html = await fs.readFile("public/thankyou.html", "utf-8");
-=======
-        let html = await fs.readFile("public/invoice_templates/statement.html", "utf-8");
->>>>>>> Stashed changes
-
         Object.keys(replacements).forEach(key => {
             const regex = new RegExp(`{{${key}}}`, "g");
             html = html.replace(regex, replacements[key]);
