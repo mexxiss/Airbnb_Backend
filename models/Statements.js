@@ -20,6 +20,10 @@ const StatementSchema = new Schema({
     net_amount_to_pay: {
         type: Number,
         required: true
+    },
+    property: {
+        type: Schema.Types.ObjectId,
+        ref: "properties"
     }
 }, { timestamps: true })
 

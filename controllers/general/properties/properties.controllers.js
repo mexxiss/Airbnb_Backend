@@ -18,7 +18,7 @@ export const GetAllProperties = async (req, res, next) => {
 
 export const GetFullPropertiesObject = async (req, res, next) => {
     try {
-        const properties = await PropertiesModel.find();
+        const properties = await PropertiesModel.find().populate('property_images amenities')
         return res.status(200).json(new apiResponse(200, properties, "Property retrieved successfully"));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));

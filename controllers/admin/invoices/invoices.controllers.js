@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 export const generatePdf = async (req, res) => {
     try {
         // Paths
-        const htmlPath = path.join(__dirname, '../../../public/invoice_templates/furnishing.html');
+        const htmlPath = path.join(__dirname, '../../../public/invoice_templates/furnishing2.html');
         const html = fs.readFileSync(htmlPath, 'utf-8');
 
         // Generate data
