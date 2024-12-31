@@ -1,5 +1,5 @@
 import { StatementModel } from "../../../models/Statements.js";
-import { apiError } from "../../../utils/apiError";
+import { apiError } from "../../../utils/apiError.js";
 
 export const addStatement = async (req, res, next) => {
     // #swagger.tags = ['Admin']
