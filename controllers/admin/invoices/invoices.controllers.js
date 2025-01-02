@@ -1,89 +1,228 @@
-import path from 'path';
-import fs from 'fs';
+import path from "path";
+import fs from "fs";
 import * as pdf from "html-pdf-node";
-import { fileURLToPath } from 'url';
-import { options } from '../../../helpers/pdfOptions.js';
-import { cloudinary } from '../../../uploads/cloudinary.js';
+import { fileURLToPath } from "url";
+import { options } from "../../../helpers/pdfOptions.js";
+import { cloudinary } from "../../../uploads/cloudinary.js";
+import { MonthalySchemaModal } from "../../../models/Invoices.js";
+import { BookedDatesModel } from "../../../models/BookedDates.js";
+import mongoose from "mongoose";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const generatePdf = async (req, res) => {
-    try {
-        // Paths
-        const htmlPath = path.join(__dirname, '../../../public/invoice_templates/statement.html');
-        const html = fs.readFileSync(htmlPath, 'utf-8');
+  try {
+    // Paths
+    const htmlPath = path.join(
+      __dirname,
+      "../../../public/invoice_templates/statement.html"
+    );
+    const html = fs.readFileSync(htmlPath, "utf-8");
 
-        // Generate data
-        const data = req.body.data || [];
-        const array = data.map(d => ({
-            name: d.name,
-            description: d.description,
-            unit: d.unit,
-            quantity: d.quantity,
-            price: d.price,
-            total: d.quantity * d.price,
-            imgurl: d.imgurl,
-        }));
+    // Generate data
+    const data = req.body.data || [];
+    const array = data.map((d) => ({
+      name: d.name,
+      description: d.description,
+      unit: d.unit,
+      quantity: d.quantity,
+      price: d.price,
+      total: d.quantity * d.price,
+      imgurl: d.imgurl,
+    }));
 
-        const subtotal = array.reduce((sum, i) => sum + i.total, 0);
-        const tax = (subtotal * 20) / 100;
-        const grandtotal = subtotal - tax;
+    const subtotal = array.reduce((sum, i) => sum + i.total, 0);
+    const tax = (subtotal * 20) / 100;
+    const grandtotal = subtotal - tax;
 
-        const obj = {
-            prodlist: array,
-            subtotal,
-            tax,
-            gtotal: grandtotal,
-        };
+    const obj = {
+      prodlist: array,
+      subtotal,
+      tax,
+      gtotal: grandtotal,
+    };
 
-        const filename = `${Date.now()}_invoice.pdf`;
-        const tempPath = path.join(__dirname, `../../../temp/${filename}`);
-        const document = {
-            content: html,
-            data: { products: obj },
-        };
+    const filename = `${Date.now()}_invoice.pdf`;
+    const tempPath = path.join(__dirname, `../../../temp/${filename}`);
+    const document = {
+      content: html,
+      data: { products: obj },
+    };
 
-        // Generate PDF
-        const pdfBuffer = await pdf.generatePdf(document, {
-            format: 'A4', margin: {
-                top: 20,
-                bottom: 20,
-                left: 20,
-                right: 20,
-            }
-        });
+    // Generate PDF
+    const pdfBuffer = await pdf.generatePdf(document, {
+      format: "A4",
+      margin: {
+        top: 20,
+        bottom: 20,
+        left: 20,
+        right: 20,
+      },
+    });
 
-        // Save the PDF temporarily
-        fs.writeFileSync(tempPath, pdfBuffer);
+    // Save the PDF temporarily
+    fs.writeFileSync(tempPath, pdfBuffer);
 
-        // Upload to Cloudinary
-        cloudinary.uploader.upload_stream(
-            {
-                folder: 'invoices',
-                resource_type: 'raw',
-                public_id: filename,
-                format: 'pdf',
-            },
-            (error, result) => {
-                fs.unlink(tempPath, err => {
-                    if (err) console.error('Error deleting temp file:', err);
-                });
+    // Upload to Cloudinary
+    cloudinary.uploader
+      .upload_stream(
+        {
+          folder: "invoices",
+          resource_type: "raw",
+          public_id: filename,
+          format: "pdf",
+        },
+        (error, result) => {
+          fs.unlink(tempPath, (err) => {
+            if (err) console.error("Error deleting temp file:", err);
+          });
 
-                if (error) {
-                    console.error('Error uploading to Cloudinary:', error);
-                    return res.status(500).json({ message: 'Error uploading PDF', error });
-                }
+          if (error) {
+            console.error("Error uploading to Cloudinary:", error);
+            return res
+              .status(500)
+              .json({ message: "Error uploading PDF", error });
+          }
 
-                res.status(200).json({
-                    message: 'PDF generated and uploaded successfully',
-                    url: result.secure_url,
-                });
-            }
-        ).end(pdfBuffer);
+          res.status(200).json({
+            message: "PDF generated and uploaded successfully",
+            url: result.secure_url,
+          });
+        }
+      )
+      .end(pdfBuffer);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    res
+      .status(500)
+      .json({ message: "Error generating PDF", error: error.message });
+  }
+};
 
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        res.status(500).json({ message: 'Error generating PDF', error: error.message });
+export const createmonthalyInvoice = async (req, res) => {
+  try {
+    const invoice = new MonthalySchemaModal(req.body);
+    await invoice.save();
+    res
+      .status(201)
+      .json({ message: "Invoice created successfully!", data: invoice });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error creating invoice", error: error.message });
+  }
+};
+export const getmonthalyRevenueDetail = async (req, res) => {
+  try {
+    // Extract query parameters
+    const { property_id, user_id, target_month } = req.query;
+
+    let startDate, endDate;
+
+    if (target_month) {
+      // Parse the target month (format: YYYY-MM)
+      const [year, month] = target_month.split("-").map(Number);
+      if (!year || !month || month < 1 || month > 12) {
+        return res
+          .status(400)
+          .json({ error: "Invalid target_month format. Use YYYY-MM." });
+      }
+
+      startDate = new Date(year, month - 1, 1);
+      endDate = new Date(year, month, 0);
+    } else {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     }
+
+    const filter = {
+      checkin_date: { $gte: startDate },
+      checkout_date: { $lte: endDate },
+    };
+
+    // Safely handle property_id
+    if (property_id) {
+      if (!mongoose.Types.ObjectId.isValid(property_id)) {
+        return res.status(400).json({ error: "Invalid property_id format" });
+      }
+      filter.property = new mongoose.Types.ObjectId(property_id.trim());
+    }
+
+    // Safely handle user_id (if needed)
+    if (user_id) {
+      if (!mongoose.Types.ObjectId.isValid(user_id)) {
+        return res.status(400).json({ error: "Invalid user_id format" });
+      }
+      filter["book_details.user"] = new mongoose.Types.ObjectId(user_id.trim());
+    }
+
+    if (property_id) {
+      filter.property = property_id;
+    }
+
+    if (user_id) {
+      filter["book_details.user"] = user_id;
+    }
+
+    const bookings = await BookedDatesModel.find(filter)
+      .populate("property", "name")
+      .populate("book_details", "first_name last_name email phone_number");
+
+    const reservations = bookings.map((booking) => ({
+      reservationCode: booking._id,
+      guestName: booking.book_details?.guest_name || "N/A",
+      checkIn: booking.checkin_date.toISOString().split("T")[0],
+      checkOut: booking.checkout_date.toISOString().split("T")[0],
+      totalNights: booking.nights_count,
+      netRentalIncome: booking.cost_details.net_charges,
+    }));
+
+    const totalIncome = reservations.reduce(
+      (sum, reservation) => sum + reservation.netRentalIncome,
+      0
+    );
+
+    const managementFeePercentage = 17;
+    const managementFee = {
+      percentage: managementFeePercentage,
+      amount: (totalIncome * managementFeePercentage) / 100,
+    };
+
+    const expenses = [
+      {
+        description: "DET License Fee",
+        amount: 370,
+      },
+    ];
+
+    const totalExpenses = expenses.reduce(
+      (sum, expense) => sum + expense.amount,
+      0
+    );
+
+    const netAmountDue = totalIncome - managementFee.amount - totalExpenses;
+
+    const invoiceDetails = {
+      invoiceNumber: `INV-${Math.floor(1000 + Math.random() * 9000)}`,
+      date: new Date().toISOString().split("T")[0],
+      statementPeriod: `${startDate.getFullYear()}/${startDate.getMonth() + 1}`,
+    };
+
+    res.json({
+      invoiceDetails,
+      reservations,
+      summary: {
+        totalIncome,
+        managementFee,
+        expenses,
+        netAmountDue,
+      },
+      footer: "Kind regards,\nMexxstates",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch revenue data" });
+  }
 };
