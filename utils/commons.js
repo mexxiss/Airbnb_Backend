@@ -13,3 +13,20 @@ export function formatNumber(num) {
 export function formatWithCommas(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export function generateReservationCode(objectId) {
+  const objectIdStr =
+    typeof objectId === "string" ? objectId : objectId?.toString();
+
+  if (!objectIdStr || !/^[a-f\d]{24}$/i.test(objectIdStr)) {
+    throw new Error("Invalid MongoDB ObjectID format.");
+  }
+
+  const uniquePart = objectIdStr.slice(-8);
+
+  const prefix = "RES";
+  const timestamp = Date.now().toString(36);
+
+  // Combine the parts into a reservation code
+  return `${prefix}-${uniquePart}-${timestamp}`.toUpperCase();
+}

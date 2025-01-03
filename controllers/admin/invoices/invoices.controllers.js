@@ -7,6 +7,9 @@ import { cloudinary } from "../../../uploads/cloudinary.js";
 import { MonthalySchemaModal } from "../../../models/Invoices.js";
 import { BookedDatesModel } from "../../../models/BookedDates.js";
 import mongoose from "mongoose";
+import { apiError } from "../../../utils/apiError.js";
+import { PropertiesModel } from "../../../models/Properties.js";
+import { generateReservationCode } from "../../../utils/commons.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -115,20 +118,16 @@ export const createmonthalyInvoice = async (req, res) => {
 };
 export const getmonthalyRevenueDetail = async (req, res) => {
   try {
-    // Extract query parameters
     const { property_id, user_id, target_month } = req.query;
 
     let startDate, endDate;
-
     if (target_month) {
-      // Parse the target month (format: YYYY-MM)
       const [year, month] = target_month.split("-").map(Number);
       if (!year || !month || month < 1 || month > 12) {
         return res
           .status(400)
           .json({ error: "Invalid target_month format. Use YYYY-MM." });
       }
-
       startDate = new Date(year, month - 1, 1);
       endDate = new Date(year, month, 0);
     } else {
@@ -142,37 +141,45 @@ export const getmonthalyRevenueDetail = async (req, res) => {
       checkout_date: { $lte: endDate },
     };
 
-    // Safely handle property_id
     if (property_id) {
-      if (!mongoose.Types.ObjectId.isValid(property_id)) {
+      if (!mongoose.Types.ObjectId.isValid(property_id.trim())) {
         return res.status(400).json({ error: "Invalid property_id format" });
       }
       filter.property = new mongoose.Types.ObjectId(property_id.trim());
     }
 
-    // Safely handle user_id (if needed)
     if (user_id) {
-      if (!mongoose.Types.ObjectId.isValid(user_id)) {
+      if (!mongoose.Types.ObjectId.isValid(user_id.trim())) {
         return res.status(400).json({ error: "Invalid user_id format" });
       }
-      filter["book_details.user"] = new mongoose.Types.ObjectId(user_id.trim());
-    }
-
-    if (property_id) {
-      filter.property = property_id;
-    }
-
-    if (user_id) {
-      filter["book_details.user"] = user_id;
+      const propertyOwned = await PropertiesModel.find({
+        user: user_id.trim(),
+      });
+      if (!propertyOwned.length) {
+        return res
+          .status(404)
+          .json({ error: "No properties found for the given user_id." });
+      }
+      filter.property = { $in: propertyOwned.map((p) => p._id) };
     }
 
     const bookings = await BookedDatesModel.find(filter)
-      .populate("property", "name")
-      .populate("book_details", "first_name last_name email phone_number");
+      .populate("property", "title")
+      .populate("book_details", "first_name last_name email");
+
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ error: "No bookings found for the given criteria." });
+    }
 
     const reservations = bookings.map((booking) => ({
-      reservationCode: booking._id,
-      guestName: booking.book_details?.guest_name || "N/A",
+      reservationCode: generateReservationCode(
+        new mongoose.Types.ObjectId(booking._id)
+      ),
+      guestName:
+        `${booking.book_details?.first_name} ${booking.book_details?.last_name}` ||
+        "N/A",
       checkIn: booking.checkin_date.toISOString().split("T")[0],
       checkOut: booking.checkout_date.toISOString().split("T")[0],
       totalNights: booking.nights_count,
@@ -202,7 +209,7 @@ export const getmonthalyRevenueDetail = async (req, res) => {
       0
     );
 
-    const netAmountDue = totalIncome - managementFee.amount - totalExpenses;
+    const netAmountDue = totalIncome - managementFee.amount;
 
     const invoiceDetails = {
       invoiceNumber: `INV-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -222,7 +229,7 @@ export const getmonthalyRevenueDetail = async (req, res) => {
       footer: "Kind regards,\nMexxstates",
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch revenue data" });
+    console.error("Error fetching revenue details:", error);
+    res.status(500).json({ error: "Failed to fetch revenue data." });
   }
 };
