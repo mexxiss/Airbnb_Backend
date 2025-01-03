@@ -1,9 +1,9 @@
 import mongoose, { Schema, model } from "mongoose";
 
-const CounterSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  seq: { type: Number, required: true, default: 0 },
-});
+// const CounterSchema = new mongoose.Schema({
+//   name: { type: String, required: true, unique: true },
+//   seq: { type: Number, required: true, default: 0 },
+// });
 
 const FurnishingSchema = new Schema({
   invoiceType: { type: String, default: "Furnishing" },
@@ -93,25 +93,25 @@ const MonthalySchema = new mongoose.Schema({
   footer: { type: String, required: false }, // e.g., "Kind regards, Mexxstates"
 });
 
-MonthalySchema.pre("save", async function (next) {
-  const invoice = this;
+// MonthalySchema.pre("save", async function (next) {
+//   const invoice = this;
 
-  if (!invoice.invoiceDetails.invoiceNumber) {
-    try {
-      const counter = await CounterSchema.findOneAndUpdate(
-        { name: "invoice" },
-        { $inc: { seq: 1 } },
-        { new: true, upsert: true }
-      );
-      invoice.invoiceDetails.invoiceNumber = `INV-${counter.seq}`;
-      next();
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    next();
-  }
-});
+//   if (!invoice.invoiceDetails.invoiceNumber) {
+//     try {
+//       const counter = await CounterSchema.findOneAndUpdate(
+//         { name: "invoice" },
+//         { $inc: { seq: 1 } },
+//         { new: true, upsert: true }
+//       );
+//       invoice.invoiceDetails.invoiceNumber = `INV-${counter.seq}`;
+//       next();
+//     } catch (error) {
+//       next(error);
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export const Furnishing = model("Furnishing", FurnishingSchema);
 export const MonthalySchemaModal = model("MonthalySchema", MonthalySchema);
