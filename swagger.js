@@ -62,6 +62,21 @@ const doc = {
       },
     },
     schemas: {
+      LoginRequest: {
+        email: "amansekhon.mexxiss@gmail.com",
+        password: "password"
+      },
+      OTPRequest: {
+        email: "amansekhon.mexxiss@gmail.com",
+      },
+      VerifyOTPRequest: {
+        otp: "123456",
+        email: "amansekhon.mexxiss@gmail.com",
+      },
+      ResetPasswordRequest: {
+        email: "amansekhon.mexxiss@gmail.com",
+        password: "new_password"
+      },
       SignUpRequest: {
         first_name: 'John',
         last_name: 'Doe',
