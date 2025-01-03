@@ -251,6 +251,59 @@
         }
       }
     },
+    "/users/properties/all": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get All Properties by User ID through JWT Token",
+        "description": "Retrieved documents may contain unnecessary fields.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/properties/block-owner/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Set Block Owner Stay for Property",
+        "description": "User can set block owner stay for their property.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/users/property-utilities/": {
       "post": {
         "tags": [
@@ -1630,13 +1683,13 @@
         }
       }
     },
-    "/admin/legals/": {
+    "/admin/content/": {
       "post": {
         "tags": [
           "Admin"
         ],
-        "summary": "AUTHORIZED Admin can add Legals to be retrieved on Terms & Conditions/Privacy Policy/Refund Policy on frontend",
-        "description": "> #TODO: Created document is being sent back through response that may be unnecessary",
+        "summary": "AUTHORIZED Admin can add or update Legals for Terms & Conditions/Privacy Policy/Refund Policy on frontend",
+        "description": "> Updates the document if the type exists, otherwise creates a new one.",
         "responses": {
           "200": {
             "description": "OK"
@@ -2359,6 +2412,124 @@
         }
       }
     },
+    "/admin/ui-content/": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "example": "any"
+                  },
+                  "body": {
+                    "example": "any"
+                  },
+                  "images": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/statements": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "Add a new statement",
+        "description": "> #TODO: Implement validation for input fields",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatementRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/monthly-invoice": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/admin/monthly-invoice-revenue": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "property_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "target_month",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
         "tags": [
@@ -2387,6 +2558,87 @@
                     "example": "any"
                   }
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/forgot-pass": {
+      "post": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Send OTP to User's Email",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/OTPRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/verify-otp": {
+      "post": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Verify OTP for User",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/VerifyOTPRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reset-pass": {
+      "post": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Reset User's Password",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/ResetPasswordRequest"
               }
             }
           }
@@ -2852,6 +3104,19 @@
         }
       }
     },
+    "/properties/all": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/properties/{id}": {
       "get": {
         "tags": [
@@ -2994,6 +3259,25 @@
           }
         }
       }
+    },
+    "/ui-content/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3050,6 +3334,54 @@
       }
     },
     "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "amansekhon.mexxiss@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "OTPRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "amansekhon.mexxiss@gmail.com"
+          }
+        }
+      },
+      "VerifyOTPRequest": {
+        "type": "object",
+        "properties": {
+          "otp": {
+            "type": "string",
+            "example": "123456"
+          },
+          "email": {
+            "type": "string",
+            "example": "amansekhon.mexxiss@gmail.com"
+          }
+        }
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "amansekhon.mexxiss@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "new_password"
+          }
+        }
+      },
       "SignUpRequest": {
         "type": "object",
         "properties": {

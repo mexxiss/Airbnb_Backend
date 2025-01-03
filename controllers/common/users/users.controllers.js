@@ -2,6 +2,7 @@ import { UserModel } from "../../../models/Users.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
 import { BlacklistModel } from "../../../models/Blacklist.js";
+import { mailSender } from "../../../utils/mailSender.js";
 
 export const ChangePassword = async (req, res, next) => {
   // #swagger.tags = ['Users']

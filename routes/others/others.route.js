@@ -3,7 +3,7 @@ import {
   contactValidator,
   contactQuerySendValidator,
 } from "../../utils/validations/contactvalidator.js";
-import { Login } from "../../controllers/general/users/users.controllers.js";
+import { ForgotPassword, Login, ResetPassword, VerifyOtp } from "../../controllers/general/users/users.controllers.js";
 import {
   GetBlog,
   GetBlogs,
@@ -42,6 +42,9 @@ const router = express.Router();
 
 // Authentication Routes
 router.post("/login", Login);
+router.post("/forgot-pass", ForgotPassword);
+router.post("/verify-otp", VerifyOtp);
+router.post("/reset-pass", ResetPassword);
 
 // Blogs Routes
 router.get("/blogs/", GetBlogs);
