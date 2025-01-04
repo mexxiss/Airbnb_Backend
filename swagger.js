@@ -229,7 +229,8 @@ const doc = {
         features: [{
           icon: "cloudinary_icon_url",
           title: "features_title",
-          description: "features_description"
+          description: "features_description",
+          link: "/services/...."
         }],
         cleaning_maintenance: {
           what_inclued: [{ title: "title_text", description: "description_text" }]

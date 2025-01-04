@@ -35,7 +35,7 @@ export const Login = async (req, res, next) => {
     });
     return res
       .status(200)
-      .json(new apiResponse(200, { user }, "Login Successful"));
+      .json(new apiResponse(200, "", "Login Successful"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
@@ -79,7 +79,7 @@ export const ForgotPassword = async (req, res, next) => {
     };
 
     await mailSender(email, "Reset Password", replacements);
-    return res.status(200).json({ message: "OTP sent to your email." });
+    return res.status(200).json(new apiResponse(200, "", "OTP sent successfully"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
@@ -110,7 +110,7 @@ export const VerifyOtp = async (req, res, next) => {
       return next(new apiError(400, "OTP Expired"));
     }
 
-    return res.status(200).json({ message: "OTP Verified" });
+    return res.status(200).json(new apiResponse(200, "", "OTP Verified"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
@@ -138,7 +138,7 @@ export const ResetPassword = async (req, res, next) => {
     await user.save();
     return res
       .status(200)
-      .json(new apiResponse(200, [], "password changed"));
+      .json(new apiResponse(200, [], "Password Changed"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
