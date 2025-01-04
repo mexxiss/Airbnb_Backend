@@ -31,6 +31,9 @@ const HomeContentSchema = new Schema({
       icon: {
         type: String,
       },
+      link: {
+        type: String,
+      }
     },
   ],
   cleaning_maintenance: {

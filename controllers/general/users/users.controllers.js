@@ -47,8 +47,10 @@ export const ForgotPassword = async (req, res, next) => {
   /* #swagger.requestBody = {
       required: true,
       content: {
-        'application/json': {
-          schema: { $ref: "#/components/schema/OTPRequest" }
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/OTPRequest"
+          }  
         }
       }
     }
@@ -87,14 +89,16 @@ export const VerifyOtp = async (req, res, next) => {
   // #swagger.tags = ['General']
   // #swagger.summary = "Verify OTP for User"
   /* #swagger.requestBody = {
-        required: true,
-        content: {
-          'application/json': {
-            schema: { $ref: "#/components/schema/VerifyOTPRequest" }
-          }
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/VerifyOTPRequest"
+          }  
         }
       }
-    */
+    }
+  */
   const { otp, email } = req.body;
   try {
     const otpData = await OtpModel.findOne({ email, otp });
@@ -116,14 +120,16 @@ export const ResetPassword = async (req, res, next) => {
   // #swagger.tags = ['General']
   // #swagger.summary = "Reset User's Password"
   /* #swagger.requestBody = {
-        required: true,
-        content: {
-          'application/json': {
-            schema: { $ref: "#/components/schema/ResetPasswordRequest" }
-          }
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/ResetPasswordRequest"
+          }  
         }
       }
-    */
+    }
+  */
   const { email, password } = req.body;
 
   try {

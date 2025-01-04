@@ -13,7 +13,7 @@ export const GetAreas = async (req, res, next) => {
         }
         return res.status(200).json(regions);
     } catch (e) {
-        return next(apiError(res, 500, "Server error fetching regions."));
+        return next(new apiError(res, 500, "Server error fetching regions."));
     }
 }
 
