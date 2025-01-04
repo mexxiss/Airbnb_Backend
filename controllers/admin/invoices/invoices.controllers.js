@@ -2,14 +2,11 @@ import path from "path";
 import fs from "fs";
 import * as pdf from "html-pdf-node";
 import { fileURLToPath } from "url";
-import { options } from "../../../helpers/pdfOptions.js";
 import { cloudinary } from "../../../uploads/cloudinary.js";
 import { MonthalySchemaModal } from "../../../models/Invoices.js";
 import { BookedDatesModel } from "../../../models/BookedDates.js";
 import mongoose from "mongoose";
-import { apiError } from "../../../utils/apiError.js";
 import { PropertiesModel } from "../../../models/Properties.js";
-import { generateReservationCode } from "../../../utils/commons.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -103,19 +100,61 @@ export const generatePdf = async (req, res) => {
   }
 };
 
-export const createmonthalyInvoice = async (req, res) => {
+export const createOrUpdateMonthlyInvoice = async (req, res) => {
   try {
-    const invoice = new MonthalySchemaModal(req.body);
-    await invoice.save();
-    res
-      .status(201)
-      .json({ message: "Invoice created successfully!", data: invoice });
+    const { statementPeriod } = req.body.invoiceDetails;
+    const { property_id } = req.body;
+
+    if (!property_id) {
+      return res
+        .status(400)
+        .json({ message: "Property ID is required to process the invoice." });
+    }
+
+    const propertyId = mongoose.Types.ObjectId.isValid(property_id)
+      ? property_id
+      : null;
+
+    if (!propertyId) {
+      return res.status(400).json({
+        message: "Invalid Property ID format.",
+      });
+    }
+
+    const existingInvoice = await MonthalySchemaModal.findOne({
+      "invoiceDetails.statementPeriod": statementPeriod,
+      property_id: propertyId,
+    });
+
+    if (existingInvoice) {
+      const updatedInvoice = await MonthalySchemaModal.findByIdAndUpdate(
+        existingInvoice._id,
+        req.body,
+        { new: true }
+      );
+
+      return res.status(200).json({
+        message: "Invoice updated successfully!",
+        data: updatedInvoice,
+      });
+    }
+
+    // Create a new invoice
+    const newInvoice = new MonthalySchemaModal(req.body);
+    await newInvoice.save();
+
+    res.status(201).json({
+      message: "Invoice created successfully!",
+      data: newInvoice,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating invoice", error: error.message });
+    res.status(500).json({
+      message: "Error processing invoice",
+      error: error.message,
+    });
   }
 };
+
 export const getmonthalyRevenueDetail = async (req, res) => {
   try {
     const { property_id, user_id, target_month } = req.query;
@@ -174,9 +213,7 @@ export const getmonthalyRevenueDetail = async (req, res) => {
     }
 
     const reservations = bookings.map((booking) => ({
-      reservationCode: generateReservationCode(
-        new mongoose.Types.ObjectId(booking._id)
-      ),
+      reservationCode: booking.reservationCode,
       guestName:
         `${booking.book_details?.first_name} ${booking.book_details?.last_name}` ||
         "N/A",
@@ -227,6 +264,19 @@ export const getmonthalyRevenueDetail = async (req, res) => {
         netAmountDue,
       },
       footer: "Kind regards,\nMexxstates",
+    });
+  } catch (error) {
+    console.error("Error fetching revenue details:", error);
+    res.status(500).json({ error: "Failed to fetch revenue data." });
+  }
+};
+
+export const getmonthalyRevenueList = async (req, res) => {
+  try {
+    const revenueInvoiceLists = await MonthalySchemaModal.find({});
+    res.status(200).json({
+      message: "Revenue details fetched successfully.",
+      data: revenueInvoiceLists,
     });
   } catch (error) {
     console.error("Error fetching revenue details:", error);

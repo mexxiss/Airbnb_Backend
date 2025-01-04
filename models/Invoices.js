@@ -6,19 +6,21 @@ import mongoose, { Schema, model } from "mongoose";
 // });
 
 const FurnishingSchema = new Schema({
-  invoiceType: { type: String, default: "Furnishing" },
-  invoiceFrom: {
-    clientName: { type: String, required: true },
-    property: { type: String, required: true },
+  property_id: {
+    type: Schema.Types.ObjectId,
+    ref: "properties",
+    required: true,
+  },
+  invoiceNumber: { type: String, required: true, unique: true },
+  statementPeriod: { type: String, required: true },
+  companyDetails: {
+    name: { type: String, required: true },
     address: { type: String, required: true },
-    email: { type: String, required: true },
     phone: { type: String, required: true },
   },
-  invoiceTo: {
-    clientName: { type: String, required: true },
-    property: { type: String, required: true },
+  ownerDetails: {
+    name: { type: String, required: true },
     address: { type: String, required: true },
-    email: { type: String, required: true },
     phone: { type: String, required: true },
   },
   status: {
@@ -27,19 +29,11 @@ const FurnishingSchema = new Schema({
     default: "Pending",
   },
   furnishingDetails: {
-    budget: { type: Number, required: true },
-    items: [
-      {
-        description: { type: String, required: true },
-        quantity: { type: Number, default: 1 },
-        unitPrice: { type: Number, default: 0 },
-        totalPrice: { type: Number, default: 0 },
-      },
-    ],
-    totalFurnishingCost: { type: Number, required: true },
-    receivedAmount: { type: Number, required: true },
-    amountOwedToFP: { type: Number, required: true },
+    type: String,
   },
+  totalFurnishingCost: { type: Number, required: true },
+  receivedAmount: { type: Number, required: true },
+  amountOwedToFP: { type: Number, required: true },
   bankDetails: {
     accountName: { type: String, required: true },
     accountNumber: { type: String, required: true },
@@ -51,6 +45,11 @@ const FurnishingSchema = new Schema({
 });
 
 const MonthalySchema = new mongoose.Schema({
+  property_id: {
+    type: Schema.Types.ObjectId,
+    ref: "properties",
+    required: true,
+  },
   companyDetails: {
     name: { type: String, required: true },
     address: { type: String, required: true },
