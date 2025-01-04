@@ -1,3 +1,4 @@
+import { randomBytes } from "crypto";
 export function formatNumber(num) {
   if (num < 1000) return num.toString();
 
@@ -15,18 +16,20 @@ export function formatWithCommas(num) {
 }
 
 export function generateReservationCode(objectId) {
+  // Generate a random ObjectID-like string if no ID is provided
   const objectIdStr =
-    typeof objectId === "string" ? objectId : objectId?.toString();
+    typeof objectId === "string"
+      ? objectId
+      : objectId?.toString() || randomBytes(12).toString("hex"); // Random 24-character hex string
 
-  if (!objectIdStr || !/^[a-f\d]{24}$/i.test(objectIdStr)) {
+  if (!/^[a-f\d]{24}$/i.test(objectIdStr)) {
     throw new Error("Invalid MongoDB ObjectID format.");
   }
 
-  const uniquePart = objectIdStr.slice(-8);
+  const uniquePart = objectIdStr.slice(-8); // Use the last 8 characters
+  const prefix = "RES"; // Prefix for reservation codes
+  const timestamp = Date.now().toString(36); // Current timestamp in Base36
 
-  const prefix = "RES";
-  const timestamp = Date.now().toString(36);
-
-  // Combine the parts into a reservation code
+  // Combine parts into a reservation code
   return `${prefix}-${uniquePart}-${timestamp}`.toUpperCase();
 }

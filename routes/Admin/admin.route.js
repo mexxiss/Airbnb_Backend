@@ -87,9 +87,10 @@ import { contactValidator } from "../../utils/validations/contactvalidator.js";
 import { AddRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
 import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
 import {
-  createmonthalyInvoice,
+  createOrUpdateMonthlyInvoice,
   generatePdf,
   getmonthalyRevenueDetail,
+  getmonthalyRevenueList,
 } from "../../controllers/admin/invoices/invoices.controllers.js";
 import { SetUIContent } from "../../controllers/admin/content/uicontent.controllers.js";
 import { addStatement } from "../../controllers/admin/properties/statements.controllers.js";
@@ -219,7 +220,8 @@ router.post("/ui-content/", SetUIContent);
 router.post("/statements", addStatement);
 
 // monthly invoice Routes
-router.post("/monthly-invoice", createmonthalyInvoice);
+router.post("/monthly-invoice", createOrUpdateMonthlyInvoice);
 router.get("/monthly-invoice-revenue", getmonthalyRevenueDetail);
+router.get("/monthly-invoice-list", getmonthalyRevenueList);
 
 export default router;
