@@ -2584,7 +2584,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/OTPRequest"
+                "$ref": "#/components/schemas/OTPRequest"
               }
             }
           }
@@ -2611,7 +2611,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/VerifyOTPRequest"
+                "$ref": "#/components/schemas/VerifyOTPRequest"
               }
             }
           }
@@ -2638,7 +2638,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schema/ResetPasswordRequest"
+                "$ref": "#/components/schemas/ResetPasswordRequest"
               }
             }
           }
