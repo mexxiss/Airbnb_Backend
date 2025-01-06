@@ -17,6 +17,8 @@ export const AddPropertyQuery = async (req, res, next) => {
         return next(new apiError(400, "Missing required parameters: name, email, phone, message, or property_id."));
     }
 
+    const formattedPhone = '+'+phone;
+
     const replacements = {
         title: "Received new Property Query!",
         text: `Congratulations, you have received a new query from ${full_name}. Here is the contact information provided.`,
@@ -33,15 +35,14 @@ export const AddPropertyQuery = async (req, res, next) => {
         moreDetails: `<p>If you have any urgent concerns, feel free to reply to this email.</p>`,
     };
 
-    // Send emails
-    await Promise.all([
-        mailSender(process.env.MAIL_FROM, emailSubject, replacements),
-        mailSender(email, "Thanks for contacting us", acknowledgeReplacements),
-    ]);
-
-
     try {
         const query = await PropertyQueryModel.create({ full_name, email, phone, message });
+
+        await Promise.all([
+            mailSender(process.env.MAIL_FROM, "New Property Management Request", replacements),
+            mailSender(email, "Your Property Management Request Received", acknowledgeReplacements),
+        ]);
+        
         return res.status(200).json("Query Added Successfully");
     } catch (err) {
         return next(new apiError(500, `Server Error: ${err}`));
