@@ -1,9 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
-
-// const CounterSchema = new mongoose.Schema({
-//   name: { type: String, required: true, unique: true },
-//   seq: { type: Number, required: true, default: 0 },
-// });
+import { autoPopulateAllFields } from "../utils/commons.js";
 
 const FurnishingSchema = new Schema({
   property_id: {
@@ -34,12 +30,10 @@ const FurnishingSchema = new Schema({
   totalFurnishingCost: { type: Number, required: true },
   receivedAmount: { type: Number, required: true },
   amountOwedToFP: { type: Number, required: true },
-  bankDetails: {
-    accountName: { type: String, required: true },
-    accountNumber: { type: String, required: true },
-    bankName: { type: String, required: true },
-    iban: { type: String, required: true },
-    swiftCode: { type: String, required: true },
+  bank_details: {
+    type: Schema.Types.ObjectId,
+    ref: "paymentdetails",
+    required: true,
   },
   notes: { type: String, default: "" },
 });
@@ -91,26 +85,6 @@ const MonthalySchema = new mongoose.Schema({
   },
   footer: { type: String, required: false }, // e.g., "Kind regards, Mexxstates"
 });
-
-// MonthalySchema.pre("save", async function (next) {
-//   const invoice = this;
-
-//   if (!invoice.invoiceDetails.invoiceNumber) {
-//     try {
-//       const counter = await CounterSchema.findOneAndUpdate(
-//         { name: "invoice" },
-//         { $inc: { seq: 1 } },
-//         { new: true, upsert: true }
-//       );
-//       invoice.invoiceDetails.invoiceNumber = `INV-${counter.seq}`;
-//       next();
-//     } catch (error) {
-//       next(error);
-//     }
-//   } else {
-//     next();
-//   }
-// });
 
 export const Furnishing = model("Furnishing", FurnishingSchema);
 export const MonthalySchemaModal = model("MonthalySchema", MonthalySchema);

@@ -94,6 +94,11 @@ import {
 } from "../../controllers/admin/invoices/invoices.controllers.js";
 import { SetUIContent } from "../../controllers/admin/content/uicontent.controllers.js";
 import { addStatement } from "../../controllers/admin/properties/statements.controllers.js";
+import {
+  createFurnishingInvoice,
+  getAllFurnishingInvoice,
+  updateFurnishingInvoice,
+} from "../../controllers/admin/invoices/furnishing.controllers.js";
 
 const router = express.Router();
 
@@ -224,4 +229,8 @@ router.post("/monthly-invoice", createOrUpdateMonthlyInvoice);
 router.get("/monthly-invoice-revenue", getmonthalyRevenueDetail);
 router.get("/monthly-invoice-list", getmonthalyRevenueList);
 
+// furnishings invoice Routes
+router.post("/furnishings", createFurnishingInvoice);
+router.put("/furnishings/:id", updateFurnishingInvoice);
+router.get("/furnishings-list", getAllFurnishingInvoice);
 export default router;
