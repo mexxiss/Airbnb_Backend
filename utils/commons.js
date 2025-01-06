@@ -33,3 +33,28 @@ export function generateReservationCode(objectId) {
   // Combine parts into a reservation code
   return `${prefix}-${uniquePart}-${timestamp}`.toUpperCase();
 }
+
+export function autoPopulateAllFields(schema) {
+  const paths = [];
+
+  schema.eachPath((pathname, schemaType) => {
+    if (pathname === "_id") return;
+    if (schemaType.options && schemaType.options.ref) {
+      paths.push(pathname);
+    }
+  });
+
+  if (paths.length > 0) {
+    const populatePaths = paths.join(" ");
+
+    schema.pre("find", function (next) {
+      this.populate(populatePaths);
+      next();
+    });
+
+    schema.pre("findOne", function (next) {
+      this.populate(populatePaths);
+      next();
+    });
+  }
+}
