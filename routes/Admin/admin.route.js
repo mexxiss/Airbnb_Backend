@@ -97,6 +97,7 @@ import { addStatement } from "../../controllers/admin/properties/statements.cont
 import {
   createFurnishingInvoice,
   getAllFurnishingInvoice,
+  getFurnishingInvoiceById,
   updateFurnishingInvoice,
 } from "../../controllers/admin/invoices/furnishing.controllers.js";
 
@@ -233,4 +234,5 @@ router.get("/monthly-invoice-list", getmonthalyRevenueList);
 router.post("/furnishings", createFurnishingInvoice);
 router.put("/furnishings/:id", updateFurnishingInvoice);
 router.get("/furnishings-list", getAllFurnishingInvoice);
+router.get("/furnishings/:id", getFurnishingInvoiceById);
 export default router;
