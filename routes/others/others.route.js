@@ -37,6 +37,7 @@ import { GetTestimonials } from "../../controllers/general/content/testimonials.
 import { GetThirdPartyLogos } from "../../controllers/general/content/thirdpartylogos.controllers.js";
 import { GetVideoGuides } from "../../controllers/general/content/guides.controllers.js";
 import { GetUIContent } from "../../controllers/general/content/uicontent.controllers.js";
+import { AddPropertyQuery } from "../../controllers/general/contact/propertyquery.controllers.js";
 
 const router = express.Router();
 
@@ -60,6 +61,7 @@ router.post("/booked-dates/", SetBookedDates);
 // Contact Us Routes
 router.get("/contact-us/", getContactus);
 router.post("/contact-us/query", contactQuerySendValidator, sendContactQuery);
+router.post("/property-query", AddPropertyQuery);
 
 // Airbnb Dubai Content Routes
 router.get("/airbnb-dubai/", GetDubaiDetails);

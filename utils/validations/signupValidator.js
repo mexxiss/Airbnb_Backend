@@ -5,7 +5,7 @@ import validator from "validator";
 export const signUpValidator = async (req, res, next) => {
   const { first_name, last_name, email, password } = req.body;
 
-  const requiredFields = [first_name, last_name, email, password];
+  const requiredFields = [first_name, last_name, email];
   const allFieldsFilled = requiredFields.every(
     (field) => field !== undefined && field !== null && field !== ""
   );

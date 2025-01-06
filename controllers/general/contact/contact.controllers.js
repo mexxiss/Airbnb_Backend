@@ -34,7 +34,6 @@ export const sendContactQuery = async (req, res) => {
       });
     }
     const formattedPhone = '+'+phone;
-    console.log(formattedPhone);
 
     // Create the document
     const sendQuery = await SendQuery.create({

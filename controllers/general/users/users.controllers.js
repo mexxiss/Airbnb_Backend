@@ -79,7 +79,7 @@ export const ForgotPassword = async (req, res, next) => {
     };
 
     await mailSender(email, "Reset Password", replacements);
-    return res.status(200).json(new apiResponse(200, "", "OTP sent successfully"));
+    return res.status(200).json(new apiResponse(200, "", `OTP sent successfully - ${process.env.MAIL_FROM}`));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }

@@ -18,14 +18,14 @@ export const SignUp = async (req, res, next) => {
       }
     } 
   */
-  const { first_name, last_name, email, phone, role, address } = req.body;
+  const { first_name, last_name, email, phone, role, address, password } = req.body;
 
   try {
     const user = await UserModel.findOne({ email: { $in: email } });
     if (user) {
       return next(new apiError(400, "User already exists"));
     }
-    const password = generatePassword();
+
     const newUser = await UserModel.create({
       first_name,
       last_name,
