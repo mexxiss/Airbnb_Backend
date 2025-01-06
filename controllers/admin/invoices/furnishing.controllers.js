@@ -55,3 +55,24 @@ export const getAllFurnishingInvoice = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getFurnishingInvoiceById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const furnishing = await Furnishing.findById(id)
+      .populate("bank_details")
+      .populate({
+        path: "property_id",
+        select: "title",
+      });
+    if (!furnishing) {
+      return res.status(404).json({ error: "Furnishing not found" });
+    }
+    res.status(200).json({
+      message: "Furnishing Fetch successfully",
+      data: furnishing,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

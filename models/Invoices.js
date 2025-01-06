@@ -1,42 +1,45 @@
 import mongoose, { Schema, model } from "mongoose";
 import { autoPopulateAllFields } from "../utils/commons.js";
 
-const FurnishingSchema = new Schema({
-  property_id: {
-    type: Schema.Types.ObjectId,
-    ref: "properties",
-    required: true,
+const FurnishingSchema = new Schema(
+  {
+    property_id: {
+      type: Schema.Types.ObjectId,
+      ref: "properties",
+      required: true,
+    },
+    invoiceNumber: { type: String, required: true, unique: true },
+    statementPeriod: { type: String, required: true },
+    companyDetails: {
+      name: { type: String, required: true },
+      address: { type: String, required: true },
+      phone: { type: String, required: true },
+    },
+    ownerDetails: {
+      name: { type: String, required: true },
+      address: { type: String, required: true },
+      phone: { type: String, required: true },
+    },
+    status: {
+      type: String,
+      enum: ["Paid", "Overdue", "Pending"],
+      default: "Pending",
+    },
+    furnishingDetails: {
+      type: String,
+    },
+    totalFurnishingCost: { type: Number, required: true },
+    receivedAmount: { type: Number, required: true },
+    amountOwedToFP: { type: Number, required: true },
+    bank_details: {
+      type: Schema.Types.ObjectId,
+      ref: "paymentdetails",
+      required: true,
+    },
+    notes: { type: String, default: "" },
   },
-  invoiceNumber: { type: String, required: true, unique: true },
-  statementPeriod: { type: String, required: true },
-  companyDetails: {
-    name: { type: String, required: true },
-    address: { type: String, required: true },
-    phone: { type: String, required: true },
-  },
-  ownerDetails: {
-    name: { type: String, required: true },
-    address: { type: String, required: true },
-    phone: { type: String, required: true },
-  },
-  status: {
-    type: String,
-    enum: ["Paid", "Overdue", "Pending"],
-    default: "Pending",
-  },
-  furnishingDetails: {
-    type: String,
-  },
-  totalFurnishingCost: { type: Number, required: true },
-  receivedAmount: { type: Number, required: true },
-  amountOwedToFP: { type: Number, required: true },
-  bank_details: {
-    type: Schema.Types.ObjectId,
-    ref: "paymentdetails",
-    required: true,
-  },
-  notes: { type: String, default: "" },
-});
+  { timestamps: true }
+);
 
 const MonthalySchema = new mongoose.Schema({
   property_id: {
