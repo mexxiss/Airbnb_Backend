@@ -1,5 +1,6 @@
 import { PropertyQueryModel } from "../../../models/PropertyQueries.js";
 import { apiError } from "../../../utils/apiError.js";
+import { mailSender } from "../../../utils/mailSender.js";
 
 export const AddPropertyQuery = async (req, res, next) => {
     // #swagger.tags = ['General']
