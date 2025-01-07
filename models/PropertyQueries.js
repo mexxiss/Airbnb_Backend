@@ -6,7 +6,7 @@ const PropertyQuerySchema = new Schema({
         type: String,
         required: true,
     },
-    phone_number: {
+    phone: {
         type: String,
         required: true,
         trim: true,
