@@ -63,7 +63,7 @@ export const getFurnishingInvoiceById = async (req, res) => {
       .populate("bank_details")
       .populate({
         path: "property_id",
-        select: "title",
+        select: "title user",
       });
     if (!furnishing) {
       return res.status(404).json({ error: "Furnishing not found" });
