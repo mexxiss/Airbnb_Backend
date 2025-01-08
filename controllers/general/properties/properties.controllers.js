@@ -63,7 +63,7 @@ export const GetPropertyObj = async (req, res, next) => {
             }
         ])
 
-        const documentSize = Buffer.byteLength(JSON.stringify({properties, bookDetails, maintenanceSummary}));
+        const documentSize = Buffer.byteLength(JSON.stringify({ properties, bookDetails, maintenanceSummary }));
         console.log("Document Size in Bytes:", documentSize);
 
         return res.status(200).json(
@@ -78,3 +78,37 @@ export const GetPropertyObj = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${error}`));
     }
 };
+
+export const getPropertiesForBooking = async (req, res, next) => {
+    // #swagger.tags = ['General']
+    // #swagger.summary = 'Get properties for booking based on location, check-in, check-out, and room type',
+    const { page = 1, limit = 4 } = req.query;
+
+    try {
+        const properties = await PropertiesModel.find()
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate("property_images");
+        return res.status(200).json(new apiResponse(200, properties, "Properties retrieved successfully"));
+    } catch (error) {
+        return next(new apiError(500, `Server Error: ${error}`));
+    }
+}
+
+export const getFullPropertyById = async (req, res, next) => {
+    // #swagger.tags = ['General']
+    // #swagger.summary = 'Get a full property by ID with all related data',
+    const { id } = req.params;
+    if (!id ||!mongoose.isValidObjectId(id)) {
+        return next(new apiError(400, "Property ID required"));
+    }
+    try {
+        const property = await PropertiesModel.findById(id).populate("property_images amenities");
+        if (!property) {
+            return next(new apiError(404, "Property not found"));
+        }
+        return res.status(200).json(new apiResponse(200, property, "Property retrieved successfully"));
+    } catch (e) {
+        return next(new apiError(500, `Server Error: ${e}`));
+    }
+}
