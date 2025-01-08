@@ -29,7 +29,7 @@ import { GetHomeContent } from "../../controllers/general/content/homecontent.co
 import { GetLegals } from "../../controllers/general/content/legal.controllers.js";
 import { GetFeaturedArticles } from "../../controllers/general/content/featuredarticles.controllers.js";
 import { GetPricings } from "../../controllers/general/content/pricing.controllers.js";
-import { GetAllProperties, GetFullPropertiesObject, getFullPropertyById, getPropertiesForBooking, GetPropertyObj } from "../../controllers/general/properties/properties.controllers.js";
+import { GetAllProperties, getFilteredPropertiesForBooking, GetFullPropertiesObject, getFullPropertyById, getPropertiesForBooking, GetPropertyObj } from "../../controllers/general/properties/properties.controllers.js";
 import { GetRequirements } from "../../controllers/general/content/requirements.controllers.js";
 import { GetServices } from "../../controllers/general/content/services.controllers.js";
 import { SetSubscription } from "../../controllers/general/subscriptions/subscriptions.controllers.js";
@@ -94,6 +94,7 @@ router.get("/pricing/", GetPricings);
 // Properties Routes
 router.get("/properties/", GetAllProperties);
 router.get("/properties/all", GetFullPropertiesObject);
+router.get("/properties/filters", getFilteredPropertiesForBooking);
 router.get("/properties/booking", getPropertiesForBooking);
 router.get("/properties/:id", GetPropertyObj);
 router.get("/property/:id", getFullPropertyById)

@@ -112,3 +112,26 @@ export const getFullPropertyById = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${e}`));
     }
 }
+
+export const getFilteredPropertiesForBooking = async (req, res, next) => {
+    // #swagger.tags = ['General']
+    // #swagger.summary = 'Get properties for booking based on location, check-in, check-out, and room type',
+    const { destination, check_in, check_out, bedrooms, guests, area, page = 1, limit = 4 } = req.query;
+
+    if (!destination ||!check_in ||!check_out ||!bedrooms ||!guests ||!area) {
+        return next(new apiError(400, "All required fields (destination, check_in, check_out, bedrooms, guests, area) are required"));
+    }
+
+    try {
+        const properties = await PropertiesModel.find({
+            property_details: { beds_count: parseInt(bedrooms), max_guest_count: parseInt(guests) },
+            address: { area: area, country: destination}
+        })
+           .skip((page - 1) * limit)
+           .limit(limit)
+           .populate("property_images");
+        return res.status(200).json(new apiResponse(200, properties, "Properties retrieved successfully"));
+    } catch (err) {
+        return next(new apiError(500, `Server Error: ${err}`));
+    }
+}
