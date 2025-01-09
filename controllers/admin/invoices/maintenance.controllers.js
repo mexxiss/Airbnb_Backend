@@ -90,7 +90,7 @@ export const GetMaintenanceInvoiceList = async (req, res) => {
     const maintenanceRecords = await MaintenanceInvoiceModal.find({})
       .populate("property_id")
       .populate("bank_details");
-    res.status(200).json(maintenanceRecords);
+    res.status(200).json({ data: maintenanceRecords });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -107,7 +107,7 @@ export const UpdateMaintenanceInvoice = async (req, res) => {
     if (!updatedMaintenance) {
       return res.status(404).json({ error: "Maintenance record not found" });
     }
-    res.status(200).json(updatedMaintenance);
+    res.status(200).json({ data: updatedMaintenance });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

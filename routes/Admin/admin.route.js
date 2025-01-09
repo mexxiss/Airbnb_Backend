@@ -103,7 +103,12 @@ import {
   getFurnishingInvoiceById,
   updateFurnishingInvoice,
 } from "../../controllers/admin/invoices/furnishing.controllers.js";
-import { CreateMaintenance } from "../../controllers/admin/invoices/maintenance.controllers.js";
+import {
+  CreateMaintenance,
+  GetMaintenanceInvoiceById,
+  GetMaintenanceInvoiceList,
+  UpdateMaintenanceInvoice,
+} from "../../controllers/admin/invoices/maintenance.controllers.js";
 
 const router = express.Router();
 
@@ -243,5 +248,8 @@ router.get("/furnishings/:id", getFurnishingInvoiceById);
 
 //** Maintenance invoice routs */
 router.post("/maintenance-invoice", CreateMaintenance);
+router.get("/maintenance-invoice-list", GetMaintenanceInvoiceList);
+router.get("/maintenance-invoice/:id", GetMaintenanceInvoiceById);
+router.put("/maintenance-invoice/:id", UpdateMaintenanceInvoice);
 
 export default router;
