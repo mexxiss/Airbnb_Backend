@@ -58,3 +58,21 @@ export function autoPopulateAllFields(schema) {
     });
   }
 }
+
+export function generateDynamicStringFromPropertyName(
+  prefix,
+  forSting,
+  propertyName,
+  fullDate
+) {
+  const extractedCode = propertyName.split(" ")[0];
+  return `${prefix}-${forSting}-${extractedCode}-${fullDate}`;
+}
+
+export function generateUAE_TRN(prefix = "TRN", length = 15) {
+  const numericPart = Array.from({ length: length - prefix.length })
+    .map(() => Math.floor(Math.random() * 10))
+    .join("");
+
+  return `${prefix}${numericPart}`;
+}

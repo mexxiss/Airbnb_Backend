@@ -75,7 +75,10 @@ import {
   AddThirdPartyLogos,
   UpdateThirdPartyLogos,
 } from "../../controllers/admin/content/thirdpartylogos.controllers.js";
-import { SetUtility } from "../../controllers/admin/providers/taxutility.controllers.js";
+import {
+  GetUtility,
+  SetUtility,
+} from "../../controllers/admin/providers/taxutility.controllers.js";
 import { AddVideoGuide } from "../../controllers/admin/content/guides.controllers.js";
 import {
   GetUserPaymentDetails,
@@ -100,6 +103,7 @@ import {
   getFurnishingInvoiceById,
   updateFurnishingInvoice,
 } from "../../controllers/admin/invoices/furnishing.controllers.js";
+import { CreateMaintenance } from "../../controllers/admin/invoices/maintenance.controllers.js";
 
 const router = express.Router();
 
@@ -209,6 +213,7 @@ router.put("/third-party-logos/:id", UpdateThirdPartyLogos);
 
 // Utilities - VAT Tax, Income Tax
 router.post("/utility/", SetUtility);
+router.get("/utility/", GetUtility);
 
 // Video Guides Routes
 router.post("/guides/", AddVideoGuide);
@@ -235,4 +240,8 @@ router.post("/furnishings", createFurnishingInvoice);
 router.put("/furnishings/:id", updateFurnishingInvoice);
 router.get("/furnishings-list", getAllFurnishingInvoice);
 router.get("/furnishings/:id", getFurnishingInvoiceById);
+
+//** Maintenance invoice routs */
+router.post("/maintenance-invoice", CreateMaintenance);
+
 export default router;
