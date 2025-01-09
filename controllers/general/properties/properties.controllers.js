@@ -99,7 +99,7 @@ export const getFullPropertyById = async (req, res, next) => {
     // #swagger.tags = ['General']
     // #swagger.summary = 'Get a full property by ID with all related data',
     const { id } = req.params;
-    if (!id ||!mongoose.isValidObjectId(id)) {
+    if (!id || !mongoose.isValidObjectId(id)) {
         return next(new apiError(400, "Property ID required"));
     }
     try {
@@ -112,3 +112,42 @@ export const getFullPropertyById = async (req, res, next) => {
         return next(new apiError(500, `Server Error: ${e}`));
     }
 }
+
+export const getFilteredPropertiesForBooking = async (req, res, next) => {
+    const { page = 1, limit = 4 } = req.query;
+    const { destination, check_in, check_out, bedrooms, guests, area } = req.body;
+
+    try {
+        let query = {};
+
+        if (check_in && check_out) {
+            const checkInDate = new Date(check_in);
+            const checkOutDate = new Date(check_out);
+
+            const bookedProperties = await BookedDatesModel.find({
+                $or: [
+                    {
+                        checkin_date: { $lt: checkOutDate },
+                        checkout_date: { $gt: checkInDate }
+                    }
+                ]
+            }).distinct("property");
+
+            query._id = { $nin: bookedProperties };
+        }
+
+        if (bedrooms) query["property_details.beds_count"] = { $gte: parseInt(bedrooms) };
+        if (guests) query["property_details.max_guest_count"] = { $gte: parseInt(guests) };
+        if (area) query["address.area"] = area;
+        if (destination) query["address.country"] = destination;
+
+        const properties = await PropertiesModel.find(query)
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .populate("property_images");
+
+        return res.status(200).json(new apiResponse(200, properties, "Properties retrieved successfully"));
+    } catch (err) {
+        return next(new apiError(500, `Server Error: ${err.message}`));
+    }
+};
