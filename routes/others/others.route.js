@@ -94,7 +94,7 @@ router.get("/pricing/", GetPricings);
 // Properties Routes
 router.get("/properties/", GetAllProperties);
 router.get("/properties/all", GetFullPropertiesObject);
-router.get("/properties/filters", getFilteredPropertiesForBooking);
+router.post("/properties/filters", getFilteredPropertiesForBooking);
 router.get("/properties/booking", getPropertiesForBooking);
 router.get("/properties/:id", GetPropertyObj);
 router.get("/property/:id", getFullPropertyById)
