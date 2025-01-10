@@ -24,7 +24,7 @@ const StatementSchema = new Schema(
     },
     statement_type: {
       type: String,
-      enum: ["revenue", "furnishing"],
+      enum: ["revenue", "furnishing", "maintenance"],
     },
     property: {
       type: Schema.Types.ObjectId,

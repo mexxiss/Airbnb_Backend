@@ -3,7 +3,12 @@ import {
   contactValidator,
   contactQuerySendValidator,
 } from "../../utils/validations/contactvalidator.js";
-import { ForgotPassword, Login, ResetPassword, VerifyOtp } from "../../controllers/general/users/users.controllers.js";
+import {
+  ForgotPassword,
+  Login,
+  ResetPassword,
+  VerifyOtp,
+} from "../../controllers/general/users/users.controllers.js";
 import {
   GetBlog,
   GetBlogs,
@@ -30,7 +35,14 @@ import { GetHomeContent } from "../../controllers/general/content/homecontent.co
 import { GetLegals } from "../../controllers/general/content/legal.controllers.js";
 import { GetFeaturedArticles } from "../../controllers/general/content/featuredarticles.controllers.js";
 import { GetPricings } from "../../controllers/general/content/pricing.controllers.js";
-import { GetAllProperties, getFilteredPropertiesForBooking, GetFullPropertiesObject, getFullPropertyById, getPropertiesForBooking, GetPropertyObj } from "../../controllers/general/properties/properties.controllers.js";
+import {
+  GetAllProperties,
+  getFilteredPropertiesForBooking,
+  GetFullPropertiesObject,
+  getFullPropertyById,
+  getPropertiesForBooking,
+  GetPropertyObj,
+} from "../../controllers/general/properties/properties.controllers.js";
 import { GetRequirements } from "../../controllers/general/content/requirements.controllers.js";
 import { GetServices } from "../../controllers/general/content/services.controllers.js";
 import { SetSubscription } from "../../controllers/general/subscriptions/subscriptions.controllers.js";
@@ -39,6 +51,7 @@ import { GetThirdPartyLogos } from "../../controllers/general/content/thirdparty
 import { GetVideoGuides } from "../../controllers/general/content/guides.controllers.js";
 import { GetUIContent } from "../../controllers/general/content/uicontent.controllers.js";
 import { AddPropertyQuery } from "../../controllers/general/contact/propertyquery.controllers.js";
+import { getStatements } from "../../controllers/admin/properties/statements.controllers.js";
 
 const router = express.Router();
 
@@ -99,7 +112,7 @@ router.get("/properties/all", GetFullPropertiesObject);
 router.post("/properties/filters", getFilteredPropertiesForBooking);
 router.get("/properties/booking", getPropertiesForBooking);
 router.get("/properties/:id", GetPropertyObj);
-router.get("/property/:id", getFullPropertyById)
+router.get("/property/:id", getFullPropertyById);
 
 // Requirements Routes
 router.get("/requirements/", GetRequirements);
@@ -121,5 +134,7 @@ router.get("/guides/", GetVideoGuides);
 
 // UI Content Routes
 router.get("/ui-content/", GetUIContent);
+
+router.get("/user-statements", getStatements);
 
 export default router;

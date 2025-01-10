@@ -72,7 +72,10 @@ export const GetMaintenanceInvoiceById = async (req, res) => {
   try {
     const { id } = req.params;
     const maintenance = await MaintenanceInvoiceModal.findById(id)
-      .populate("property_id")
+      .populate({
+        path: "property_id",
+        select: "title user",
+      })
       .populate("bank_details");
     if (!maintenance) {
       return res.status(404).json({ error: "Maintenance record not found" });
@@ -88,9 +91,12 @@ export const GetMaintenanceInvoiceById = async (req, res) => {
 export const GetMaintenanceInvoiceList = async (req, res) => {
   try {
     const maintenanceRecords = await MaintenanceInvoiceModal.find({})
-      .populate("property_id")
+      .populate({
+        path: "property_id",
+        select: "title user",
+      })
       .populate("bank_details");
-    res.status(200).json(maintenanceRecords);
+    res.status(200).json({ data: maintenanceRecords });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -107,7 +113,7 @@ export const UpdateMaintenanceInvoice = async (req, res) => {
     if (!updatedMaintenance) {
       return res.status(404).json({ error: "Maintenance record not found" });
     }
-    res.status(200).json(updatedMaintenance);
+    res.status(200).json({ data: updatedMaintenance });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
