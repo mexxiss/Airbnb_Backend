@@ -15,9 +15,9 @@ export const SetBookDetails = async (req, res, next) => {
             }
         }
     */
-    const { first_name, last_name, email, guests, phone_number, message, promo_code, newsletter_agree, property, booked_dates } = req.body;
+    const { first_name, last_name, email, guests, phone_number, message, promo_code, newsletter_agree, property } = req.body;
     try {
-        const details = await BookDetailsModel.create({ first_name, last_name, email, guests, phone_number, message, promo_code, newsletter_agree, property, booked_dates });
+        const details = await BookDetailsModel.create({ first_name, last_name, email, guests, phone_number, message, promo_code, newsletter_agree, property });
         return res.status(200).json(new apiResponse(200, details, "Booking Details saved successfully."));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
