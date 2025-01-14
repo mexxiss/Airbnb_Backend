@@ -238,4 +238,15 @@ PropertiesSchema.methods.updateImages = async function (newImages) {
   await this.save();
 };
 
+PropertiesSchema.methods.getNightsCount = async function (checkin_date, checkout_date) {
+  const oneDay = 24 * 60 * 60 * 1000;
+  const nights_count = Math.ceil(
+    (new Date(checkout_date) - new Date(checkin_date)) / oneDay
+  );
+  if (nights_count <= 0) {
+    throw new Error("Check-out date must be after check-in date.");
+  }
+  return nights_count;
+}
+
 export const PropertiesModel = model("properties", PropertiesSchema);

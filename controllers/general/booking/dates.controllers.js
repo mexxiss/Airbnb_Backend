@@ -4,6 +4,7 @@ import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
 import { UtilityModel } from "../../../models/Utility.js";
 import { generateReservationCode } from "../../../utils/commons.js";
+import mongoose from "mongoose";
 
 export const GetBookedDates = async (req, res, next) => {
   // #swagger.tags = ['General']
@@ -19,11 +20,16 @@ export const GetBookedDates = async (req, res, next) => {
 
     const query = { checkout_date: { $gte: new Date() }, property: property };
 
-    const dates = await BookedDatesModel.find(query);
+    const dates = await BookedDatesModel.find(query).select("checkin_date checkout_date -_id");
+
+    const formattedDates = dates.map((date) => ({
+      from: date.checkin_date.toISOString().split("T")[0],
+      to: date.checkout_date.toISOString().split("T")[0],
+    }));
 
     return res
       .status(200)
-      .json(new apiResponse(200, dates, "Booked dates retrieved successfully"));
+      .json(new apiResponse(200, formattedDates, "Booked dates retrieved successfully"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
@@ -89,3 +95,54 @@ export const SetBookedDates = async (req, res, next) => {
     return next(new apiError(500, `Server Error: ${error}`));
   }
 };
+
+export const calculateCosts = async (req, res, next) => {
+  // #swagger.tags = ['General']
+  // #swagger.summary = "Calculate costs for booked dates"
+  // #swagger.description = "> #TODO: Calculated costs are being sent back through response that may contain unnecessary information",
+
+  const { checkin, checkout, property } = req.query;
+  try {
+    const doc = await PropertiesModel.findById(property);
+    if (!doc) {
+      return next(new apiError(400, "Property not found"));
+    }
+
+    const nights_count = await doc.getNightsCount(checkin, checkout);
+    const costs = await doc.calculateCosts(nights_count, 0, 5, 6);
+
+    const data = {
+      nights_count,
+      stay_charges: costs.stay_charges,
+      discount: costs.discount,
+      cleaning_fee: costs.cleaning_fee,
+      tourism_tax: costs.tourism_tax,
+      vat_tax: costs.vat_tax,
+      net_charges: costs.net_charges,
+    }
+
+    return res
+      .status(200)
+      .json(new apiResponse(200, data, "Costs calculated successfully"));
+  } catch (err) {
+    next(new apiError(500, `Server Error: ${err}`));
+  }
+}
+
+// export const GetBookedDatesforBooking = async (req, res, next) => {
+//   // #swagger.tags = ['General']
+//   // #swagger.summary = "Get booked dates for a property that can be booked"
+//   // #swagger.description = "> #TODO: Retrieved documents are being sent back through response that may contain unnecessary information",
+
+//   const { property } = req.query;
+//   if (!property || !mongoose.isValidObjectId(property)) {
+//     return next(new apiError(400, "Property id not provided or invalid"));
+//   }
+
+//   const query = { checkout_date: { $gte: new Date() }, property: property };
+
+//   const dates = await BookedDatesModel.find(query);
+//   try {
+//     const bookedDates = await BookedDatesModel.find()
+//   }
+// }

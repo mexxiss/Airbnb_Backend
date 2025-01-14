@@ -96,7 +96,7 @@ export const UpdatePropertyUtility = async (req, res, next) => {
     }
   */
   const { id } = req.params || req.query; // Property ID
-  const user_id = req._id; // Authenticated user ID
+  const user_id = req.user._id; // Authenticated user ID
   const { updates } = req.body; // Utilities to update or create
 
   if (!updates || !user_id) {

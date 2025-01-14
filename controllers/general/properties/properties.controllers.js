@@ -116,7 +116,7 @@ export const getFullPropertyById = async (req, res, next) => {
 export const getFilteredPropertiesForBooking = async (req, res, next) => {
     const { page = 1, limit = 4 } = req.query;
     const { destination, check_in, check_out, bedrooms, guests, area } = req.body;
-
+    
     try {
         let query = {};
 
@@ -132,7 +132,6 @@ export const getFilteredPropertiesForBooking = async (req, res, next) => {
                     }
                 ]
             }).distinct("property");
-
             query._id = { $nin: bookedProperties };
         }
 
