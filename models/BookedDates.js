@@ -4,20 +4,16 @@ const BookedDatesSchema = new Schema(
   {
     checkin_date: {
       type: Date,
-      required: true,
     },
     checkout_date: {
       type: Date,
-      required: true,
     },
     nights_count: {
       type: Number,
-      required: true,
     },
     source: {
       type: String,
       default: "booking.com",
-      required: true,
     },
     reservationCode: {
       type: String,
@@ -29,49 +25,61 @@ const BookedDatesSchema = new Schema(
       },
       stay_charges: {
         type: Number,
-        required: true,
+
         default: 0.0,
         min: [0, "Amount cannot be negative"],
       },
       discount: {
         type: Number,
-        required: true,
+
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       cleaning_fee: {
         type: Number,
-        required: true,
+
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       tourism_tax: {
         type: Number,
-        required: true,
+
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       vat_tax: {
         type: Number,
-        required: true,
+
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       net_charges: {
         type: Number,
-        required: true,
+
         min: [0, "Amount cannot be negative"],
       },
     },
     property: {
       type: Schema.Types.ObjectId,
       ref: "properties",
-      required: true,
     },
     book_details: {
       type: Schema.Types.ObjectId,
       ref: "bookDetails",
-      required: true,
+    },
+    access_card_keys: {
+      type: String,
+      enum: [
+        "Yes, I require both",
+        "I have an access card, but I require keys",
+        "I have keys, but I require an access card",
+        "No, I have both keys and an access card",
+      ],
+      default: "",
+    },
+    note: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }
