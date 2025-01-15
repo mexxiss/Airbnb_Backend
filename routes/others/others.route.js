@@ -15,6 +15,7 @@ import {
 } from "../../controllers/general/blogs/blogs.controllers.js";
 import { SetBookDetails } from "../../controllers/general/booking/details.controllers.js";
 import {
+  calculateCosts,
   GetBookedDates,
   SetBookedDates,
 } from "../../controllers/general/booking/dates.controllers.js";
@@ -71,6 +72,7 @@ router.post("/book-details/", SetBookDetails);
 // Booked Dates Routes
 router.get("/booked-dates/", GetBookedDates);
 router.post("/booked-dates/", SetBookedDates);
+router.get("/booked-dates/calculate", calculateCosts)
 
 // Contact Us Routes
 router.get("/contact-us/", getContactus);

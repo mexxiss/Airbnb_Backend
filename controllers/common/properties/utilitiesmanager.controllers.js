@@ -82,15 +82,48 @@ export const getPropertyUtilityById = async (req, res) => {
     }
 
     try {
+        // Build the query
         let query = { property: id };
         if (user) {
             query.user = user;
         }
 
-        const propertyUtility = await PropertyUtilitiesManagerModel.findOne(query);
+        // Check if the property utility document exists
+        let propertyUtility = await PropertyUtilitiesManagerModel.findOne(query);
+
         if (!propertyUtility) {
-            return res.status(404).send({ error: 'Property utility not found.' });
+            // Create a new empty utility document if not found
+            propertyUtility = new PropertyUtilitiesManagerModel({
+                property: id,
+                user,
+                internet: {
+                    service_name: "Internet",
+                    paid_by: "Owner",
+                    field_name: "internet",
+                },
+                electricity_water: {
+                    service_name: "Electricity & Water",
+                    paid_by: "Owner",
+                    field_name: "electricity_water",
+                },
+                gas: {
+                    service_name: "Gas",
+                    paid_by: "Owner",
+                    field_name: "gas",
+                },
+                chiller: {
+                    service_name: "Chiller",
+                    paid_by: "Owner",
+                    field_name: "chiller",
+                },
+                other: [],
+            });
+
+            await propertyUtility.save();
+
+            return res.status(201).send(propertyUtility);
         }
+
         res.status(200).send(propertyUtility);
     } catch (error) {
         console.error('Error fetching property utility:', error);
@@ -100,7 +133,7 @@ export const getPropertyUtilityById = async (req, res) => {
 
 // Update a property utility by ID
 export const UpdatePropertyUtilityById = async (req, res) => {
-    const {id} = req.params;
+    const {id} = req.params; // Property ID
     const { updates } = req.body;
     try {
         const propertyUtility = await PropertyUtilitiesManagerModel.findByIdAndUpdate(id, updates, { new: true, runValidators: true });

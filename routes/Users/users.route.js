@@ -23,6 +23,7 @@ import {
   UpdatePropertyUtility,
 } from "../../controllers/common/properties/utilities.controllers.js";
 import { GetProviders } from "../../controllers/common/providers/providers.controllers.js";
+
 import { upload } from "../../uploads/multer.js";
 import {
   UploadMultiple,
@@ -40,6 +41,8 @@ import {
   UpdatePropertyUtilityById,
 } from "../../controllers/common/properties/utilitiesmanager.controllers.js";
 import { SetBlockedDates } from "../../controllers/general/booking/date.owner-block.controllers.js";
+import { addQuery } from "../../controllers/common/users/userqueries.controllers.js";
+
 
 const router = express.Router();
 
@@ -85,6 +88,11 @@ router.get("/user-documents/", GetUserDocuments);
 router.post("/user-documents/", SetUserDocument);
 router.put("/user-documents/:id", UpdateUserDocuments);
 
+
 router.post("/blocked-owner-dates/", SetBlockedDates);
 
+// Users Queries Routes
+router.post("/queries", addQuery);
+
 export default router;
+
