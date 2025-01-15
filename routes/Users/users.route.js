@@ -10,6 +10,7 @@ import {upload} from "../../uploads/multer.js";
 import { UploadMultiple, UploadSingle } from "../../controllers/common/upload/upload.controllers.js";
 import { GetUserDocuments, SetUserDocument, UpdateUserDocuments } from "../../controllers/common/users/documents.controllers.js";
 import { createPropertyUtility, deletePropertyUtilityById, getPropertyUtilityById, UpdatePropertyUtilityById } from "../../controllers/common/properties/utilitiesmanager.controllers.js";
+import { addQuery } from "../../controllers/common/users/userqueries.controllers.js";
 
 const router = express.Router();
 
@@ -54,5 +55,8 @@ router.post("/upload/multiple", upload.array("files"), UploadMultiple);
 router.get("/user-documents/", GetUserDocuments);
 router.post("/user-documents/", SetUserDocument);
 router.put("/user-documents/:id", UpdateUserDocuments);
+
+// Users Queries Routes
+router.post("/queries", addQuery);
 
 export default router;

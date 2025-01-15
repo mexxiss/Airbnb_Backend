@@ -64,7 +64,7 @@ export const UpdateUserDocuments = async (req, res, next) => {
     } 
     */
     const {id} = req.params || req.query;
-    const user_id = req?.updates?.id;
+    const user_id = req?.user?.id;
     const {updates} = req.body;
 
     if (!updates) {
@@ -86,11 +86,10 @@ export const UpdateUserDocuments = async (req, res, next) => {
         }
 
         doc.set(updates);
-        await doc.save({ validateBeforeSave: true });
+        await doc.save({ validateBeforeSave: false });
 
         return res.status(200).json(doc);
     } catch (error) {
-        console.error(`Error updating payment details: ${error.message}`);
         return next(new apiError(500, `Server Error`));
     }
 }
