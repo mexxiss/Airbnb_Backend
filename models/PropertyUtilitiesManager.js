@@ -13,8 +13,8 @@ const PropertyUtilitiesManagerSchema = new Schema(
       account_no: String,
       paid_by: {
         type: String,
-        required: true,
         enum: ["Owner", "Company"],
+        default: "Company"
       },
       already_have_account: {
         type: Boolean,
@@ -36,8 +36,8 @@ const PropertyUtilitiesManagerSchema = new Schema(
       account_no: String,
       paid_by: {
         type: String,
-        required: true,
         enum: ["Owner", "Company"],
+        default: "Company"
       },
       already_have_account: {
         type: Boolean,
@@ -59,8 +59,8 @@ const PropertyUtilitiesManagerSchema = new Schema(
       account_no: String,
       paid_by: {
         type: String,
-        required: true,
         enum: ["Owner", "Company"],
+        default: "Company"
       },
       already_have_account: {
         type: Boolean,
@@ -82,8 +82,8 @@ const PropertyUtilitiesManagerSchema = new Schema(
       account_no: String,
       paid_by: {
         type: String,
-        required: true,
         enum: ["Owner", "Company"],
+        default: "Company"
       },
       already_have_account: {
         type: Boolean,
@@ -106,8 +106,8 @@ const PropertyUtilitiesManagerSchema = new Schema(
       account_no: String,
       paid_by: {
         type: String,
-        required: true,
         enum: ["Owner", "Company"],
+        default: "Company"
       },
       already_have_account: {
         type: Boolean,
