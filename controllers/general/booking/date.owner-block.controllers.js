@@ -2,8 +2,8 @@ import { BookedDatesModel } from "../../../models/BookedDates.js";
 import { PropertiesModel } from "../../../models/Properties.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
-import { UtilityModel } from "../../../models/Utility.js";
 import { generateReservationCode } from "../../../utils/commons.js";
+import { BookDetailsModel } from "../../../models/BookDetails.js";
 
 export const GetBookedDates = async (req, res, next) => {
   // #swagger.tags = ['General']
@@ -50,11 +50,10 @@ export const SetBlockedDates = async (req, res, next) => {
     source,
     note,
     access_card_keys,
+    book_details,
   } = req.body;
 
   const reservationCode = generateReservationCode();
-  console.log({ checkin_date });
-  console.log({ checkout_date });
 
   const checkinDateISO = new Date(checkin_date).toISOString();
   const checkoutDateISO = new Date(checkout_date).toISOString();
@@ -72,6 +71,7 @@ export const SetBlockedDates = async (req, res, next) => {
       source,
       reservationCode,
       access_card_keys,
+      book_details,
       note,
     });
 
@@ -81,5 +81,83 @@ export const SetBlockedDates = async (req, res, next) => {
       .json(new apiResponse(200, bookedDates, "Dates Booked"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
+  }
+};
+
+export const SetOwnerBookDetails = async (req, res, next) => {
+  // #swagger.tags = ['General']
+  // #swagger.summary = "Save or update booking details based on property_id"
+  // #swagger.description = "> Save new booking details or update existing ones based on property_id."
+  /* #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/components/schemas/BookDetailsRequest" }  
+                }
+            }
+        }
+    */
+  const {
+    property,
+    first_name,
+    last_name,
+    email,
+    guests,
+    phone_number,
+    message,
+    promo_code,
+    newsletter_agree,
+  } = req.body;
+
+  try {
+    let details = await BookDetailsModel.findOne({
+      property,
+    });
+
+    if (details) {
+      details = await BookDetailsModel.findOneAndUpdate(
+        {
+          property,
+        },
+        {
+          first_name,
+          last_name,
+          email,
+          guests,
+          phone_number,
+          message,
+          promo_code,
+          newsletter_agree,
+          property,
+        },
+        { new: true }
+      );
+
+      return res
+        .status(200)
+        .json(
+          new apiResponse(200, details, "Booking Details updated successfully.")
+        );
+    } else {
+      details = await BookDetailsModel.create({
+        property,
+        first_name,
+        last_name,
+        email,
+        guests,
+        phone_number,
+        message,
+        promo_code,
+        newsletter_agree,
+      });
+
+      return res
+        .status(200)
+        .json(
+          new apiResponse(200, details, "Booking Details saved successfully.")
+        );
+    }
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error.message}`));
   }
 };

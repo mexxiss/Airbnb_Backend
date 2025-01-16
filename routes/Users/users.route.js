@@ -40,9 +40,11 @@ import {
   getPropertyUtilityById,
   UpdatePropertyUtilityById,
 } from "../../controllers/common/properties/utilitiesmanager.controllers.js";
-import { SetBlockedDates } from "../../controllers/general/booking/date.owner-block.controllers.js";
+import {
+  SetBlockedDates,
+  SetOwnerBookDetails,
+} from "../../controllers/general/booking/date.owner-block.controllers.js";
 import { addQuery } from "../../controllers/common/users/userqueries.controllers.js";
-
 
 const router = express.Router();
 
@@ -88,11 +90,11 @@ router.get("/user-documents/", GetUserDocuments);
 router.post("/user-documents/", SetUserDocument);
 router.put("/user-documents/:id", UpdateUserDocuments);
 
-
 router.post("/blocked-owner-dates/", SetBlockedDates);
 
 // Users Queries Routes
 router.post("/queries", addQuery);
 
-export default router;
+router.post("/owner-book-details/", SetOwnerBookDetails);
 
+export default router;
