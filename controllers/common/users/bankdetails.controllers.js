@@ -35,14 +35,18 @@ export const GetPaymentDetails = async (req, res, next) => {
     // #swagger.summary = "Get Payment Details by passing user ID through JWT Token"
     // #swagger.description = "> TODO: Retrieved details are sent back that may contain unnecessary information."
 
-    const user_id = req?.user?.id;
+    const user_id = req.user.role === "Admin" ? req.body.user_id : req?.user?.id;
 
-    if( !user_id ) {
+    if (!user_id) {
         return next(new apiError(400, `User required`));
     }
 
     try {
-        const docs = await PaymentDetailsModel.find({user: user_id}).limit(1);
+        let docs = await PaymentDetailsModel.find({user: user_id}).limit(1);
+        if (docs.length === 0) {
+            docs = await PaymentDetailsModel.create({user: user_id});
+            return res.status(200).json(docs);
+        }
         return res.status(200).json(docs[0]);
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`))
