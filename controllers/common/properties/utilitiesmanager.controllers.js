@@ -136,7 +136,7 @@ export const UpdatePropertyUtilityById = async (req, res) => {
     const {id} = req.params; // Property ID
     const { updates } = req.body;
     try {
-        const propertyUtility = await PropertyUtilitiesManagerModel.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+        const propertyUtility = await PropertyUtilitiesManagerModel.findByIdAndUpdate(id, updates, { new: true, runValidators: false });
         if (!propertyUtility) {
             return res.status(404).send();
         }
