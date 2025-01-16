@@ -56,6 +56,7 @@ export const ForgotPassword = async (req, res, next) => {
     }
   */
   const { email } = req.body;
+  
   try {
     const user = await UserModel.findOne({ email: { $in: email } });
     if (!user) {
