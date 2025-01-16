@@ -92,7 +92,7 @@ export const getPropertyUtilityById = async (req, res) => {
         let propertyUtility = await PropertyUtilitiesManagerModel.findOne(query);
 
         if (!propertyUtility) {
-            // Create a new empty utility document if not found
+
             propertyUtility = new PropertyUtilitiesManagerModel({
                 property: id,
                 user,
@@ -124,7 +124,7 @@ export const getPropertyUtilityById = async (req, res) => {
             return res.status(201).send(propertyUtility);
         }
 
-        res.status(200).send(propertyUtility);
+        return res.status(200).send(propertyUtility);
     } catch (error) {
         console.error('Error fetching property utility:', error);
         res.status(500).send({ error: 'Internal Server Error: Unable to fetch property utility.' });
