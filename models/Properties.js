@@ -96,7 +96,7 @@ const PropertiesSchema = new Schema(
       },
       pincode: {
         type: String,
-      },
+      }
     },
     discounts_percentage: {
       weekly: {

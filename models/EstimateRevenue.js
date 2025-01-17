@@ -16,7 +16,11 @@ const EstimateRevenueSchema = new Schema({
     furnishing: [{
         title: { type: String, required: true, enum: ["Premium", "Standard"] },
         increment: { type: Number, required: true }
-    }]
+    }],
+    coordinates: {
+        latitude: { type: String },
+        longitude: { type: String }
+    }
 }, { timestamps: true });
 
 EstimateRevenueSchema.methods.calculatePrice = function (beds, furnishing) {
