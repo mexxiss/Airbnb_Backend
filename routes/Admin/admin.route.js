@@ -109,6 +109,7 @@ import {
   GetMaintenanceInvoiceList,
   UpdateMaintenanceInvoice,
 } from "../../controllers/admin/invoices/maintenance.controllers.js";
+import { GetSingleBookedDate } from "../../controllers/general/booking/date.owner-block.controllers.js";
 
 const router = express.Router();
 
@@ -136,6 +137,7 @@ router.get("/blog-categories/", GetBlogCategories);
 router.post("/blogs/", AddBlogs);
 
 // Booked Dates Routes
+
 router.put("/booked-dates/:id", UpdateBookedDates);
 router.delete("/booked-dates/:id", DeleteBookedDates);
 

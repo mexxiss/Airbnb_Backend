@@ -29,19 +29,91 @@ export const GetBookedDates = async (req, res, next) => {
   }
 };
 
+export const GetSingleBookedDate = async (req, res, next) => {
+  // #swagger.tags = ['General']
+  // #swagger.summary = "Get a single booked date for a property within a date range"
+  // #swagger.description = "> Retrieve a single booking that overlaps with the given date range for a property."
+
+  /*
+    #swagger.parameters['property'] = {
+      in: 'query',
+      description: 'ID of the property to fetch the booked date',
+      required: true,
+      type: 'string'
+    }
+    
+  */
+
+  const { doc_id } = req.query;
+
+  if (!doc_id) {
+    return next(new apiError(400, "booking dates ID, are required"));
+  }
+
+  try {
+    // const checkinDateISO = new Date(checkin_date).toISOString();
+    // const checkoutDateISO = new Date(checkout_date).toISOString();
+
+    // Find a single document where the date range overlaps
+    const bookedDate = await BookedDatesModel.findById(doc_id);
+    // const bookedDate = await BookedDatesModel.findOne({
+    //   doc_id,
+    //   // $or: [
+    //   //   {
+    //   //     $and: [
+    //   //       { checkin_date: { $lte: checkinDateISO } },
+    //   //       { checkout_date: { $gte: checkinDateISO } },
+    //   //     ],
+    //   //   },
+    //   //   {
+    //   //     $and: [
+    //   //       { checkin_date: { $lte: checkoutDateISO } },
+    //   //       { checkout_date: { $gte: checkoutDateISO } },
+    //   //     ],
+    //   //   },
+    //   //   {
+    //   //     $and: [
+    //   //       { checkin_date: { $gte: checkinDateISO } },
+    //   //       { checkout_date: { $lte: checkoutDateISO } },
+    //   //     ],
+    //   //   },
+    //   // ],
+    // }).lean();
+
+    if (!bookedDate) {
+      return res
+        .status(404)
+        .json(
+          new apiResponse(
+            404,
+            null,
+            "No booking found for the specified criteria"
+          )
+        );
+    }
+
+    return res
+      .status(200)
+      .json(new apiResponse(200, bookedDate, "Booking retrieved successfully"));
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error.message}`));
+  }
+};
+
 export const SetBlockedDates = async (req, res, next) => {
   // #swagger.tags = ['General']
-  // #swagger.summary = "Set booked dates or reserve dates for a property"
-  // #swagger.description = "> #TODO: Created document is being sent back through response that may contain unnecessary information",
+  // #swagger.summary = "Set or update booked dates or reserve dates for a property"
+  // #swagger.description = "> Handles both creation and updating of booked/blocked dates for a property."
+
   /* #swagger.requestBody = {
-            required: true,
-            content: {
-                "application/json": {
-                    schema: { $ref: "#/components/schemas/BookedDatesRequest" }  
-                }
+        required: true,
+        content: {
+            "application/json": {
+                schema: { $ref: "#/components/schemas/BookedDatesRequest" }  
             }
         }
-    */
+    }
+  */
 
   const {
     checkin_date,
@@ -55,32 +127,79 @@ export const SetBlockedDates = async (req, res, next) => {
 
   const reservationCode = generateReservationCode();
 
+  // Parse dates to ISO strings
   const checkinDateISO = new Date(checkin_date).toISOString();
   const checkoutDateISO = new Date(checkout_date).toISOString();
 
   try {
+    // Ensure the property exists
     const propertyDoc = await PropertiesModel.findById(property);
     if (!propertyDoc) {
       return next(new apiError(400, "Property not found"));
     }
 
-    const bookedDates = new BookedDatesModel({
-      checkin_date: checkinDateISO,
-      checkout_date: checkoutDateISO,
+    // Check for overlapping dates
+    const overlappingRecord = await BookedDatesModel.findOne({
       property,
-      source,
-      reservationCode,
-      access_card_keys,
-      book_details,
-      note,
+      $or: [
+        {
+          $and: [
+            { checkin_date: { $lte: checkinDateISO } },
+            { checkout_date: { $gte: checkinDateISO } },
+          ],
+        },
+        {
+          $and: [
+            { checkin_date: { $lte: checkoutDateISO } },
+            { checkout_date: { $gte: checkoutDateISO } },
+          ],
+        },
+        {
+          $and: [
+            { checkin_date: { $gte: checkinDateISO } },
+            { checkout_date: { $lte: checkoutDateISO } },
+          ],
+        },
+      ],
     });
 
-    await bookedDates.save();
-    return res
-      .status(200)
-      .json(new apiResponse(200, bookedDates, "Dates Booked"));
+    if (overlappingRecord) {
+      // Update the existing record
+      overlappingRecord.checkin_date = checkinDateISO;
+      overlappingRecord.checkout_date = checkoutDateISO;
+      overlappingRecord.source = source || overlappingRecord.source;
+      overlappingRecord.access_card_keys =
+        access_card_keys || overlappingRecord.access_card_keys;
+      overlappingRecord.book_details =
+        book_details || overlappingRecord.book_details;
+      overlappingRecord.note = note || overlappingRecord.note;
+
+      await overlappingRecord.save();
+
+      return res
+        .status(200)
+        .json(new apiResponse(200, overlappingRecord, "Dates Updated"));
+    } else {
+      // Create a new record
+      const newRecord = new BookedDatesModel({
+        checkin_date: checkinDateISO,
+        checkout_date: checkoutDateISO,
+        property,
+        source,
+        reservationCode,
+        access_card_keys,
+        book_details,
+        note,
+      });
+
+      await newRecord.save();
+
+      return res
+        .status(201)
+        .json(new apiResponse(201, newRecord, "Dates Booked"));
+    }
   } catch (error) {
-    return next(new apiError(500, `Server Error: ${error}`));
+    return next(new apiError(500, `Server Error: ${error.message}`));
   }
 };
 
@@ -157,6 +276,27 @@ export const SetOwnerBookDetails = async (req, res, next) => {
           new apiResponse(200, details, "Booking Details saved successfully.")
         );
     }
+  } catch (error) {
+    return next(new apiError(500, `Server Error: ${error.message}`));
+  }
+};
+
+export const deleteBookedDate = async (req, res, next) => {
+  const { doc_id } = req.query;
+
+  if (!doc_id) {
+    return next(new apiError(400, "booking dates ID, are required"));
+  }
+
+  try {
+    // Find and remove the document matching the `from` and `to` dates
+    const deletedDate = await BookedDatesModel.findByIdAndDelete(doc_id);
+
+    if (!deletedDate) {
+      return next(new apiError(404, "Booked date not found"));
+    }
+
+    return res.status(200).json(new apiResponse(200, "Booked date deleted"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error.message}`));
   }
