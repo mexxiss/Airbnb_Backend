@@ -8,6 +8,11 @@ const UserSchema = new Schema(
   {
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
+    profile_img: {
+      type: String,
+      default:
+        "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1737112104~exp=1737115704~hmac=b3d9985b852ca5b6625c878877ca3ce60d09ed39e910328666c8bf2cd362b1c7&w=826",
+    },
     email: {
       type: [String],
       required: true,
