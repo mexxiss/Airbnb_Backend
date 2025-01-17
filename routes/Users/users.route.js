@@ -41,6 +41,8 @@ import {
   UpdatePropertyUtilityById,
 } from "../../controllers/common/properties/utilitiesmanager.controllers.js";
 import {
+  deleteBookedDate,
+  GetSingleBookedDate,
   SetBlockedDates,
   SetOwnerBookDetails,
 } from "../../controllers/general/booking/date.owner-block.controllers.js";
@@ -91,6 +93,8 @@ router.post("/user-documents/", SetUserDocument);
 router.put("/user-documents/:id", UpdateUserDocuments);
 
 router.post("/blocked-owner-dates/", SetBlockedDates);
+router.get("/block-stay-owner/single-booked-dates/", GetSingleBookedDate);
+router.delete("/block-stay-owner/single-booked-dates/", deleteBookedDate);
 
 // Users Queries Routes
 router.post("/queries", addQuery);
