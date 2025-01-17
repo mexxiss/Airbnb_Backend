@@ -4,6 +4,7 @@ import {
   getUserById,
   SignUp,
   softDeleteUserById,
+  updateProfileById,
   updateUserById,
 } from "../../controllers/admin/users/users.controllers.js";
 import amenitiesValidator from "../../utils/validations/amenitiesValidatior.js";
@@ -87,7 +88,10 @@ import {
 import { signUpValidator } from "../../utils/validations/signupValidator.js";
 import { GetBookDetails } from "../../controllers/admin/booking/details.controllers.js";
 import { contactValidator } from "../../utils/validations/contactvalidator.js";
-import { AddRevenueDetails, UpdateRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
+import {
+  AddRevenueDetails,
+  UpdateRevenueDetails,
+} from "../../controllers/admin/content/estimaterevenue.controllers.js";
 import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
 import {
   createOrUpdateMonthlyInvoice,
@@ -121,6 +125,8 @@ router.get("/users", getAllUsers);
 router.put("/users/:id", updateUserById);
 router.get("/users/:id", getUserById);
 router.delete("/users/:id", softDeleteUserById);
+
+router.put("/update-profile/", updateProfileById);
 
 // Amenities Routes
 router.post("/amenities/", amenitiesValidator, createAmenities);

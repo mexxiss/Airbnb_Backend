@@ -18,7 +18,8 @@ export const SignUp = async (req, res, next) => {
       }
     } 
   */
-  const { first_name, last_name, email, phone, role, address, password } = req.body;
+  const { first_name, last_name, email, phone, role, address, password } =
+    req.body;
 
   try {
     const user = await UserModel.findOne({ email: { $in: email } });
@@ -205,6 +206,32 @@ export const updateUserById = async (req, res) => {
   // #swagger.summary = "Admin can update the user details by passing AUTHORIZED BEARER TOKEN in header and user ID in path"
 
   const { id } = req.params;
+  const updateData = req.body;
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password -accessToken");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "User updated successfully", data: updatedUser });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update user", error: error.message });
+  }
+};
+
+export const updateProfileById = async (req, res) => {
+  // #swagger.tags = ['Admin']
+  // #swagger.summary = "Admin can update the user details by passing AUTHORIZED BEARER TOKEN in header and user ID in path"
+
+  const { id } = req.user;
   const updateData = req.body;
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
