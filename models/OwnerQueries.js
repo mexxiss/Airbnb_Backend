@@ -1,7 +1,7 @@
 import {Schema, model} from 'mongoose';
 
 const OwnerQueriesSchema = new Schema({
-    general_question: {
+    question_type: {
         type: String,
         required: true
     },
