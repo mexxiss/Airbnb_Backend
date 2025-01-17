@@ -87,7 +87,7 @@ import {
 import { signUpValidator } from "../../utils/validations/signupValidator.js";
 import { GetBookDetails } from "../../controllers/admin/booking/details.controllers.js";
 import { contactValidator } from "../../utils/validations/contactvalidator.js";
-import { AddRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
+import { AddRevenueDetails, UpdateRevenueDetails } from "../../controllers/admin/content/estimaterevenue.controllers.js";
 import { getFigures } from "../../controllers/admin/dashboard/dashboard.controllers.js";
 import {
   createOrUpdateMonthlyInvoice,
@@ -153,6 +153,7 @@ router.post("/airbnb-dubai/", SetDubaiDetails);
 
 // Estimate Revenue Routes
 router.post("/estimate-revenue/", AddRevenueDetails);
+router.put("/estimate-revenue/:id", UpdateRevenueDetails);
 
 // FAQs Routes
 router.post("/faqs/", SetFaqs);

@@ -70,9 +70,9 @@ router.get("/properties/all", GetFullPropertiesObjByUser);
 router.get("/properties/block-owner/:id", SetBlockOwnerStay);
 
 // Property Utilities Routes
-router.post("/property-utilities/", SetPropertyUtility);
-router.get("/property-utilities/", GetPropertyUtilities);
-router.put("/property-utilities/:id", UpdatePropertyUtility);
+// router.post("/property-utilities/", SetPropertyUtility);
+// router.get("/property-utilities/", GetPropertyUtilities);
+// router.put("/property-utilities/:id", UpdatePropertyUtility);
 
 // Property Utilities Manager Routes
 router.post("/utilities/", createPropertyUtility);

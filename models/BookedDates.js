@@ -75,7 +75,6 @@ const BookedDatesSchema = new Schema(
         "I have keys, but I require an access card",
         "No, I have both keys and an access card",
       ],
-      default: "",
     },
     note: {
       type: String,
