@@ -13,15 +13,15 @@ export const addQuery = async (req, res, next) => {
         schema: { $ref: '#/components/schemas/QueryRequest' }
     } */
 
-    const { general_question, message } = req.body;
+    const { question_type, message } = req.body;
     const user = req.user.id;
 
-    if (!general_question || !message || !user) {
+    if (!question_type || !message || !user) {
         return res.status(400).json({ success: false, message: 'All fields are required.' });
     }
 
     try {
-        const query = await OwnerQueriesModel.create({ general_question, message, user })
+        const query = await OwnerQueriesModel.create({ question_type, message, user })
         return res.status(200).json(new apiResponse(200, "", "Query created successfully"));
     } catch (err) {
         return next(new apiError(500, `Server error: ${err.message}`));

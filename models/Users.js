@@ -25,6 +25,7 @@ const UserSchema = new Schema(
         },
       ],
     },
+    
     phone: {
       type: [String],
       validate: [
