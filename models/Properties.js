@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Schema, model } from "mongoose";
+import axios from "axios";
 
 const PropertiesSchema = new Schema(
   {
@@ -74,6 +75,14 @@ const PropertiesSchema = new Schema(
         type: String,
       },
     },
+    location: {
+      longitude: {
+        type: String,
+      },
+      latitude: {
+        type: String,
+      },
+    },
     address: {
       building_no: {
         type: String,
@@ -96,7 +105,7 @@ const PropertiesSchema = new Schema(
       },
       pincode: {
         type: String,
-      }
+      },
     },
     discounts_percentage: {
       weekly: {
@@ -176,11 +185,11 @@ const PropertiesSchema = new Schema(
     },
     block_owner: {
       from: {
-        type: Date
+        type: Date,
       },
       to: {
-        type: Date
-      }
+        type: Date,
+      },
     },
   },
   { timestamps: true }
@@ -238,7 +247,10 @@ PropertiesSchema.methods.updateImages = async function (newImages) {
   await this.save();
 };
 
-PropertiesSchema.methods.getNightsCount = async function (checkin_date, checkout_date) {
+PropertiesSchema.methods.getNightsCount = async function (
+  checkin_date,
+  checkout_date
+) {
   const oneDay = 24 * 60 * 60 * 1000;
   const nights_count = Math.ceil(
     (new Date(checkout_date) - new Date(checkin_date)) / oneDay
@@ -247,6 +259,51 @@ PropertiesSchema.methods.getNightsCount = async function (checkin_date, checkout
     throw new Error("Check-out date must be after check-in date.");
   }
   return nights_count;
-}
+};
 
+PropertiesSchema.methods.updateLocationFromAddress = async function (
+  googleApiKey
+) {
+  const { building_no, street, area, city, country, pincode } = this.address;
+
+  // Construct the full address string
+  const address = [building_no, street, area, city, country, pincode]
+    .filter(Boolean) // Remove undefined, null, or empty values
+    .join(", ");
+
+  try {
+    // Call Google Maps Geocoding API
+    const response = await axios.get(
+      "https://maps.googleapis.com/maps/api/geocode/json",
+      {
+        params: {
+          address,
+          key: googleApiKey,
+        },
+      }
+    );
+
+    if (response.data.status === "OK" && response.data.results.length > 0) {
+      const location = response.data.results[0].geometry.location;
+
+      // Update the location field in the property document
+      this.location = {
+        latitude: location.lat.toString(),
+        longitude: location.lng.toString(),
+      };
+
+      // Save the document with the updated location
+      await this.save();
+
+      return this.location;
+    } else {
+      throw new Error(
+        "Unable to fetch coordinates. Please verify the address."
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching location:", error.message);
+    throw new Error("Failed to fetch location coordinates.");
+  }
+};
 export const PropertiesModel = model("properties", PropertiesSchema);
