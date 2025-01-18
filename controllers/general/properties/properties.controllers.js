@@ -115,8 +115,8 @@ export const getFullPropertyById = async (req, res, next) => {
 
 export const getFilteredPropertiesForBooking = async (req, res, next) => {
     const { page = 1, limit = 4 } = req.query;
-    const { destination, check_in, check_out, bedrooms, guests, area } = req.body;
-    
+    const { destination, check_in, check_out, bedrooms, guests, area, sort } = req.body;
+
     try {
         let query = {};
 
@@ -132,6 +132,7 @@ export const getFilteredPropertiesForBooking = async (req, res, next) => {
                     }
                 ]
             }).distinct("property");
+
             query._id = { $nin: bookedProperties };
         }
 
@@ -140,13 +141,47 @@ export const getFilteredPropertiesForBooking = async (req, res, next) => {
         if (area) query["address.area"] = area;
         if (destination) query["address.country"] = destination;
 
-        const properties = await PropertiesModel.find(query)
-            .skip((page - 1) * limit)
-            .limit(limit)
-            .populate("property_images");
+        let sortCriteria = {};
+        if (sort === "price_low") {
+            sortCriteria = { "costs.prices.price_per_night": 1 };
+        } else if (sort === "price_high") {
+            sortCriteria = { "costs.prices.price_per_night": -1 };
+        } else {
+            sortCriteria = { _id: 1 }; 
+        }
 
-        return res.status(200).json(new apiResponse(200, properties, "Properties retrieved successfully"));
+        // Aggregation pipeline
+        const result = await PropertiesModel.aggregate([
+            { $match: query },
+            {
+                $facet: {
+                    totalCount: [{ $count: "count" }], // Count total matching documents
+                    properties: [
+                        { $sort: sortCriteria },
+                        { $skip: (page - 1) * limit },
+                        { $limit: parseInt(limit) },
+                        {
+                            $lookup: {
+                                from: "galleries",
+                                localField: "property_images",
+                                foreignField: "_id",
+                                as: "property_images"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]);
+
+        const totalCount = result[0]?.totalCount[0]?.count || 0;
+        const properties = result[0]?.properties || [];
+
+        return res
+            .status(200)
+            .json(new apiResponse(200, { properties, totalCount }, "Properties retrieved successfully"));
     } catch (err) {
+        console.log(err.message);
+        
         return next(new apiError(500, `Server Error: ${err.message}`));
     }
 };
