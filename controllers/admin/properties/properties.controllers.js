@@ -3,6 +3,7 @@ import { PropertiesModel } from "../../../models/Properties.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
 import { GalleryModel } from "../../../models/Gallery.js";
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
 export const getPropertyListByAdmin = async (req, res) => {
   // #swagger.tags = ['Admin']
@@ -151,6 +152,8 @@ export const SetProperty = async (req, res, next) => {
       user,
     });
 
+    await createdProperty.updateLocationFromAddress(GOOGLE_API_KEY);
+
     // Step 2: Update the gallery documents
     if (property_images && property_images.length > 0) {
       const objectIdImages = property_images.map(
@@ -240,6 +243,8 @@ export const UpdateProperty = async (req, res, next) => {
       { $set: updates },
       { new: true, runValidators: true }
     ).populate({ path: "property_images", select: "img_url type" });
+
+    await property.updateLocationFromAddress(GOOGLE_API_KEY);
     return res
       .status(200)
       .json(new apiResponse(200, property, "Property Updated Successfully"));
