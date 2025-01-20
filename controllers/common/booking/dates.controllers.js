@@ -213,6 +213,8 @@ export const GetFilteredDates = async (req, res, next) => {
                                 checkout_date: 1,
                                 property: 1,
                                 nights_count_dynamic: 1,
+                                reservationCode: 1,
+                                nights_count: 1,
                                 first_name: "$book_details.first_name",
                                 last_name: "$book_details.last_name",
                                 guest_count: "$book_details.guests",
