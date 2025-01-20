@@ -74,10 +74,6 @@ export const getStatements = async (req, res, next) => {
 
     const statements = await StatementModel.find(query);
 
-    if (!statements || statements.length === 0) {
-      return res.status(404).json({ message: "No statements found" });
-    }
-
     return res.status(200).json({ data: statements });
   } catch (e) {
     return next(new apiError(500, `Failed to fetch statements: ${e.message}`));

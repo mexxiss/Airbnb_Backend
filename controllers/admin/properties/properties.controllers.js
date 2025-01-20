@@ -119,6 +119,9 @@ export const SetProperty = async (req, res, next) => {
     user,
   } = req.body;
 
+  console.log(property_images);
+  
+
   if (!title || !description || !address || !user) {
     return res
       .status(400)
@@ -179,7 +182,6 @@ export const SetProperty = async (req, res, next) => {
   } catch (error) {
     console.error("Error during property creation:", error);
 
-    // Cleanup: Rollback created property if an error occurs
     if (createdProperty) {
       try {
         await PropertiesModel.findByIdAndDelete(createdProperty._id);
