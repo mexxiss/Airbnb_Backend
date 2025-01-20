@@ -28,7 +28,11 @@ export const AddLegal = async (req, res, next) => {
       { new: true, upsert: true }
     );
 
-    return res.status(200).json(new apiResponse(200, legal, "Legal document added/updated successfully"));
+    return res
+      .status(200)
+      .json(
+        new apiResponse(200, legal, "Legal document section saved successfully")
+      );
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
