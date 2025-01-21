@@ -273,3 +273,46 @@ export const GetUserProperties = async (req, res, next) => {
     return next(new apiError(500, `Server Error: ${error}`));
   }
 };
+
+export const getPropertyById = async (req, res) => {
+  // #swagger.tags = ['Admin']
+  // #swagger.summary = "AUTHORIZED Admin can view a single property by ID"
+  // #swagger.description = "> This endpoint fetches a specific property by its unique ID."
+
+  const { id } = req.params;
+
+  try {
+    // Validate ID format (assuming MongoDB ObjectId)
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: "Invalid property ID format" });
+    }
+
+    // Fetch the property by ID
+    const property = await PropertiesModel.findById(id)
+      .populate({
+        path: "property_images",
+        select: "img_url type",
+      })
+      .populate({
+        path: "amenities",
+        select: "title icon",
+      });
+
+    // If property not found, return 404
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    // Send the fetched property
+    res.status(200).json({
+      data: property,
+      message: "Property fetched successfully",
+    });
+  } catch (error) {
+    console.log({ error });
+
+    res
+      .status(500)
+      .json({ message: "Failed to fetch property", error: error.message });
+  }
+};

@@ -11,6 +11,7 @@ import amenitiesValidator from "../../utils/validations/amenitiesValidatior.js";
 import galleryValidator from "../../utils/validations/galleryValidator.js";
 import {
   DeleteProperty,
+  getPropertyById,
   getPropertyListByAdmin,
   GetUserProperties,
   SetProperty,
@@ -203,6 +204,7 @@ router.post("/properties/", SetProperty);
 router.get("/properties/", getPropertyListByAdmin);
 router.delete("/properties/:id", DeleteProperty);
 router.put("/properties/:id", UpdateProperty);
+router.get("/property/:id", getPropertyById);
 router.get("/properties/:user", GetUserProperties);
 
 // Requirements Routes
