@@ -45,7 +45,39 @@ export const updateFurnishingInvoice = async (req, res) => {
 
 export const getAllFurnishingInvoice = async (req, res) => {
   try {
-    const invoices = await Furnishing.find({}).populate("bank_details");
+    const { search } = req.query;
+
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { invoiceNumber: { $regex: search, $options: "i" } },
+          { statementPeriod: { $regex: search, $options: "i" } },
+          { "companyDetails.name": { $regex: search, $options: "i" } },
+          { "companyDetails.address": { $regex: search, $options: "i" } },
+          { "companyDetails.phone": { $regex: search, $options: "i" } },
+          { "ownerDetails.name": { $regex: search, $options: "i" } },
+          { "ownerDetails.address": { $regex: search, $options: "i" } },
+          { "ownerDetails.phone": { $regex: search, $options: "i" } },
+          { status: { $regex: search, $options: "i" } },
+          { furnishingDetails: { $regex: search, $options: "i" } },
+          { notes: { $regex: search, $options: "i" } },
+        ],
+      };
+
+      if (!isNaN(search)) {
+        const searchNumber = Number(search);
+
+        query.$or.push(
+          { totalFurnishingCost: { $gte: searchNumber } },
+          { receivedAmount: { $gte: searchNumber } },
+          { amountOwedToFP: { $gte: searchNumber } }
+        );
+      }
+    }
+
+    const invoices = await Furnishing.find(query).populate("bank_details");
 
     res.status(200).json({
       message: "Furnishing Invoices fetched successfully",
