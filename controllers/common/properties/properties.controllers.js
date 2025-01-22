@@ -8,13 +8,19 @@ export const GetAllPropertiesByUser = async (req, res, next) => {
     // #swagger.description = "Retrieved documents may contain unnecessary fields."
     
     const user_id = req?.user?.id;
+    const { search_term } = req.query;
 
     if (!user_id) {
         return next(new apiError(400, "User required"))
     }
 
+    const query = { user: user_id };
+    if (search_term) {
+        query.title = { $regex: search_term, $options: "i" }; 
+    }
+
     try {
-        const properties = await PropertiesModel.find({ user: user_id }).populate('property_images').select('title description property_images property_details.rooms_count status');
+        const properties = await PropertiesModel.find(query).populate('property_images').select('title description property_images property_details.rooms_count status');
         return res.status(200).json(new apiResponse(200, properties, "Property retrieved successfully"));
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
@@ -45,7 +51,7 @@ export const SetBlockOwnerStay = async (req, res) => {
     // #swagger.summary = "Set Block Owner Stay for Property",
     // #swagger.description = "User can set block owner stay for their property."
     
-    const { id } = req.params; //
+    const { id } = req.params;
     const { block_owner } = req.body;
 
     if (!block_owner || typeof block_owner !== 'object' || Array.isArray(block_owner)) {

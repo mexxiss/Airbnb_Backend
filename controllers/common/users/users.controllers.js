@@ -84,7 +84,7 @@ export const UpdateUser = async (req, res, next) => {
   
   const user_id = req?.user?.id;
   const { updates } = req.body;
-
+  
   if (!user_id) {
     return next(new apiError(400, "User Id not provided"));
   }

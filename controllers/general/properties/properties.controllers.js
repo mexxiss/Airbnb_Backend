@@ -64,7 +64,6 @@ export const GetPropertyObj = async (req, res, next) => {
         ])
 
         const documentSize = Buffer.byteLength(JSON.stringify({ properties, bookDetails, maintenanceSummary }));
-        console.log("Document Size in Bytes:", documentSize);
 
         return res.status(200).json(
             new apiResponse(200, {
