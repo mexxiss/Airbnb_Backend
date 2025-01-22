@@ -273,7 +273,41 @@ export const getmonthalyRevenueDetail = async (req, res) => {
 
 export const getmonthalyRevenueList = async (req, res) => {
   try {
-    const revenueInvoiceLists = await MonthalySchemaModal.find({});
+    const { search } = req.query;
+
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { "companyDetails.name": { $regex: search, $options: "i" } },
+          { "companyDetails.address": { $regex: search, $options: "i" } },
+          { "companyDetails.phone": { $regex: search, $options: "i" } },
+          { "ownerDetails.name": { $regex: search, $options: "i" } },
+          { "ownerDetails.address": { $regex: search, $options: "i" } },
+          { "ownerDetails.phone": { $regex: search, $options: "i" } },
+          { "invoiceDetails.invoiceNumber": { $regex: search, $options: "i" } },
+          {
+            "invoiceDetails.statementPeriod": { $regex: search, $options: "i" },
+          },
+          { "reservations.guestName": { $regex: search, $options: "i" } },
+          { "reservations.reservationCode": { $regex: search, $options: "i" } },
+          { footer: { $regex: search, $options: "i" } },
+        ],
+      };
+
+      // Check if summary fields are numeric before querying
+      if (!isNaN(search)) {
+        query.$or.push(
+          { "summary.totalIncome": search },
+          { "summary.managementFee.amount": search },
+          { "summary.netAmountDue": search }
+        );
+      }
+    }
+
+    const revenueInvoiceLists = await MonthalySchemaModal.find(query);
+
     res.status(200).json({
       message: "Revenue details fetched successfully.",
       data: revenueInvoiceLists,
