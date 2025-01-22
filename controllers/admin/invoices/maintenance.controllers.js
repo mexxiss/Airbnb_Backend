@@ -90,15 +90,57 @@ export const GetMaintenanceInvoiceById = async (req, res) => {
 
 export const GetMaintenanceInvoiceList = async (req, res) => {
   try {
-    const maintenanceRecords = await MaintenanceInvoiceModal.find({})
+    const { search } = req.query;
+
+    let query = {};
+
+    if (search) {
+      query = {
+        $or: [
+          { statementPeriod: { $regex: search, $options: "i" } },
+          { trn_number: { $regex: search, $options: "i" } },
+          { taxInvoiceNumber: { $regex: search, $options: "i" } },
+          { "companyDetails.name": { $regex: search, $options: "i" } },
+          { "companyDetails.address": { $regex: search, $options: "i" } },
+          { "companyDetails.phone": { $regex: search, $options: "i" } },
+          { "ownerDetails.name": { $regex: search, $options: "i" } },
+          { "ownerDetails.address": { $regex: search, $options: "i" } },
+          { "ownerDetails.phone": { $regex: search, $options: "i" } },
+          { "essentialWorks.itemService": { $regex: search, $options: "i" } },
+          {
+            "essentialWorksImages.work_name": { $regex: search, $options: "i" },
+          },
+          { notes: { $regex: search, $options: "i" } },
+        ],
+      };
+
+      // Handle numeric fields separately
+      if (!isNaN(search)) {
+        const searchNumber = Number(search); // Convert the search term to a number
+
+        query.$or.push(
+          { subtotal: { $gte: searchNumber } },
+          { totalMaintenceCost: { $gte: searchNumber } },
+          { receivedAmount: { $gte: searchNumber } },
+          { amountOwedToFP: { $gte: searchNumber } }
+        );
+      }
+    }
+
+    const maintenanceRecords = await MaintenanceInvoiceModal.find(query)
       .populate({
         path: "property_id",
         select: "title user",
       })
       .populate("bank_details");
-    res.status(200).json({ data: maintenanceRecords });
+
+    res.status(200).json({
+      message: "Maintenance invoices fetched successfully.",
+      data: maintenanceRecords,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error fetching maintenance invoices:", error);
+    res.status(400).json({ error: "Failed to fetch maintenance invoices." });
   }
 };
 
