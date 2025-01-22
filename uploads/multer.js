@@ -7,7 +7,6 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
     try {
-      console.log("Upload Middleware: ", file);
       const originalNameWithoutExt = path.parse(file.originalname).name;
       return {
         folder: `uploads/${req.query.folder || ""}`,
