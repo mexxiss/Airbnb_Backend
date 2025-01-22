@@ -120,7 +120,6 @@ export const SetProperty = async (req, res, next) => {
   } = req.body;
 
   console.log(property_images);
-  
 
   if (!title || !description || !address || !user) {
     return res
