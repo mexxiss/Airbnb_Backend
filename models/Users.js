@@ -25,7 +25,7 @@ const UserSchema = new Schema(
         },
       ],
     },
-    
+
     phone: {
       type: [String],
       validate: [
@@ -58,7 +58,7 @@ const UserSchema = new Schema(
       street: { type: String },
       area: { type: String },
       landmark: { type: String },
-      country: { type: String, default: "Dubai" },
+      country: { type: String, default: "" },
       pincode: { type: String },
     },
   },
