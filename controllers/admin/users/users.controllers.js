@@ -110,9 +110,8 @@ export const getAllUsers = async (req, res) => {
       filterConditions.isDeleted = isDeleted === "false" ? false : true;
     }
 
-    // Improved Search Handling
     if (searchTerm.trim()) {
-      const searchWords = searchTerm.trim().split(/\s+/); // Split by spaces
+      const searchWords = searchTerm.trim().split(/\s+/);
       filterConditions.$or = searchWords.map((word) => ({
         $or: [
           { fullname: { $regex: word, $options: "i" } },
