@@ -21,11 +21,10 @@ export const getPropertyListByAdmin = async (req, res) => {
 
   const filterConditions = {};
   try {
-    // Date range filtering
     if (startDate && endDate) {
       filterConditions.createdAt = {
-        $gte: new Date(startDate), // greater than or equal to startDate
-        $lte: new Date(endDate), // less than or equal to endDate
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
       };
     }
 
@@ -34,35 +33,21 @@ export const getPropertyListByAdmin = async (req, res) => {
       filterConditions.status = status;
     }
 
-    // Search term filtering
     if (searchTerm) {
       filterConditions.$or = [
         { title: { $regex: searchTerm, $options: "i" } },
         { "address.city": { $regex: searchTerm, $options: "i" } },
         { "address.area": { $regex: searchTerm, $options: "i" } },
         { "address.pincode": { $regex: searchTerm, $options: "i" } },
-        { description: { $regex: searchTerm, $options: "i" } },
-        {
-          "property_details.furnishing": { $regex: searchTerm, $options: "i" },
-        },
-        { "property_details.wifi.name": { $regex: searchTerm, $options: "i" } },
-        { "costs.currency": { $regex: searchTerm, $options: "i" } },
-        {
-          "important_information.about_space": {
-            $regex: searchTerm,
-            $options: "i",
-          },
-        },
-        {
-          "important_information.guest_access": {
-            $regex: searchTerm,
-            $options: "i",
-          },
-        },
       ];
+      if (!isNaN(searchTerm)) {
+        const searchNumber = Number(searchTerm);
+        filterConditions.$or.push({
+          "costs.prices.price_per_night": { $gte: searchNumber },
+        });
+      }
     }
 
-    // Fetch filtered properties
     const properties = await PropertiesModel.find(filterConditions)
       .populate({
         path: "property_images",
