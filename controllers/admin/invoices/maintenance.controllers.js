@@ -114,9 +114,8 @@ export const GetMaintenanceInvoiceList = async (req, res) => {
         ],
       };
 
-      // Handle numeric fields separately
       if (!isNaN(search)) {
-        const searchNumber = Number(search); // Convert the search term to a number
+        const searchNumber = Number(search);
 
         query.$or.push(
           { subtotal: { $gte: searchNumber } },
