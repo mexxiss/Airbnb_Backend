@@ -82,9 +82,6 @@ export const SignUp = async (req, res, next) => {
 };
 
 export const getAllUsers = async (req, res) => {
-  // #swagger.tags = ['Admin']
-  // #swagger.summary = "Admin can view the list of users by passing AUTHORIZED BEARER TOKEN in header and query parameters - startDate, endDate, status, searchTerm, role, city, page, and limit"
-
   const {
     startDate,
     endDate,
@@ -94,7 +91,6 @@ export const getAllUsers = async (req, res) => {
     limit = 10,
   } = req.query;
 
-  // Convert startDate and endDate to Date objects
   const filterConditions = {};
 
   try {
@@ -104,8 +100,8 @@ export const getAllUsers = async (req, res) => {
     // Date range filtering
     if (startDate && endDate) {
       filterConditions.createdAt = {
-        $gte: new Date(startDate), // greater than or equal to startDate
-        $lte: new Date(endDate), // less than or equal to endDate
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
       };
     }
 
@@ -114,15 +110,16 @@ export const getAllUsers = async (req, res) => {
       filterConditions.isDeleted = isDeleted === "false" ? false : true;
     }
 
-    // Search term (search by fullname, email, or phone)
-    if (searchTerm) {
-      filterConditions.$or = [
-        { fullname: { $regex: searchTerm, $options: "i" } },
-        { email: { $regex: searchTerm, $options: "i" } },
-        { phone: { $regex: searchTerm, $options: "i" } },
-        { role: { $regex: searchTerm, $options: "i" } },
-        { "address.city": { $regex: searchTerm, $options: "i" } },
-      ];
+    // Improved Search Handling
+    if (searchTerm.trim()) {
+      const searchWords = searchTerm.trim().split(/\s+/); // Split by spaces
+      filterConditions.$or = searchWords.map((word) => ({
+        $or: [
+          { fullname: { $regex: word, $options: "i" } },
+          { email: { $regex: word, $options: "i" } },
+          { phone: { $regex: word, $options: "i" } },
+        ],
+      }));
     }
 
     // Exclude the admin from the list
@@ -138,7 +135,6 @@ export const getAllUsers = async (req, res) => {
     // Get total user count for pagination
     const totalUsers = await UserModel.countDocuments(filterConditions);
 
-    // Send the response
     res.status(200).json({
       data: users,
       currentPage: page,
