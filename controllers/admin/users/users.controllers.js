@@ -115,6 +115,8 @@ export const getAllUsers = async (req, res) => {
       filterConditions.$or = searchWords.map((word) => ({
         $or: [
           { fullname: { $regex: word, $options: "i" } },
+          { first_name: { $regex: word, $options: "i" } },
+          { last_name: { $regex: word, $options: "i" } },
           { email: { $regex: word, $options: "i" } },
           { phone: { $regex: word, $options: "i" } },
         ],
