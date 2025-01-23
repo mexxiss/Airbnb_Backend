@@ -19,12 +19,14 @@ export const GetFilteredDates = async (req, res, next) => {
         ? new Date(start_date_ISO)
         : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
-    const e_date = new Date(s_date);
-    e_date.setMonth(e_date.getMonth() + 4);
-
     const firstOfMonth = new Date(Date.UTC(s_date.getFullYear(), s_date.getMonth(), 1));
     const lastOfMonth = new Date(Date.UTC(s_date.getFullYear(), s_date.getMonth() + 1, 0));
 
+    const e_date = new Date(firstOfMonth);
+    e_date.setMonth(firstOfMonth.getMonth() + 4);
+
+    console.log(firstOfMonth, lastOfMonth, e_date);
+    
     try {
         const dates = await BookedDatesModel.aggregate([
             {
@@ -240,6 +242,9 @@ export const GetFilteredDates = async (req, res, next) => {
         const occupancyDetails = await BookedDatesModel.aggregate(
             getOccupancyAggregation(property, firstOfMonth, e_date)
         );
+
+        console.log(occupancyDetails);
+        
 
         return res.status(200).json({dates: dates[0], occupancy: occupancyDetails});
     } catch (error) {
