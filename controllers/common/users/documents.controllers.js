@@ -36,7 +36,7 @@ export const GetUserDocuments = async (req, res, next) => {
     // #swagger.description = "> TODO: Retrieved documents are sent back that may contain unnecessary information."
 
     const { property } = req.query || req.params;
-    const user_id = req.user.role === "Admin" ? req.body.user_id : req?.user?.id;
+    const user_id = req?.user?.id;
 
     if (!user_id) {
         return next(new apiError(400, `User required`));

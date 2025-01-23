@@ -35,7 +35,7 @@ export const GetPaymentDetails = async (req, res, next) => {
     // #swagger.summary = "Get Payment Details by passing user ID through JWT Token"
     // #swagger.description = "> TODO: Retrieved details are sent back that may contain unnecessary information."
 
-    const user_id = req.user.role === "Admin" ? req.body.user_id : req?.user?.id;
+    const user_id = req?.user?.id;
 
     if (!user_id) {
         return next(new apiError(400, `User required`));

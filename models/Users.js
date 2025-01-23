@@ -58,7 +58,7 @@ const UserSchema = new Schema(
       street: { type: String },
       area: { type: String },
       landmark: { type: String },
-      country: { type: String, default: "Dubai" },
+      country: { type: String },
       pincode: { type: String },
     },
   },
