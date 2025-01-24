@@ -51,8 +51,6 @@ import { GetThirdPartyLogos } from "../../controllers/general/content/thirdparty
 import { GetVideoGuides } from "../../controllers/general/content/guides.controllers.js";
 import { GetUIContent } from "../../controllers/general/content/uicontent.controllers.js";
 import { AddPropertyQuery } from "../../controllers/general/contact/propertyquery.controllers.js";
-import { getStatements } from "../../controllers/admin/properties/statements.controllers.js";
-import { SetBlockedDates } from "../../controllers/general/booking/date.owner-block.controllers.js";
 
 const router = express.Router();
 
@@ -135,8 +133,6 @@ router.get("/guides/", GetVideoGuides);
 
 // UI Content Routes
 router.get("/ui-content/", GetUIContent);
-
-router.get("/user-statements", getStatements);
 
 //** Blocked Owner Stay */
 

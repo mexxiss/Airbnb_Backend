@@ -169,7 +169,43 @@ const getOccupancyAggregation = (property, firstOfMonth, e_date) => [
             "_id.year": 1,
             "_id.month": 1
         }
+    },
+    {
+        $unionWith: {
+            pipeline: [
+                {
+                    $documents: Array.from({ length: Math.ceil((e_date - firstOfMonth) / (30 * 24 * 60 * 60 * 1000)) }, (_, i) => {
+                        const date = new Date(firstOfMonth);
+                        date.setMonth(date.getMonth() + i);
+                        return {
+                            _id: {
+                                year: date.getUTCFullYear(),
+                                month: date.getUTCMonth() + 1
+                            },
+                            total_nights_booked: 0,
+                            days_in_month: new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate(),
+                            occupancy_percentage: 0
+                        };
+                    })
+                }
+            ]
+        }
+    },
+    {
+        $group: {
+            _id: "$_id",
+            total_nights_booked: { $sum: "$total_nights_booked" },
+            days_in_month: { $first: "$days_in_month" },
+            occupancy_percentage: { $first: "$occupancy_percentage" }
+        }
+    },
+    {
+        $sort: {
+            "_id.year": 1,
+            "_id.month": 1
+        }
     }
+    
 ];
 
 export {
