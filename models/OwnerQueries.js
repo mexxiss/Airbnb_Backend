@@ -12,7 +12,7 @@ const OwnerQueriesSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
-    }
+    },
 }, { timestamps: true });
 
 export const OwnerQueriesModel = model('ownerqueries', OwnerQueriesSchema);

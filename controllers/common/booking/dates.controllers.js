@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { BookedDatesModel } from "../../../models/BookedDates.js";
 import { apiError } from "../../../utils/apiError.js";
-import { getDaysInMonth, getOccupancyAggregation } from "../../../utils/bookingPipeline.js";
+import { getOccupancyAggregation } from "../../../utils/bookingPipeline.js";
 
 export const GetFilteredDates = async (req, res, next) => {
     // #swagger.tags = ['Users']
@@ -25,7 +25,16 @@ export const GetFilteredDates = async (req, res, next) => {
     const e_date = new Date(firstOfMonth);
     e_date.setMonth(firstOfMonth.getMonth() + 4);
 
-    console.log(firstOfMonth, lastOfMonth, e_date);
+    const adjustedFirstOfMonth = new Date(firstOfMonth);
+    adjustedFirstOfMonth.setMonth(adjustedFirstOfMonth.getMonth() - 1);
+
+    const adjustedEndDate = new Date(firstOfMonth); 
+    adjustedEndDate.setMonth(adjustedEndDate.getMonth() + 2);
+    adjustedEndDate.setUTCDate(0); 
+
+    if ([1, 3, 5, 7, 8, 10, 12].includes(adjustedEndDate.getMonth() + 1)) {
+        adjustedEndDate.setUTCDate(30); 
+    }
     
     try {
         const dates = await BookedDatesModel.aggregate([
@@ -239,14 +248,15 @@ export const GetFilteredDates = async (req, res, next) => {
             }
         ]);
 
-        const occupancyDetails = await BookedDatesModel.aggregate(
-            getOccupancyAggregation(property, firstOfMonth, e_date)
+        let occupancyDetails = await BookedDatesModel.aggregate(
+            getOccupancyAggregation(property, adjustedFirstOfMonth, adjustedEndDate)
         );
 
-        console.log(occupancyDetails);
-        
+        if (occupancyDetails.length > 3) {
+            occupancyDetails = occupancyDetails.slice(1, 4)
+        }
 
-        return res.status(200).json({dates: dates[0], occupancy: occupancyDetails});
+        return res.status(200).json({ dates: dates[0], occupancy: occupancyDetails });
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`));
     }
