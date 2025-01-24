@@ -36,6 +36,12 @@ export const addStatement = async (req, res, next) => {
     return next(new apiError(400, "Incomplete or missing required fields"));
   }
 
+  const existStatement = await StatementModel.exists({ title });
+
+  if (existStatement) {
+    return res.status(200).json({ message: "Statement already exists" });
+  }
+
   try {
     const newStatement = StatementModel.create({
       url,
@@ -46,7 +52,9 @@ export const addStatement = async (req, res, next) => {
       statement_type,
       property,
     });
-    return res.status(200).json(newStatement);
+    return res
+      .status(201)
+      .json({ data: newStatement, message: "Statement Genrated Succesfully" });
   } catch (e) {
     return next(new apiError(500, `Failed to add statement: ${e.message}`));
   }
