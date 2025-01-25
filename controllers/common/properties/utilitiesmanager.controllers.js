@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { PropertyUtilitiesManagerModel } from '../../../models/PropertyUtilitiesManager.js';
+import { apiError } from '../../../utils/apiError.js';
 
 // Create a new property utility
 export const createPropertyUtility = async (req, res) => {
@@ -62,6 +63,71 @@ export const createPropertyUtility = async (req, res) => {
 //         res.status(500).send(error);
 //     }
 // };
+
+export const createEmptyPropertyUtility = async (req, res, next) => {
+    const {id} = req.query // Property ID
+    const user = req.user.id;
+
+    if (!id ||!mongoose.isValidObjectId(id)) {
+        return res.status(400).send({ error: 'Invalid Property Id: A valid property ID is required.' });
+    }
+
+    if (!user || !mongoose.isValidObjectId(user)) {
+        return res.status(400).send({ error: 'Invalid User Id: A valid user ID is required.' });
+    }
+
+    const utility = {
+        property: id,
+        user: user,
+        internet: {
+            service_name: "Internet",
+            paid_by: "Owner",
+            field_name: "internet",
+        },
+        electricity_water: {
+            service_name: "Electricity & Water",
+            paid_by: "Owner",
+            field_name: "electricity_water",
+        },
+        gas: {
+            service_name: "Gas",
+            paid_by: "Owner",
+            field_name: "gas",
+        },
+        chiller: {
+            service_name: "Chiller",
+            paid_by: "Owner",
+            field_name: "chiller",
+        },
+        other: [],
+    }
+    try {
+        const newUtility = await PropertyUtilitiesManagerModel.create(utility);
+        return res.status(200).send(newUtility);
+    } catch (error) {
+        console.log('Error creating empty property utility:', error);
+        return next(new apiError(500, `Unable to create empty property utility: ${error.message}`));
+    }
+}
+
+export const getPropertyUtilitiesById = async (req, res, next) => {
+    const { id } = req.query; 
+    const user = req.user.id;
+
+    let query = { property: id }
+    if (user) { query.user = user }
+    
+    try {
+        const propertyUtility = await PropertyUtilitiesManagerModel.findOne(query);
+
+        if (!propertyUtility) {
+            return res.status(404).send({ error: 'Property utility not found' });
+        }
+        return res.status(200).send(propertyUtility);
+    } catch (error) {
+        return next(new apiError(500, `Failed to fetch property utility: ${error.message}`));
+    }
+}
 
 // Get a single property utility by ID
 export const getPropertyUtilityById = async (req, res) => {

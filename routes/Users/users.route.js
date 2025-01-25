@@ -35,8 +35,10 @@ import {
   UpdateUserDocuments,
 } from "../../controllers/common/users/documents.controllers.js";
 import {
+  createEmptyPropertyUtility,
   createPropertyUtility,
   deletePropertyUtilityById,
+  getPropertyUtilitiesById,
   getPropertyUtilityById,
   UpdatePropertyUtilityById,
 } from "../../controllers/common/properties/utilitiesmanager.controllers.js";
@@ -76,7 +78,9 @@ router.get("/properties/block-owner/:id", SetBlockOwnerStay);
 // router.put("/property-utilities/:id", UpdatePropertyUtility);
 
 // Property Utilities Manager Routes
+router.post("/property-utilities", createEmptyPropertyUtility);
 router.post("/utilities/", createPropertyUtility);
+router.get("/property-utilities/", getPropertyUtilitiesById);
 router.get("/utilities", getPropertyUtilityById);
 router.put("/utilities/:id", UpdatePropertyUtilityById);
 router.delete("/utilities/:id", deletePropertyUtilityById);
@@ -104,4 +108,5 @@ router.post("/owner-book-details/", SetOwnerBookDetails);
 
 // Statements & Maintenance Invoices Routes
 router.get("/user-statements", getStatements);
+
 export default router;
