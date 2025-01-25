@@ -6,6 +6,10 @@ const UserDocumentsSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    issue_date: {
+        type: Date,
+        default: Date.now
+    },
     note: String,
     document: {
         type: String,
