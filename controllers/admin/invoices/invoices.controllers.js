@@ -206,11 +206,11 @@ export const getmonthalyRevenueDetail = async (req, res) => {
       .populate("property", "title")
       .populate("book_details", "first_name last_name email");
 
-    if (!bookings.length) {
-      return res
-        .status(404)
-        .json({ error: "No bookings found for the given criteria." });
-    }
+    // if (!bookings.length) {
+    //   return res
+    //     .status(200)
+    //     .json({ error: "No bookings found for the given criteria." });
+    // }
 
     const reservations = bookings.map((booking) => ({
       reservationCode: booking.reservationCode,
