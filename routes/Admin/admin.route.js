@@ -101,7 +101,10 @@ import {
   getmonthalyRevenueList,
 } from "../../controllers/admin/invoices/invoices.controllers.js";
 import { SetUIContent } from "../../controllers/admin/content/uicontent.controllers.js";
-import { addStatement } from "../../controllers/admin/properties/statements.controllers.js";
+import {
+  addStatement,
+  deleteStatement,
+} from "../../controllers/admin/properties/statements.controllers.js";
 import {
   createFurnishingInvoice,
   getAllFurnishingInvoice,
@@ -245,6 +248,7 @@ router.post("/ui-content/", SetUIContent);
 
 // Statements Routes
 router.post("/statements", addStatement);
+router.delete("/statements/:title", deleteStatement);
 
 // monthly invoice Routes
 router.post("/monthly-invoice", createOrUpdateMonthlyInvoice);

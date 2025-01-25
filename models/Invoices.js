@@ -8,6 +8,10 @@ const FurnishingSchema = new Schema(
       ref: "properties",
       required: true,
     },
+    isStatementGenrated: {
+      type: Boolean,
+      default: false,
+    },
     invoiceNumber: { type: String, required: true, unique: true },
     statementPeriod: { type: String, required: true },
     companyDetails: {
@@ -47,6 +51,10 @@ const MonthalySchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "properties",
       required: true,
+    },
+    isStatementGenrated: {
+      type: Boolean,
+      default: false,
     },
     companyDetails: {
       name: { type: String, required: true },
@@ -99,6 +107,10 @@ const MaintenanceSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "properties",
       required: true,
+    },
+    isStatementGenrated: {
+      type: Boolean,
+      default: false,
     },
     statementPeriod: { type: String, required: true },
     trn_number: { type: String, required: true },
