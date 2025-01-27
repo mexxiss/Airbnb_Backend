@@ -77,8 +77,11 @@ export const getAllFurnishingInvoice = async (req, res) => {
       }
     }
 
-    const invoices = await Furnishing.find(query).populate("bank_details");
-
+    const invoices = await Furnishing.find(query)
+      .sort({
+        createdAt: -1,
+      })
+      .populate("bank_details");
     res.status(200).json({
       message: "Furnishing Invoices fetched successfully",
       data: invoices,

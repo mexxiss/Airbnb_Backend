@@ -434,7 +434,9 @@ export const getmonthalyRevenueList = async (req, res) => {
       }
     }
 
-    const revenueInvoiceLists = await MonthalySchemaModal.find(query);
+    const revenueInvoiceLists = await MonthalySchemaModal.find(query).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json({
       message: "Revenue details fetched successfully.",
