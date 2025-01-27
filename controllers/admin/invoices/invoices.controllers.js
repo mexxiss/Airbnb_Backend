@@ -155,6 +155,133 @@ export const createOrUpdateMonthlyInvoice = async (req, res) => {
   }
 };
 
+// export const getmonthalyRevenueDetail = async (req, res) => {
+//   try {
+//     const { property_id, user_id, target_month } = req.query;
+
+//     let startDate, endDate;
+//     if (target_month) {
+//       const [year, month] = target_month.split("-").map(Number);
+//       if (!year || !month || month < 1 || month > 12) {
+//         return res
+//           .status(400)
+//           .json({ error: "Invalid target_month format. Use YYYY-MM." });
+//       }
+//       startDate = new Date(year, month - 1, 1);
+//       endDate = new Date(year, month, 0);
+//     } else {
+//       const now = new Date();
+//       startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+//       endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+//     }
+
+//     const filter = {
+//       checkin_date: { $gte: startDate },
+//       checkout_date: { $lte: endDate },
+//     };
+
+//     if (property_id) {
+//       if (!mongoose.Types.ObjectId.isValid(property_id.trim())) {
+//         return res.status(400).json({ error: "Invalid property_id format" });
+//       }
+//       filter.property = new mongoose.Types.ObjectId(property_id.trim());
+//     }
+
+//     if (user_id) {
+//       if (!mongoose.Types.ObjectId.isValid(user_id.trim())) {
+//         return res.status(400).json({ error: "Invalid user_id format" });
+//       }
+//       const propertyOwned = await PropertiesModel.find({
+//         user: user_id.trim(),
+//       });
+//       if (!propertyOwned.length) {
+//         return res
+//           .status(404)
+//           .json({ error: "No properties found for the given user_id." });
+//       }
+//       filter.property = { $in: propertyOwned.map((p) => p._id) };
+//     }
+
+//     const bookings = await BookedDatesModel.find(filter)
+//       .populate("property", "title")
+//       .populate("book_details", "first_name last_name email");
+
+//     // if (!bookings.length) {
+//     //   return res
+//     //     .status(200)
+//     //     .json({
+
+//     //       reservations,
+//     //       summary: {
+//     //         totalIncome,
+//     //         managementFee,
+//     //         expenses,
+//     //         netAmountDue,
+//     //       },
+//     //       footer: "Kind regards,\nMexxstates",
+//     //     });
+//     // }
+//     console.log({ bookings });
+
+//     const reservations = bookings.map((booking) => ({
+//       reservationCode: booking.reservationCode,
+//       guestName:
+//         `${booking.book_details?.first_name} ${booking.book_details?.last_name}` ||
+//         "N/A",
+//       checkIn: booking.checkin_date.toISOString().split("T")[0],
+//       checkOut: booking.checkout_date.toISOString().split("T")[0],
+//       totalNights: booking.nights_count || 0,
+//       netRentalIncome: booking.cost_details.net_charges || 0,
+//     }));
+
+//     const totalIncome = reservations.reduce(
+//       (sum, reservation) => sum + reservation.netRentalIncome,
+//       0
+//     );
+
+//     const managementFeePercentage = 17;
+//     const managementFee = {
+//       percentage: managementFeePercentage,
+//       amount: (totalIncome * managementFeePercentage) / 100,
+//     };
+
+//     const expenses = [
+//       {
+//         description: "DET License Fee",
+//         amount: 370,
+//       },
+//     ];
+
+//     const totalExpenses = expenses.reduce(
+//       (sum, expense) => sum + expense.amount,
+//       0
+//     );
+
+//     const netAmountDue = totalIncome - managementFee.amount;
+
+//     const invoiceDetails = {
+//       invoiceNumber: `INV-${Math.floor(1000 + Math.random() * 9000)}`,
+//       date: new Date().toISOString().split("T")[0],
+//       statementPeriod: `${startDate.getFullYear()}/${startDate.getMonth() + 1}`,
+//     };
+
+//     res.json({
+//       invoiceDetails,
+//       reservations,
+//       summary: {
+//         totalIncome,
+//         managementFee,
+//         expenses,
+//         netAmountDue,
+//       },
+//       footer: "Kind regards,\nMexxstates",
+//     });
+//   } catch (error) {
+//     console.error("Error fetching revenue details:", error);
+//     res.status(500).json({ error: "Failed to fetch revenue data." });
+//   }
+// };
+
 export const getmonthalyRevenueDetail = async (req, res) => {
   try {
     const { property_id, user_id, target_month } = req.query;
@@ -206,22 +333,23 @@ export const getmonthalyRevenueDetail = async (req, res) => {
       .populate("property", "title")
       .populate("book_details", "first_name last_name email");
 
-    // if (!bookings.length) {
-    //   return res
-    //     .status(200)
-    //     .json({ error: "No bookings found for the given criteria." });
-    // }
-
-    const reservations = bookings.map((booking) => ({
-      reservationCode: booking.reservationCode,
-      guestName:
-        `${booking.book_details?.first_name} ${booking.book_details?.last_name}` ||
-        "N/A",
-      checkIn: booking.checkin_date.toISOString().split("T")[0],
-      checkOut: booking.checkout_date.toISOString().split("T")[0],
-      totalNights: booking.nights_count,
-      netRentalIncome: booking.cost_details.net_charges,
-    }));
+    const reservations = bookings.length
+      ? bookings.map((booking) => ({
+          reservationCode: booking.reservationCode || "",
+          guestName:
+            `${booking.book_details?.first_name || ""} ${
+              booking.book_details?.last_name || ""
+            }`.trim() || "N/A",
+          checkIn: booking.checkin_date
+            ? booking.checkin_date.toISOString().split("T")[0]
+            : "",
+          checkOut: booking.checkout_date
+            ? booking.checkout_date.toISOString().split("T")[0]
+            : "",
+          totalNights: booking.nights_count || 0,
+          netRentalIncome: booking.cost_details?.net_charges || 0,
+        }))
+      : [];
 
     const totalIncome = reservations.reduce(
       (sum, reservation) => sum + reservation.netRentalIncome,
@@ -306,7 +434,9 @@ export const getmonthalyRevenueList = async (req, res) => {
       }
     }
 
-    const revenueInvoiceLists = await MonthalySchemaModal.find(query);
+    const revenueInvoiceLists = await MonthalySchemaModal.find(query).sort({
+      createdAt: -1,
+    });
 
     res.status(200).json({
       message: "Revenue details fetched successfully.",

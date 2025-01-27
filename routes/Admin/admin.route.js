@@ -13,6 +13,7 @@ import {
   DeleteProperty,
   getPropertyById,
   getPropertyListByAdmin,
+  getUserListOnlyProperty,
   GetUserProperties,
   SetProperty,
   UpdateProperty,
@@ -270,5 +271,7 @@ router.put("/maintenance-invoice/:id", UpdateMaintenanceInvoice);
 // Contact Support Queries
 router.put("/queries", updateQueries);
 router.get("/queries", getQueries);
+
+router.get("/only-properties-userlist", getUserListOnlyProperty);
 
 export default router;

@@ -127,6 +127,9 @@ export const GetMaintenanceInvoiceList = async (req, res) => {
     }
 
     const maintenanceRecords = await MaintenanceInvoiceModal.find(query)
+      .sort({
+        createdAt: -1,
+      })
       .populate({
         path: "property_id",
         select: "title user",
