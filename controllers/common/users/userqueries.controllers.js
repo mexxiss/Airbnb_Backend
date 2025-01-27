@@ -27,3 +27,18 @@ export const addQuery = async (req, res, next) => {
         return next(new apiError(500, `Server error: ${err.message}`));
     }
 } 
+
+export const getQueries = async (req, res) => {
+    // #swagger.tags = ['General']
+    // #swagger.summary = "Get all queries"
+    // #swagger.description = "Endpoint to get all queries"
+    
+    const user = req?.user?.id;
+
+    try {
+        const queries = await OwnerQueriesModel.find({user}).populate();
+        return res.status(200).json(new apiResponse(200, "", queries));
+    } catch (err) {
+        return next(new apiError(500, `Server error: ${err.message}`));
+    }
+}

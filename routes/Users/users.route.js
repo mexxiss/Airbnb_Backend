@@ -17,11 +17,6 @@ import {
   GetFullPropertiesObjByUser,
   SetBlockOwnerStay,
 } from "../../controllers/common/properties/properties.controllers.js";
-import {
-  GetPropertyUtilities,
-  SetPropertyUtility,
-  UpdatePropertyUtility,
-} from "../../controllers/common/properties/utilities.controllers.js";
 import { GetProviders } from "../../controllers/common/providers/providers.controllers.js";
 
 import { upload } from "../../uploads/multer.js";
@@ -48,7 +43,7 @@ import {
   SetBlockedDates,
   SetOwnerBookDetails,
 } from "../../controllers/general/booking/date.owner-block.controllers.js";
-import { addQuery } from "../../controllers/common/users/userqueries.controllers.js";
+import { addQuery, getQueries } from "../../controllers/common/users/userqueries.controllers.js";
 import { getStatements } from "../../controllers/common/properties/statements.controllers.js";
 
 const router = express.Router();
@@ -103,6 +98,7 @@ router.delete("/block-stay-owner/single-booked-dates/", deleteBookedDate);
 
 // Users Queries Routes
 router.post("/queries", addQuery);
+router.get("/queries", getQueries);
 
 router.post("/owner-book-details/", SetOwnerBookDetails);
 
