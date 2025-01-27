@@ -3,6 +3,7 @@ import { PropertiesModel } from "../../../models/Properties.js";
 import { apiError } from "../../../utils/apiError.js";
 import { apiResponse } from "../../../utils/apiResponse.js";
 import { GalleryModel } from "../../../models/Gallery.js";
+import { UserModel } from "../../../models/Users.js";
 const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
 
 export const getPropertyListByAdmin = async (req, res) => {
@@ -298,5 +299,31 @@ export const getPropertyById = async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to fetch property", error: error.message });
+  }
+};
+
+export const getUserListOnlyProperty = async (req, res) => {
+  try {
+    // Find distinct user IDs from properties
+    const propertyOwners = await PropertiesModel.distinct("user");
+
+    if (!propertyOwners.length) {
+      return res
+        .status(404)
+        .json({ message: "No users with properties found" });
+    }
+
+    // Find users whose IDs match those found in properties
+    const usersWithProperties = await UserModel.find({
+      _id: { $in: propertyOwners },
+      role: { $ne: "Admin" },
+    })
+      .select("first_name last_name email phone profile_img role")
+      .lean();
+
+    res.status(200).json({ success: true, data: usersWithProperties });
+  } catch (error) {
+    console.error("Error fetching users with properties:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
