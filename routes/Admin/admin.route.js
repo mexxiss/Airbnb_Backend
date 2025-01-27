@@ -13,6 +13,7 @@ import {
   DeleteProperty,
   getPropertyById,
   getPropertyListByAdmin,
+  getUserListOnlyProperty,
   GetUserProperties,
   SetProperty,
   UpdateProperty,
@@ -266,5 +267,7 @@ router.post("/maintenance-invoice", CreateMaintenance);
 router.get("/maintenance-invoice-list", GetMaintenanceInvoiceList);
 router.get("/maintenance-invoice/:id", GetMaintenanceInvoiceById);
 router.put("/maintenance-invoice/:id", UpdateMaintenanceInvoice);
+
+router.get("/only-properties-userlist", getUserListOnlyProperty);
 
 export default router;

@@ -45,25 +45,17 @@ const updateStatementGeneratedFlag = async (
 };
 
 export const addStatement = async (req, res, next) => {
-  const {
-    url,
-    title,
-    total_amount,
-    received_amount,
-    net_amount_to_pay,
-    statement_type,
-    property,
+  let {
+    url = "",
+    title = "",
+    total_amount = 0,
+    received_amount = 0,
+    net_amount_to_pay = 0,
+    statement_type = "",
+    property = "",
   } = req.body;
 
-  if (
-    !url ||
-    !title ||
-    !total_amount ||
-    !received_amount ||
-    !net_amount_to_pay ||
-    !property ||
-    !statement_type
-  ) {
+  if (!url || !title || !property || !statement_type) {
     return next(new apiError(400, "Incomplete or missing required fields"));
   }
 
