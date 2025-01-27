@@ -117,7 +117,7 @@ import {
   GetMaintenanceInvoiceList,
   UpdateMaintenanceInvoice,
 } from "../../controllers/admin/invoices/maintenance.controllers.js";
-import { GetSingleBookedDate } from "../../controllers/general/booking/date.owner-block.controllers.js";
+import { getQueries, updateQueries } from "../../controllers/admin/users/queries.controllers.js";
 
 const router = express.Router();
 
@@ -266,5 +266,9 @@ router.post("/maintenance-invoice", CreateMaintenance);
 router.get("/maintenance-invoice-list", GetMaintenanceInvoiceList);
 router.get("/maintenance-invoice/:id", GetMaintenanceInvoiceById);
 router.put("/maintenance-invoice/:id", UpdateMaintenanceInvoice);
+
+// Contact Support Queries
+router.put("/queries", updateQueries);
+router.get("/queries", getQueries);
 
 export default router;
