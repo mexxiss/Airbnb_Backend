@@ -25,37 +25,31 @@ const BookedDatesSchema = new Schema(
       },
       stay_charges: {
         type: Number,
-
         default: 0.0,
         min: [0, "Amount cannot be negative"],
       },
       discount: {
         type: Number,
-
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       cleaning_fee: {
         type: Number,
-
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       tourism_tax: {
         type: Number,
-
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       vat_tax: {
         type: Number,
-
         default: 0,
         min: [0, "Amount cannot be negative"],
       },
       net_charges: {
         type: Number,
-
         min: [0, "Amount cannot be negative"],
       },
     },

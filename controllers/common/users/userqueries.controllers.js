@@ -22,7 +22,7 @@ export const addQuery = async (req, res, next) => {
 
     try {
         const query = await OwnerQueriesModel.create({ question_type, message, user })
-        return res.status(200).json(new apiResponse(200, "", "Query created successfully"));
+        return res.status(200).json(new apiResponse(200, query, "Query created successfully"));
     } catch (err) {
         return next(new apiError(500, `Server error: ${err.message}`));
     }
@@ -36,8 +36,8 @@ export const getQueries = async (req, res) => {
     const user = req?.user?.id;
 
     try {
-        const queries = await OwnerQueriesModel.find({user}).populate();
-        return res.status(200).json(new apiResponse(200, "", queries));
+        const queries = await OwnerQueriesModel.find({user}).sort({createdAt: -1})
+        return res.status(200).json(new apiResponse(200, queries, "Query retrieved successfully"));
     } catch (err) {
         return next(new apiError(500, `Server error: ${err.message}`));
     }
