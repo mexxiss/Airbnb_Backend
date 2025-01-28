@@ -119,7 +119,7 @@ import {
   UpdateMaintenanceInvoice,
 } from "../../controllers/admin/invoices/maintenance.controllers.js";
 
-import { getQueries, getQueriesByUser, updateQueries } from "../../controllers/admin/users/queries.controllers.js";
+import { getQueries, getQueriesByUser, updateQueries, updateQuery } from "../../controllers/admin/users/queries.controllers.js";
 
 import {
   addLicense,
@@ -127,8 +127,9 @@ import {
   getLicenseById,
   getLicenses,
   renewLicense,
-  updateLicense,
+  updateLicense, 
 } from "../../controllers/admin/license/license.controllers.js";
+import { getPropertyQueries } from "../../controllers/admin/properties/queries.controllers.js";
 
 
 const router = express.Router();
@@ -283,6 +284,7 @@ router.put("/maintenance-invoice/:id", UpdateMaintenanceInvoice);
 router.put("/queries", updateQueries);
 router.get("/queries", getQueries);
 router.get("/user-queries", getQueriesByUser);
+router.put("/reply-query/:id", updateQuery);
 
 router.get("/only-properties-userlist", getUserListOnlyProperty);
 
@@ -292,5 +294,7 @@ router.get("/license/:id", getLicenseById);
 router.put("/license/:id", updateLicense);
 router.delete("/license:id", deleteLicense);
 router.patch("/license/:id/renew", renewLicense);
+
+router.get("/property-queries", getPropertyQueries);
 
 export default router;

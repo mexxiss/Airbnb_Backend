@@ -94,3 +94,23 @@ export const updateQueries = async (req, res, next) => {
         return next(new apiError(500, `Server error: ${error}`));
     }
 }
+
+export const updateQuery = async (req, res, next) => {
+    const { id } = req.params;
+    const { updates } = req.body;
+    
+    if (!id) {
+        return next(new apiError(400, 'id is required'));
+    }
+    
+    if (!updates) {
+        return next(new apiError(400, 'Updates are required'));
+    }
+
+    try {
+        const query = await OwnerQueriesModel.findByIdAndUpdate(id, updates, {new: true});
+        return res.status(200).json(query);
+    } catch (err) {
+        return next(new apiError(500, `Server error: ${err}`));
+    }
+}
