@@ -52,15 +52,15 @@ export const GetFilteredDates = async (req, res, next) => {
             {
                 $lookup: {
                     from: "bookdetails", // Collection name of BookDetailsModel
-                    localField: "book_details", // Field in BookedDates that references BookDetails
-                    foreignField: "_id", // Field in BookDetails that references BookedDates
-                    as: "book_details", // Alias for the joined data
+                    localField: "book_details", 
+                    foreignField: "_id", 
+                    as: "book_details", 
                 }
             },
             {
                 $unwind: {
                     path: "$book_details",
-                    preserveNullAndEmptyArrays: true, // In case there are no matching book_details
+                    preserveNullAndEmptyArrays: false, // In case there are no matching book_details
                 }
             },
             {
@@ -226,6 +226,7 @@ export const GetFilteredDates = async (req, res, next) => {
                                 nights_count_dynamic: 1,
                                 reservationCode: 1,
                                 nights_count: 1,
+                                book_details: 1,
                                 first_name: "$book_details.first_name",
                                 last_name: "$book_details.last_name",
                                 guest_count: "$book_details.guests",
