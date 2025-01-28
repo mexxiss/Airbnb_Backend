@@ -183,6 +183,10 @@ const PropertiesSchema = new Schema(
       ref: "users",
       required: true,
     },
+    licenses: {
+      type: Schema.Types.ObjectId,
+      ref: "detLicenses",
+    },
     block_owner: {
       from: {
         type: Date,
