@@ -118,7 +118,18 @@ import {
   GetMaintenanceInvoiceList,
   UpdateMaintenanceInvoice,
 } from "../../controllers/admin/invoices/maintenance.controllers.js";
-import { getQueries, updateQueries } from "../../controllers/admin/users/queries.controllers.js";
+import {
+  getQueries,
+  updateQueries,
+} from "../../controllers/admin/users/queries.controllers.js";
+import {
+  addLicense,
+  deleteLicense,
+  getLicenseById,
+  getLicenses,
+  renewLicense,
+  updateLicense,
+} from "../../controllers/admin/license/license.controllers.js";
 
 const router = express.Router();
 
@@ -271,7 +282,13 @@ router.put("/maintenance-invoice/:id", UpdateMaintenanceInvoice);
 // Contact Support Queries
 router.put("/queries", updateQueries);
 router.get("/queries", getQueries);
-
 router.get("/only-properties-userlist", getUserListOnlyProperty);
+
+router.post("/license", addLicense);
+router.get("/license", getLicenses);
+router.get("/license/:id", getLicenseById);
+router.put("/license/:id", updateLicense);
+router.delete("/license:id", deleteLicense);
+router.patch("/license/:id/renew", renewLicense);
 
 export default router;
