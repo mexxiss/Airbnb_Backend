@@ -15,7 +15,8 @@ const Auth = async (req, res, next) => {
   if (!token) {
     return res.status(401).json(new apiError(401, "", "Not Authorized"));
   }
-
+  console.log(token);
+  
   try {
     const decoded = jsonwebtoken.verify(token, JWT_SECRET);
     req.user = {
@@ -28,7 +29,6 @@ const Auth = async (req, res, next) => {
     req.token = token;
     next();
   } catch (error) {
-    console.log(error);
     res.status(401).json(new apiError(401, "", "User Not Found"));
   }
 };
