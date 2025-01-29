@@ -4,7 +4,7 @@ import { apiError } from "../../../utils/apiError.js";
 export const getPropertyQueries = async (req, res, next) => {
 
     try {
-        const queries = await PropertyQueryModel.find();
+        const queries = await PropertyQueryModel.find().sort({createdAt: 1});
         return res.status(200).json(queries);
     } catch (err) {
         console.log(err.message);
