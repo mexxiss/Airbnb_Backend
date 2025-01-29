@@ -117,7 +117,7 @@ export const getFilteredPropertiesForBooking = async (req, res, next) => {
     const { destination, check_in, check_out, bedrooms, guests, area, sort } = req.body;
 
     try {
-        let query = {};
+        let query = {status: 'Active'};
 
         if (check_in && check_out) {
             const checkInDate = new Date(check_in);
