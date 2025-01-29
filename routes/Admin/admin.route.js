@@ -130,6 +130,7 @@ import {
   updateLicense, 
 } from "../../controllers/admin/license/license.controllers.js";
 import { getPropertyQueries } from "../../controllers/admin/properties/queries.controllers.js";
+import { getAllContactQueries } from "../../controllers/admin/contact/web-queries.controllers.js";
 
 
 const router = express.Router();
@@ -296,5 +297,7 @@ router.delete("/license:id", deleteLicense);
 router.patch("/license/:id/renew", renewLicense);
 
 router.get("/property-queries", getPropertyQueries);
+
+router.get("/contact-queries/", getAllContactQueries);
 
 export default router;

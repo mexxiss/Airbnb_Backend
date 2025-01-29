@@ -2,10 +2,13 @@ import { PropertyQueryModel } from "../../../models/PropertyQueries.js"
 import { apiError } from "../../../utils/apiError.js";
 
 export const getPropertyQueries = async (req, res, next) => {
-
+    const {page = 1, limit = 10} = req.query;
     try {
-        const queries = await PropertyQueryModel.find().sort({createdAt: 1});
-        return res.status(200).json(queries);
+        const totalCount = await PropertyQueryModel.countDocuments();
+        const queries = await PropertyQueryModel.find().sort({createdAt: -1}).skip((page - 1) * limit).limit(limit);
+        const totalPages = Math.ceil(totalCount / limit);
+        
+        return res.status(200).json({totalCount, queries, totalPages});
     } catch (err) {
         console.log(err.message);
         

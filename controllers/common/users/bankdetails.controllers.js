@@ -42,12 +42,8 @@ export const GetPaymentDetails = async (req, res, next) => {
     }
 
     try {
-        let docs = await PaymentDetailsModel.find({user: user_id}).limit(1);
-        if (docs.length === 0) {
-            docs = await PaymentDetailsModel.create({user: user_id});
-            return res.status(200).json(docs);
-        }
-        return res.status(200).json(docs[0]);
+        let docs = await PaymentDetailsModel.findOne({user: user_id});
+        return res.status(200).json(docs);
     } catch (error) {
         return next(new apiError(500, `Server Error: ${error}`))
     }
