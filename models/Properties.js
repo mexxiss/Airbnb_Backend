@@ -43,7 +43,16 @@ const PropertiesSchema = new Schema(
       },
       bhk: {
         type: String,
-        enum: ["1rk", "1bhk", "2bhk", "3bhk", "3+bhk"],
+        enum: [
+          "1bhk",
+          "2bhk",
+          "3bhk",
+          "3bhk",
+          "4bhk",
+          "5bhk",
+          "6+bhk",
+          "studio",
+        ],
         default: "1bhk",
       },
       rooms_count: {
