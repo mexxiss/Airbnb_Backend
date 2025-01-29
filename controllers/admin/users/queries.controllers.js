@@ -11,7 +11,7 @@ export const getQueriesByUser = async (req, res, next) => {
     }
 
     try {
-        const queries = await OwnerQueriesModel.find({ user }).sort({ createdAt: -1 });
+        const queries = await OwnerQueriesModel.find({ user }).sort({ createdAt: 1 });
         return res.status(200).json(queries);
     } catch (error) {
         return next(new apiError(500, `Server error: ${error.message}`));
