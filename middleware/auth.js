@@ -15,7 +15,6 @@ const Auth = async (req, res, next) => {
   if (!token) {
     return res.status(401).json(new apiError(401, "", "Not Authorized"));
   }
-  console.log(token);
   
   try {
     const decoded = jsonwebtoken.verify(token, JWT_SECRET);
@@ -24,9 +23,9 @@ const Auth = async (req, res, next) => {
       role: decoded.role,
       token,
     };
-    req._id = decoded._id;
-    req.role = decoded.role;
-    req.token = token;
+    // req._id = decoded._id;
+    // req.role = decoded.role;
+    // req.token = token;
     next();
   } catch (error) {
     res.status(401).json(new apiError(401, "", "User Not Found"));
