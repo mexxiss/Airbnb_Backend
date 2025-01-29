@@ -24,7 +24,7 @@ export const addLicense = async (req, res, next) => {
 
   const existLicense = await DETLicense.findOne({ owner, property });
   if (existLicense) {
-    return res.status(400).json({ error: "License already exists" });
+    return res.status(400).json({ message: "License already exists" });
   }
 
   try {
@@ -55,7 +55,18 @@ export const addLicense = async (req, res, next) => {
 // @access Admin/User
 export const getLicenses = async (req, res, next) => {
   try {
-    let { page, limit, search, sortBy, sortOrder, status, owner } = req.query;
+    let {
+      page,
+      limit,
+      searchTerm,
+      sortBy,
+      sortOrder,
+      status,
+      owner,
+      startDate,
+      endDate,
+      isPaid,
+    } = req.query;
 
     // Set default values for pagination
     page = parseInt(page) || 1;
@@ -65,11 +76,11 @@ export const getLicenses = async (req, res, next) => {
     const filter = {};
 
     // Search by licenseNumber (case-insensitive)
-    if (search) {
-      filter.licenseNumber = { $regex: search, $options: "i" };
+    if (searchTerm) {
+      filter.licenseNumber = { $regex: searchTerm, $options: "i" };
     }
 
-    // Filter by status (paid/unpaid)
+    // Filter by status (e.g., paid/unpaid)
     if (status) {
       filter.status = status;
     }
@@ -77,6 +88,16 @@ export const getLicenses = async (req, res, next) => {
     // Filter by owner ID
     if (owner) {
       filter.owner = owner;
+    }
+
+    // Filter by issueDate and expiryDate range
+    if (startDate && endDate) {
+      filter.issueDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
+    }
+
+    // Filter by isPaid status
+    if (isPaid && isPaid !== "all") {
+      filter.status = isPaid === "true" ? "paid" : "unpaid";
     }
 
     // Define sorting options (default to `createdAt`)
@@ -87,13 +108,15 @@ export const getLicenses = async (req, res, next) => {
       sortOptions["createdAt"] = -1;
     }
 
+    // Fetch data from MongoDB
     const totalLicenses = await DETLicense.countDocuments(filter);
     const licenses = await DETLicense.find(filter)
       .sort(sortOptions)
       .skip((page - 1) * limit)
       .limit(limit)
-      .populate("");
+      .populate(""); // Populate owner and property references
 
+    // Return response
     return res.status(200).json(
       new apiResponse(
         200,
@@ -116,9 +139,9 @@ export const getLicenses = async (req, res, next) => {
 // @access Admin/User
 export const getLicenseById = async (req, res, next) => {
   try {
-    const license = await DETLicense.findById(req.params.id).populate(
-      "owner property"
-    );
+    const license = await DETLicense.findById(req.params.id)
+      .populate("owner", "first_name last_name _id")
+      .populate("property", "title _id");
     if (!license) {
       return next(new apiError(404, "License not found"));
     }
