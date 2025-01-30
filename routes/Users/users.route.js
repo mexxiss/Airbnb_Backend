@@ -16,6 +16,7 @@ import {
   GetAllPropertiesByUser,
   GetFullPropertiesObjByUser,
   SetBlockOwnerStay,
+  UpdatePropertyByUser,
 } from "../../controllers/common/properties/properties.controllers.js";
 import { GetProviders } from "../../controllers/common/providers/providers.controllers.js";
 
@@ -43,7 +44,10 @@ import {
   SetBlockedDates,
   SetOwnerBookDetails,
 } from "../../controllers/general/booking/date.owner-block.controllers.js";
-import { addQuery, getQueries } from "../../controllers/common/users/userqueries.controllers.js";
+import {
+  addQuery,
+  getQueries,
+} from "../../controllers/common/users/userqueries.controllers.js";
 import { getStatements } from "../../controllers/common/properties/statements.controllers.js";
 
 const router = express.Router();
@@ -74,6 +78,7 @@ router.get("/properties/block-owner/:id", SetBlockOwnerStay);
 
 // Property Utilities Manager Routes
 router.post("/property-utilities", createEmptyPropertyUtility);
+router.put("/properties/:id", UpdatePropertyByUser);
 router.post("/utilities/", createPropertyUtility);
 router.get("/property-utilities/", getPropertyUtilitiesById);
 router.get("/utilities", getPropertyUtilityById);

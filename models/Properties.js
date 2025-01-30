@@ -76,6 +76,10 @@ const PropertiesSchema = new Schema(
           },
         },
       },
+      isWifiAvailable: {
+        type: Boolean,
+        default: false,
+      },
       wifi: {
         name: { type: String },
         password: { type: String },
