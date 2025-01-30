@@ -32,6 +32,7 @@ import {
 } from "../../controllers/admin/blogs/blogcategories.controllers.js";
 import {
   DeleteBookedDates,
+  GetAllBookings,
   UpdateBookedDates,
 } from "../../controllers/admin/booking/dates.controllers.js";
 import {
@@ -119,7 +120,12 @@ import {
   UpdateMaintenanceInvoice,
 } from "../../controllers/admin/invoices/maintenance.controllers.js";
 
-import { getQueries, getQueriesByUser, updateQueries, updateQuery } from "../../controllers/admin/users/queries.controllers.js";
+import {
+  getQueries,
+  getQueriesByUser,
+  updateQueries,
+  updateQuery,
+} from "../../controllers/admin/users/queries.controllers.js";
 
 import {
   addLicense,
@@ -127,11 +133,10 @@ import {
   getLicenseById,
   getLicenses,
   renewLicense,
-  updateLicense, 
+  updateLicense,
 } from "../../controllers/admin/license/license.controllers.js";
 import { getPropertyQueries } from "../../controllers/admin/properties/queries.controllers.js";
 import { getAllContactQueries } from "../../controllers/admin/contact/web-queries.controllers.js";
-
 
 const router = express.Router();
 
@@ -164,6 +169,7 @@ router.post("/blogs/", AddBlogs);
 
 router.put("/booked-dates/:id", UpdateBookedDates);
 router.delete("/booked-dates/:id", DeleteBookedDates);
+router.get("/bookings", GetAllBookings);
 
 // Book Details Routes
 router.get("/book-details/:id", GetBookDetails);
