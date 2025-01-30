@@ -174,10 +174,11 @@ export const getFilteredPropertiesForBooking = async (req, res, next) => {
 
         const totalCount = result[0]?.totalCount[0]?.count || 0;
         const properties = result[0]?.properties || [];
+        const totalPages = Math.ceil(totalCount / limit)
 
         return res
             .status(200)
-            .json(new apiResponse(200, { properties, totalCount }, "Properties retrieved successfully"));
+            .json(new apiResponse(200, { properties, totalCount, totalPages }, "Properties retrieved successfully"));
     } catch (err) {
         console.log(err.message);
         
