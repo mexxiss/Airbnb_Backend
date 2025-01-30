@@ -108,7 +108,6 @@ export const UpdatePropertyByUser = async (req, res, next) => {
   */
   const { id } = req.params;
   const { updates } = req.body;
-  console.log({ updates });
 
   if (!id) {
     return next(new apiError(400, "Document ID required"));
