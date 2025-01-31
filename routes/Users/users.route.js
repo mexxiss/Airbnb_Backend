@@ -49,6 +49,7 @@ import {
   getQueries,
 } from "../../controllers/common/users/userqueries.controllers.js";
 import { getStatements } from "../../controllers/common/properties/statements.controllers.js";
+import { generatePdf } from "../../controllers/common/genrate-pdf/genratePDF.js";
 
 const router = express.Router();
 
@@ -109,5 +110,6 @@ router.post("/owner-book-details/", SetOwnerBookDetails);
 
 // Statements & Maintenance Invoices Routes
 router.get("/user-statements", getStatements);
+router.post("/generate-pdf", generatePdf);
 
 export default router;
