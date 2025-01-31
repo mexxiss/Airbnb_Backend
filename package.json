@@ -26,6 +26,7 @@
     "express": "^4.21.1",
     "form-data": "^4.0.1",
     "fs": "^0.0.1-security",
+    "handlebars": "^4.7.8",
     "html-pdf-node": "^1.0.8",
     "jsonwebtoken": "^9.0.2",
     "libphonenumber-js": "^1.11.15",
@@ -36,6 +37,7 @@
     "nodemon": "^3.1.7",
     "otp-generator": "^4.0.1",
     "pdf-creator-node": "^2.3.5",
+    "puppeteer": "^24.1.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "validator": "^13.12.0"
