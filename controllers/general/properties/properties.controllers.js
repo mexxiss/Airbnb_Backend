@@ -157,8 +157,7 @@ export const getFilteredPropertiesForBooking = async (req, res, next) => {
                     totalCount: [{ $count: "count" }], // Count total matching documents
                     properties: [
                         { $sort: sortCriteria },
-                        { $skip: (page - 1) * limit },
-                        { $limit: parseInt(limit) },
+                        { $limit: page * limit },
                         {
                             $lookup: {
                                 from: "galleries",
