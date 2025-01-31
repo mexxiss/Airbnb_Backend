@@ -19,9 +19,17 @@ const UserSchema = new Schema(
       validate: [
         {
           validator: function (emails) {
+            // Ensure all emails are valid
             return emails.every((email) => validator.isEmail(email));
           },
           message: "One or more emails are invalid.",
+        },
+        {
+          validator: function (emails) {
+            // Ensure all emails are unique in the array
+            return new Set(emails).size === emails.length;
+          },
+          message: "Duplicate emails are not allowed.",
         },
       ],
     },
@@ -30,12 +38,20 @@ const UserSchema = new Schema(
       validate: [
         {
           validator: function (phones) {
+            // Ensure all phone numbers are valid
             return phones.every((phone) => {
               const phoneNumber = parsePhoneNumberFromString(phone);
               return phoneNumber && phoneNumber.isValid();
             });
           },
           message: "One or more phone numbers are invalid.",
+        },
+        {
+          validator: function (phones) {
+            // Ensure all phone numbers are unique in the array
+            return new Set(phones).size === phones.length;
+          },
+          message: "Duplicate phone numbers are not allowed.",
         },
       ],
     },

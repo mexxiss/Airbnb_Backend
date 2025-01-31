@@ -16,10 +16,17 @@ export const Login = async (req, res, next) => {
   });
 
   try {
-    const user = await UserModel.findOne({ email: { $in: email } });
-    if (!user) {
+    const isEmailExist = await UserModel.findOne({ email: { $in: email } });
+
+    if (!isEmailExist) {
       return next(new apiError(400, "Email is not Registered"));
     }
+
+    if (isEmailExist.email[0] !== email) {
+      return next(new apiError(400, "Please use your primary email to log in"));
+    }
+
+    const user = await UserModel.findOne({ "email.0": email });
 
     if (!user.compareBcryptPassword(password)) {
       return next(new apiError(400, "Password is Incorrect"));
@@ -35,8 +42,10 @@ export const Login = async (req, res, next) => {
     });
     return res
       .status(200)
-      .json(new apiResponse(200, {user}, "Login Successful"));
+      .json(new apiResponse(200, { user }, "Login Successful"));
   } catch (error) {
+    console.log({ error });
+
     return next(new apiError(500, `Server Error: ${error}`));
   }
 };
@@ -56,7 +65,7 @@ export const ForgotPassword = async (req, res, next) => {
     }
   */
   const { email } = req.body;
-  
+
   try {
     const user = await UserModel.findOne({ email: { $in: email } });
     if (!user) {
@@ -80,11 +89,13 @@ export const ForgotPassword = async (req, res, next) => {
     };
 
     await mailSender(email, "Reset Password", replacements);
-    return res.status(200).json(new apiResponse(200, "", "OTP sent successfully"));
+    return res
+      .status(200)
+      .json(new apiResponse(200, "", "OTP sent successfully"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
 
 export const VerifyOtp = async (req, res, next) => {
   // #swagger.tags = ['General']
@@ -115,7 +126,7 @@ export const VerifyOtp = async (req, res, next) => {
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
 
 export const ResetPassword = async (req, res, next) => {
   // #swagger.tags = ['General']
@@ -137,10 +148,8 @@ export const ResetPassword = async (req, res, next) => {
     const user = await UserModel.findOne({ email: { $in: email } });
     user.password = password;
     await user.save();
-    return res
-      .status(200)
-      .json(new apiResponse(200, [], "Password Changed"));
+    return res.status(200).json(new apiResponse(200, [], "Password Changed"));
   } catch (error) {
     return next(new apiError(500, `Server Error: ${error}`));
   }
-}
+};
