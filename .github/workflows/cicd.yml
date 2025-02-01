@@ -13,12 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # ✅ Ensure SSH directory exists before adding known hosts
+      # Add SSH known hosts to avoid authenticity prompt
       - name: Setup SSH Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
+
+      - name: Setup SSH Key for Authentication
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
 
       - name: Deploy to Production (main branch)
         if: github.ref == 'refs/heads/main'
@@ -30,8 +38,6 @@ jobs:
           port: 22
           script: |
             cd /var/www/html/frankporter/Frankporter_Backend/
-            eval "$(ssh-agent -s)"
-            ssh-add - <<< "${{ secrets.SSH_PRIVATE_KEY }}"
             
             # Ensure Git uses SSH for authentication
             git remote set-url origin git@github.com:mexxiss/Frankporter_Backend.git
