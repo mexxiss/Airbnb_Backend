@@ -19,10 +19,10 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /var/www/html/Real-estate-backend/
+            cd /var/www/html/frankporter/Frankporter_Backend/
             sudo git pull https://${{ secrets.PAT }}@github.com/frankporter/Frankporter_Backend main
             sudo npm i
             sudo git status
