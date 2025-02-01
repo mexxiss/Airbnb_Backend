@@ -25,6 +25,5 @@ jobs:
             cd /var/www/html/Real-estate-backend/
             sudo git pull https://${{ secrets.PAT }}@github.com/frankporter/Frankporter_Backend main
             sudo npm i
-            sudo npm run build
             sudo git status
             pm2 restart Frankporter_Backend
