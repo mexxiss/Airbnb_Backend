@@ -9,8 +9,12 @@ export const GetLegals = async (req, res, next) => {
     const { type } = req.query;
 
     try {
-        const legals = await LegalModel.findOne({type});
-        return res.status(200).json(new apiResponse(200, legals, "Guide Retrieved Successfully"))
+        let legals = await LegalModel.find({type});
+        if (legals.length === 0) {
+
+            legals = await LegalModel.create({type, title: "", body: ""});
+        }
+        return res.status(200).json(new apiResponse(200, legals[0], "Guide Retrieved Successfully"))
     } catch (error) {
         console.log(error.message);
         

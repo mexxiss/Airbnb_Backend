@@ -3,16 +3,16 @@ import { Schema, model } from "mongoose";
 const LegalSchema = new Schema({
     title: {
         type: String,
-        required: true,
+        // required: true,
     },
     type: {
         type: String,
         required: true,
-        enum: ["terms", "privacy", "refund"]
+        enum: ["terms", "privacy", "refund", "booking_refund", "booking_privacy", "booking_terms"]
     },
     body: {
         type: String,
-        required: true
+        // required: true
     }
 }, {timestamps: true});
 
