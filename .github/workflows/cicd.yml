@@ -13,21 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Add SSH known hosts to avoid authenticity prompt
-      - name: Setup SSH Known Hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
-
-      - name: Setup SSH Key for Authentication
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
-
       - name: Deploy to Production (main branch)
         if: github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v0.1.10
@@ -38,18 +23,7 @@ jobs:
           port: 22
           script: |
             cd /var/www/html/frankporter/Frankporter_Backend/
-            
-            # Ensure Git uses SSH for authentication
-            git remote set-url origin git@github.com:mexxiss/Frankporter_Backend.git
-
-            # Pull latest changes
-            sudo git pull origin main
-
-            # Install dependencies and build
-            sudo npm install
-
-            # Show Git status
+            sudo git pull https://${{ secrets.PAT }}@github.com/frankporter/Frankporter_Backend main
+            sudo npm i
             sudo git status
-
-            # Restart app with PM2
             pm2 restart Frankporter_Backend
