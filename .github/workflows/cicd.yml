@@ -23,7 +23,7 @@ jobs:
           port: 22
           script: |
             cd /var/www/html/frankporter/Frankporter_Backend/
-            sudo git pull https://${{ secrets.PAT }}@github.com/frankporter/Frankporter_Backend main
+            sudo git pull git@github.com:frankporter/Frankporter_Backend.git main
             sudo npm i
             sudo git status
             pm2 restart Frankporter_Backend
